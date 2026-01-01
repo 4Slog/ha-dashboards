@@ -1,19 +1,332 @@
-# Loads default set of integrations. Do not remove.
+# Converted for Claude
+# ═══════════════════════════════════════════════════════════
+
+# =======================
+#  CORE HOME ASSISTANT
+# =======================
 default_config:
 
-# Load frontend themes from the themes folder
+# =======================
+#  BLUETOOTH - PREFER TP-LINK ADAPTER WITH ACTIVE SCANNING
+# =======================
+bluetooth:
+  adapters:
+    - "CC:B0:DA:B1:44:68"  # TP-Link adapter (hci1) - more powerful
+    - "E0:D3:62:64:47:D2"  # Built-in adapter (hci0) - fallback
+  passive: false  # Enable active scanning for SwitchBot
+
+# =======================
+#  FRONTEND & THEMES
+# =======================
 frontend:
   themes: !include_dir_merge_named themes
 
+# =======================
+#  AUTOMATIONS / SCRIPTS / SCENES
+# =======================
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+
+# =======================
+#  BROWSER MOD
+# =======================
+browser_mod:
+
+# =======================
+#  LOVELACE DASHBOARDS
+# =======================
 lovelace:
   mode: yaml
+
+  # ===== Custom Card Resources =====
+  resources:
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
+      type: module
+    - url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js
+      type: module
+    - url: /hacsfiles/auto-entities/auto-entities.js
+      type: module
+    - url: /hacsfiles/lovelace-mushroom/mushroom.js
+      type: module
+    - url: /hacsfiles/button-card/button-card.js
+      type: module
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
+    - url: /hacsfiles/Google-Map-Card/google-maps-card.js
+      type: module
+    - url: /hacsfiles/ha-map-card/map-card.js
+      type: module
+    - url: /hacsfiles/slider-button-card/slider-button-card.js
+      type: module
+    - url: /hacsfiles/slider-entity-row/slider-entity-row.js
+      type: module
+    - url: /hacsfiles/hass-swipe-navigation/swipe-navigation.js
+      type: module
+
+
+  # ===== Dashboards =====
   dashboards:
+    command-center-show8:
+      mode: yaml
+      title: Command Center (Show 8)
+      icon: mdi:tablet-dashboard
+      show_in_sidebar: true
+      filename: dashboards/command_center_show8.yaml
     casa-de-sowu:
       mode: yaml
       title: Casa de Sowu
       icon: mdi:home
       show_in_sidebar: true
+      require_admin: false
       filename: dashboards/casa_de_sowu.yaml
+    kitchen-tablet:
+      mode: yaml
+      title: Kitchen Tablet
+      icon: mdi:tablet-dashboard
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/kitchen_tablet.yaml
+    casa-dynamic:
+      mode: yaml
+      title: Casa Dynamic
+      icon: mdi:home-lightbulb
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/casa_dynamic.yaml
+    great-room:
+      mode: yaml
+      title: Great Room
+      icon: mdi:television
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/great_room.yaml
+    fire-tv-master:
+      mode: yaml
+      title: Master TV
+      icon: mdi:television-classic
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/fire_tv_master.yaml
+    hp-dashboard:
+      mode: yaml
+      title: HP Dash
+      icon: mdi:monitor
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/hp_dashboard.yaml
+    hp-control-center:
+      mode: yaml
+      title: Control Center
+      icon: mdi:monitor-dashboard
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/hp_control_center.yaml
+    command-center:
+      mode: yaml
+      title: Command Center
+      icon: mdi:tablet-dashboard
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/command_center.yaml 
+    galaxy-command:
+      mode: yaml
+      title: Galaxy Command
+      icon: mdi:cellphone-android
+      show_in_sidebar: true
+      filename: dashboards/galaxy.yaml
+
+    lovelace-home-media:
+      mode: yaml
+      title: Home Media
+      icon: mdi:home-music
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/home_media.yaml
+
+
+
+    mobile-dashboard:
+      mode: yaml
+      title: Mobile
+      icon: mdi:cellphone
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/mobile_dashboard.yaml
+# =======================
+#  OPTIONAL COMPONENTS
+# =======================
+homeassistant:
+  customize: !include customize.yaml
+
+# =======================
+#  HTTP / FRONTEND SECURITY
+# =======================
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - ::1
+    - 172.30.33.0/24
+    - 172.16.0.0/12
+    - 10.0.0.0/8
+
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# =======================
+#  TEMPLATE SENSORS
+# =======================
+template:
+  - sensor:
+      - name: "Average Home Temperature"
+        unique_id: average_home_temperature
+        unit_of_measurement: "°F"
+        device_class: temperature
+        state: >
+          {% set master = states('sensor.lumi_lumi_weather_temperature') | float(0) %}
+          {% set galley = states('sensor.temp_bedroom_wing_temperature') | float(0) %}
+          {% set blue   = states('sensor.temp_bedroom_wing_temperature_2') | float(0) %}
+          {{ ((master + galley + blue) / 3) | round(1) }}
+      - name: "Kitchen Range Status"
+        unique_id: kitchen_range_status
+        state: >
+          {% set op   = states('sensor.range_operating_state') %}
+          {% set mode = states('sensor.range_oven_mode') %}
+          {% set temp = states('sensor.range_temperature') | float(0) %}
+          {% if op is string and op|lower in ['off', 'idle', 'ready'] %}
+            Off
+          {% elif mode not in ['unknown', 'unavailable', 'None', 'none', 'off', 'Off', ''] and temp > 0 %}
+            {{ mode }} {{ temp | round(0) }}°F
+          {% elif op not in ['unknown', 'unavailable', 'None', 'none', ''] %}
+            {{ op }}
+          {% else %}
+            Unknown
+          {% endif %}
+
+# =======================
+#  INPUT BOOLEANS
+# =======================
+input_boolean:
+  hvac_auto_comfort:
+    name: HVAC Auto Comfort
+    icon: mdi:thermostat-auto
+  main_lights_master:
+    name: Main Lights Master
+    icon: mdi:lightbulb-group
+  hp_presence:
+    name: HP Presence
+    icon: mdi:motion-sensor
+
+# =======================
+#  DEVICE TRACKER - MAURIECE iPHONE
+# =======================
+device_tracker:
+  - platform: ping
+    hosts:
+      mauriece_iphone: 10.0.0.64
+    count: 3
+    consider_home: 180  # Consider home for 3 minutes after last seen
+
+# =======================
+#  WAZE TRAVEL TIME
+# =======================
+sensor:
+    
+    
+
+# =======================
+#  DEVICE TRACKER - MAURIECE iPHONE
+# =======================
+device_tracker:
+  - platform: ping
+    hosts:
+      mauriece_iphone: 10.0.0.64
+    count: 3
+    consider_home: 180  # Consider home for 3 minutes after last seen
+
+# =======================
+#  WAZE TRAVEL TIME (Use UI Integration Instead)
+# =======================
+# NOTE: Waze Travel Time is now configured via:
+# Settings → Devices & Services → Add Integration → Waze Travel Time
+# We'll set this up in the UI after this restart
+
+# =======================
+#  DEVICE TRACKER - MAURIECE iPHONE
+# =======================
+device_tracker:
+  - platform: ping
+    hosts:
+      mauriece_iphone: 10.0.0.64
+    count: 3
+    consider_home: 180  # Consider home for 3 minutes after last seen
+
+# =======================
+#  WAZE TRAVEL TIME (Use UI Integration Instead)
+# =======================
+# NOTE: Waze Travel Time is now configured via:
+# Settings → Devices & Services → Add Integration → Waze Travel Time
+# We'll set this up in the UI after this restart
+
+# =======================
+#  HOME ZONE
+# =======================
+zone:
+  - name: Home
+    latitude: 33.3551289
+    longitude: -82.1132485
+    radius: 100
+    icon: mdi:home
+
+# =======================
+#  DEVICE TRACKER - MAURIECE iPHONE
+# =======================
+device_tracker:
+  - platform: ping
+    hosts:
+      mauriece_iphone: 10.0.0.64
+    count: 3
+    consider_home: 180  # Consider home for 3 minutes after last seen
+
+# =======================
+#  WAZE TRAVEL TIME
+# =======================
+sensor:
+    
+    
+
+# =======================
+#  DEVICE TRACKER - MAURIECE iPHONE
+# =======================
+device_tracker:
+  - platform: ping
+    hosts:
+      mauriece_iphone: 10.0.0.64
+    count: 3
+    consider_home: 180  # Consider home for 3 minutes after last seen
+
+# =======================
+#  WAZE TRAVEL TIME (Use UI Integration Instead)
+# =======================
+# NOTE: Waze Travel Time is now configured via:
+# Settings → Devices & Services → Add Integration → Waze Travel Time
+# We'll set this up in the UI after this restart
+
+# Input Booleans for UI controls
+input_boolean:
+  media_photos_visible:
+    name: Media Photos Visible
+    initial: on
+    icon: mdi:image-multiple
+
+
+  hvac_auto_comfort:
+    name: HVAC Auto Comfort
+    initial: off
+    icon: mdi:thermostat-auto
+
+camera: !include cameras.yaml
+ffmpeg:
