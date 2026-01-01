@@ -1,0 +1,10 @@
+title: Galaxy Command
+icon: mdi:cellphone-android
+theme: default
+views:
+  - !include ../ui/views/galaxy-media.yaml
+  - !include ../ui/views/galaxy-home.yaml
+  - !include ../ui/views/galaxy-weather.yaml
+  - !include ../ui/views/galaxy-calendar.yaml
+  - !include ../ui/views/galaxy-family.yaml
+  - !include ../ui/views/galaxy-cameras.yaml

@@ -1,0 +1,40 @@
+toggle_main_lights:
+  alias: Toggle All Main Lights
+  mode: single
+  sequence:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: light.kitchen_light_switch
+              state: "off"
+            - condition: state
+              entity_id: light.great_room_fan_and_light
+              state: "off"
+            - condition: state
+              entity_id: light.dining_room_main_light
+              state: "off"
+            - condition: state
+              entity_id: switch.master_hallway
+              state: "off"
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id:
+                  - light.kitchen_light_switch
+                  - light.great_room_fan_and_light
+                  - light.dining_room_main_light
+            - service: switch.turn_on
+              target:
+                entity_id:
+                  - switch.master_hallway
+      default:
+        - service: light.turn_off
+          target:
+            entity_id:
+              - light.kitchen_light_switch
+              - light.great_room_fan_and_light
+              - light.dining_room_main_light
+        - service: switch.turn_off
+          target:
+            entity_id:
+              - switch.master_hallway

@@ -1,0 +1,168 @@
+- id: maintain_comfort_band_71_73
+  alias: Maintain Comfort Band 71–73°F
+  description: Automatically switch HVAC between heat and cool to keep average home temperature in the 71–73°F comfort band.
+  mode: single
+
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.average_home_temperature
+      below: 71
+      for:
+        minutes: 10
+
+    - platform: numeric_state
+      entity_id: sensor.average_home_temperature
+      above: 73
+      for:
+        minutes: 10
+
+  # Only run when your master toggle is ON
+  condition:
+    - condition: state
+      entity_id: input_boolean.hvac_auto_comfort
+      state: "on"
+
+  action:
+    - choose:
+
+        # === HEAT WHEN TOO COLD (<71°F) ===
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.average_home_temperature
+              below: 71
+          sequence:
+            - service: climate.set_hvac_mode
+              target:
+                entity_id: climate.thermostat
+              data:
+                hvac_mode: heat
+            - service: climate.set_temperature
+              target:
+                entity_id: climate.thermostat
+              data:
+                temperature: 72
+
+        # === COOL WHEN TOO HOT (>73°F) ===
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.average_home_temperature
+              above: 73
+          sequence:
+            - service: climate.set_hvac_mode
+              target:
+                entity_id: climate.thermostat
+              data:
+                hvac_mode: cool
+            - service: climate.set_temperature
+              target:
+                entity_id: climate.thermostat
+              data:
+                temperature: 72
+
+    # LOG RESULT
+    - service: logbook.log
+      data:
+        name: HVAC Comfort Band
+        message: System adjusted to maintain 71–73°F comfort range.
+
+- id: hvac_fan_circulation_hourly
+  alias: HVAC Fan Circulation Hourly
+  description: Run system fan 10 minutes every hour when comfort automation is enabled and HVAC is idle.
+  mode: single
+
+  trigger:
+    # Top of every hour
+    - platform: time_pattern
+      minutes: "0"
+
+  condition:
+    # Only if auto comfort is ON
+    - condition: state
+      entity_id: input_boolean.hvac_auto_comfort
+      state: "on"
+    # Only if HVAC is currently OFF (not actively heating or cooling)
+    - condition: state
+      entity_id: climate.thermostat
+      state: "off"
+
+  action:
+    - service: climate.set_fan_mode
+      target:
+        entity_id: climate.thermostat
+      data:
+        fan_mode: "on"
+
+    - delay: "00:10:00"
+
+    - service: climate.set_fan_mode
+      target:
+        entity_id: climate.thermostat
+      data:
+        fan_mode: "auto"
+
+- id: doorbell_front_door_popup_kitchen_tablet
+  alias: 'Doorbell Front Door Popup - Kitchen Tablet'
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: event.front_door_ding_2
+  action:
+    - service: browser_mod.popup
+      data:
+        title: Front Door
+        device_id: browser_mod_c145c9d9_9dc38c06
+        content:
+          type: picture-entity
+          entity: camera.front_door_live_view_2
+          camera_view: live
+        timeout: 30000
+- id: main_lights_master_on
+  alias: Main Lights Master On
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.main_lights_master
+      to: "on"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.kitchen_light_switch
+          - light.great_room_fan_and_light
+
+- id: main_lights_master_off
+  alias: Main Lights Master Off
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.main_lights_master
+      to: "off"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.kitchen_light_switch
+          - light.great_room_fan_and_light
+- id: hp_motion_detected
+  alias: HP Motion Detected
+  description: Triggered when HP webcam detects motion
+  mode: single
+  trigger:
+    - platform: webhook
+      webhook_id: hp_motion_detected
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.hp_presence
+
+- id: hp_motion_cleared
+  alias: HP Motion Cleared
+  description: Triggered when HP webcam motion clears
+  mode: single
+  trigger:
+    - platform: webhook
+      webhook_id: hp_motion_cleared
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.hp_presence

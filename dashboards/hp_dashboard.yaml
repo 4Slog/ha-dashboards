@@ -1,0 +1,326 @@
+views:
+  - title: HP Dashboard
+    path: hp_dashboard
+    icon: mdi:monitor
+    panel: true
+    theme: default
+
+    cards:
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 1fr
+          grid-auto-rows: min-content
+          justify-content: stretch
+          align-content: start
+          gap: 16px
+          padding: 16px
+
+        cards:
+
+          # === HEADER (GREETING + DATE/TIME) ===
+          - type: markdown
+            content: |
+              {% set h = now().hour %}
+              {% if 5 <= h < 12 %}
+                {% set greet = 'Good morning' %}
+              {% elif 12 <= h < 17 %}
+                {% set greet = 'Good afternoon' %}
+              {% elif 17 <= h < 22 %}
+                {% set greet = 'Good evening' %}
+              {% else %}
+                {% set greet = 'Good night' %}
+              {% endif %}
+
+              <h1>{{ greet }}</h1>
+
+              <div class="date-time-row">
+                <span>{{ now().strftime('%A, %b %d') }}</span>
+                <span>{{ now().strftime('%I:%M %p') }}</span>
+              </div>
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  padding-top: 8px !important;
+                  padding-bottom: 8px !important;
+                }
+                h1 {
+                  text-align: center;
+                  margin-bottom: 8px !important;
+                  font-size: 2.5rem !important;
+                }
+                .date-time-row {
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  font-size: 1.6rem;
+                  padding: 0 32px;
+                  margin-top: 0 !important;
+                }
+
+          # === TODAY / CALENDAR (FULL WIDTH BAND) ===
+          - type: vertical-stack
+            cards:
+              - type: heading
+                heading: Today
+                heading_style: title
+                icon: mdi:calendar-clock
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 1.4rem !important;
+                    }
+
+              - type: custom:atomic-calendar-revive
+                name: Upcoming Appointments
+                enableModeChange: false
+                defaultMode: Event
+                maxDaysToShow: 30
+                maxEventCount: 50
+                showMonth: false
+                showWeek: false
+                showDate: false
+                showProgressBar: false
+                showCurrentEventLine: false
+                sortByStartTime: true
+                hideFinishedEvents: true
+                hoursOnSameLine: true
+                timeFormat: 12
+                refreshInterval: 60
+                entities:
+                  - entity: calendar.thesowus_gmail_com
+                  - entity: calendar.sowu_paul_gmail_com
+                  - entity: calendar.family
+                  - entity: calendar.augusta_eagles_varsity_boys_basketball
+                card_mod:
+                  style: |
+                    ha-card {
+                      max-height: 260px;
+                      overflow-y: auto;
+                      font-size: 1.15rem !important;
+                    }
+
+          # === LIGHTS STRIP (FULL WIDTH BAND, TALLER) ===
+          - type: vertical-stack
+            cards:
+              - type: heading
+                heading: Lights
+                heading_style: title
+                icon: mdi:lightbulb-group-outline
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 1.4rem !important;
+                    }
+
+              - type: grid
+                columns: 5
+                square: false
+                cards:
+                  - type: tile
+                    entity: light.kitchen_light_switch
+                    name: Kitchen Light
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 160px;
+                          font-size: 1.2rem !important;
+                        }
+
+                  - type: tile
+                    entity: light.great_room_fan_and_light
+                    name: Great Room Light
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 160px;
+                          font-size: 1.2rem !important;
+                        }
+
+                  - type: tile
+                    entity: fan.great_room_fan_and_light
+                    name: Great Room Fan
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 160px;
+                          font-size: 1.2rem !important;
+                        }
+
+                  - type: tile
+                    entity: media_player.living_room_tv_2
+                    name: Great Room TV
+                    icon: mdi:volume-high
+                    tap_action:
+                      action: call-service
+                      service: media_player.volume_mute
+                      data:
+                        is_volume_muted: true
+                      target:
+                        entity_id: media_player.living_room_tv_2
+                    double_tap_action:
+                      action: call-service
+                      service: media_player.volume_mute
+                      data:
+                        is_volume_muted: false
+                      target:
+                        entity_id: media_player.living_room_tv_2
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 160px;
+                          font-size: 1.2rem !important;
+                        }
+
+                  - type: tile
+                    entity: script.toggle_main_lights
+                    name: All Main Lights
+                    icon: mdi:lightbulb-multiple
+                    tap_action:
+                      action: call-service
+                      service: script.toggle_main_lights
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 160px;
+                          font-size: 1.2rem !important;
+                        }
+
+          # === WEATHER & COMFORT (FULL WIDTH BAND) ===
+          - type: vertical-stack
+            cards:
+              - type: heading
+                heading: Weather & Comfort
+                heading_style: title
+                icon: mdi:weather-partly-cloudy
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 1.4rem !important;
+                    }
+
+              - type: grid
+                columns: 3
+                square: false
+                cards:
+                  - type: weather-forecast
+                    entity: weather.forecast_home
+                    show_forecast: false
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 130px;
+                          font-size: 1.15rem !important;
+                        }
+
+                  - type: thermostat
+                    entity: climate.thermostat
+                    name: Thermostat
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 130px;
+                          font-size: 1.15rem !important;
+                        }
+
+                  - type: tile
+                    entity: sensor.average_home_temperature
+                    name: Indoor avg
+                    color: blue
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 130px;
+                          display: flex;
+                          align-items: center;
+                          font-size: 1.3rem !important;
+                        }
+
+          # === FRONT DOOR (FULL WIDTH BAND) ===
+          - type: vertical-stack
+            cards:
+              - type: heading
+                heading: Front Door
+                heading_style: title
+                icon: mdi:shield-home
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 1.4rem !important;
+                    }
+
+              - type: grid
+                columns: 2
+                square: false
+                cards:
+                  - type: entities
+                    title: Front Door
+                    state_color: true
+                    entities:
+                      - entity: switch.front_door_in_home_chime
+                        name: In-Home Chime
+                      - entity: switch.front_door_motion_detection
+                        name: Motion Detection
+                      - entity: switch.front_door_motion_detection_2
+                        name: Motion Detection (Alt)
+                      - entity: number.front_door_volume
+                        name: Chime Volume
+                      - entity: sensor.front_door_last_activity
+                        name: Last Activity
+                    card_mod:
+                      style: |
+                        ha-card {
+                          font-size: 1.15rem !important;
+                          min-height: 280px;
+                        }
+
+                  - type: picture-entity
+                    entity: camera.front_door_live_view_2
+                    name: Front Door
+                    camera_view: live
+                    card_mod:
+                      style: |
+                        ha-card {
+                          min-height: 280px;
+                        }
+
+          # === PRESENCE & MAP (FULL WIDTH BAND) ===
+          - type: vertical-stack
+            cards:
+              - type: heading
+                heading: Presence & Map
+                heading_style: title
+                icon: mdi:account-group
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 1.4rem !important;
+                    }
+
+              - type: entities
+                title: Presence
+                entities:
+                  - person.paul_sowu
+                  - person.tuella_sowu
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 1.15rem !important;
+                    }
+
+              - type: map
+                entities:
+                  - person.paul_sowu
+                  - person.tuella_sowu
+                  - zone.home
+                dark_mode: true
+                hours_to_show: 1
+                default_zoom: 14
+                card_mod:
+                  style: |
+                    ha-card {
+                      min-height: 320px;
+                    }
+

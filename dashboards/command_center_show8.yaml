@@ -1,0 +1,12 @@
+swipe_nav:
+  wrap: true
+  animate: true
+  swipe_amount: 30
+
+views:
+  - !include ../ui/command-center-show8/media.yaml
+  - !include ../ui/command-center-show8/home.yaml
+  - !include ../ui/command-center-show8/weather.yaml
+  - !include ../ui/command-center-show8/calendar.yaml
+  - !include ../ui/command-center-show8/family.yaml
+  - !include ../ui/command-center-show8/frontdoor.yaml

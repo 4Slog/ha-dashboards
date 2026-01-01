@@ -1,0 +1,6 @@
+views:
+  - !include ../ui/views/mobile-home.yaml
+  - !include ../ui/views/mobile-weather.yaml
+  - !include ../ui/views/mobile-calendar.yaml
+  - !include ../ui/views/mobile-family.yaml
+  - !include ../ui/views/mobile-frontdoor.yaml

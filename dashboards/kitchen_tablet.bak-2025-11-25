@@ -1,0 +1,306 @@
+views:
+  - title: Control Center
+    path: kitchen_tablet
+    icon: mdi:tablet-dashboard
+    type: sections
+    max_columns: 2
+    theme: default
+
+    # ===== HEADER (compact: greeting + date left / time right) =====
+    header:
+      card:
+        type: markdown
+        content: |
+          {% set h = now().hour %}
+          {% if 5 <= h < 12 %}
+          {% set greet = 'Good morning' %}
+          {% elif 12 <= h < 17 %}
+          {% set greet = 'Good afternoon' %}
+          {% elif 17 <= h < 22 %}
+          {% set greet = 'Good evening' %}
+          {% else %}
+          {% set greet = 'Good night' %}
+          {% endif %}
+
+          # {{ greet }}
+
+          <div class="top-row">
+            <span class="left">{{ now().strftime('%A, %b %d') }}</span>
+            <span class="right">{{ now().strftime('%I:%M %p') }}</span>
+          </div>
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              padding-top: 4px !important;
+              padding-bottom: 4px !important;
+            }
+            h1 {
+              text-align: center;
+              margin-top: 4px !important;
+              margin-bottom: 4px !important;
+            }
+            .top-row {
+              display: flex;
+              justify-content: space-between;
+              font-size: 16px;
+              margin-top: 2px;
+            }
+            .top-row .left {
+              text-align: left;
+            }
+            .top-row .right {
+              text-align: right;
+            }
+      layout: center
+      badges_position: bottom
+      badges_wrap: scroll
+
+    sections:
+
+      # ===== SECTION 1: TODAY / CALENDAR =====
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Today
+            heading_style: title
+            icon: mdi:calendar-clock
+            grid_options:
+              columns: full
+
+          - type: custom:atomic-calendar-revive
+            name: Upcoming Appointments
+            enableModeChange: false
+            defaultMode: Event
+            maxDaysToShow: 30
+            maxEventCount: 50
+            showMonth: false
+            showWeek: false
+            showDate: false
+            showProgressBar: false
+            showCurrentEventLine: false
+            sortByStartTime: true
+            hideFinishedEvents: true
+            hoursOnSameLine: true
+            timeFormat: 12
+            refreshInterval: 60
+            entities:
+              - entity: calendar.thesowus_gmail_com
+              - entity: calendar.sowu_paul_gmail_com
+              - entity: calendar.family
+              - entity: calendar.augusta_eagles_varsity_boys_basketball
+            grid_options:
+              columns: full
+            card_mod:
+              style: |
+                ha-card {
+                  max-height: 260px;
+                  overflow-y: auto;
+                }
+
+      # ===== SECTION 2: WEATHER + COMFORT STRIP (under Today) =====
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Weather & Comfort
+            heading_style: title
+            icon: mdi:weather-partly-cloudy
+            grid_options:
+              columns: full
+
+          # Use layout-card to get 2/3 forecast, 1/3 thermostat+avg
+          - type: custom:layout-card
+            layout_type: grid
+            layout:
+              grid-template-columns: 2fr 1fr
+              grid-auto-rows: 1fr
+              column-gap: 12px
+            cards:
+              # 2/3 width: forecast for today + next 2 days
+              - type: weather-forecast
+                entity: weather.forecast_home
+                name: Weather
+                show_forecast: true
+                number_of_forecasts: 2
+
+              # 1/3 width: thermostat + indoor avg
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-climate-card
+                    entity: climate.thermostat
+                    name: Thermostat
+                    layout: vertical
+                    show_temperature_control: true
+                    show_modes_control: false
+
+                  - type: custom:mushroom-template-card
+                    entity: sensor.average_home_temperature
+                    primary: Indoor avg
+                    secondary: "{{ states('sensor.average_home_temperature') }}°F"
+                    icon: mdi:home-thermometer-outline
+                    layout: horizontal
+
+      # ===== SECTION 3: LIGHTS + TV MUTE STRIP =====
+      - type: grid
+        columns: 4
+        cards:
+          - type: heading
+            heading: Lights
+            heading_style: title
+            icon: mdi:lightbulb-group-outline
+            grid_options:
+              columns: 4
+
+          # Kitchen Light
+          - type: custom:mushroom-light-card
+            entity: light.kitchen_light_switch
+            name: Kitchen Light
+            layout: vertical
+            show_brightness_control: true
+
+          # Great Room Light
+          - type: custom:mushroom-light-card
+            entity: light.great_room_fan_and_light
+            name: Great Room Light
+            layout: vertical
+            show_brightness_control: true
+
+          # Great Room Fan
+          - type: custom:mushroom-fan-card
+            entity: fan.great_room_fan_and_light
+            name: Great Room Fan
+            layout: vertical
+            show_percentage_control: true
+
+          # 4th box: TV mute toggle + All Lights Off quick action
+          - type: vertical-stack
+            cards:
+              # TV mute / unmute toggle
+              - type: custom:mushroom-template-card
+                entity: media_player.living_room_tv
+                primary: Great Room TV
+                secondary: >
+                  {% if state_attr('media_player.living_room_tv', 'is_volume_muted') %}
+                    Muted
+                  {% else %}
+                    Sound On
+                  {% endif %}
+                icon: >
+                  {% if state_attr('media_player.living_room_tv', 'is_volume_muted') %}
+                    mdi:volume-off
+                  {% else %}
+                    mdi:volume-high
+                  {% endif %}
+                layout: vertical
+                tap_action:
+                  action: call-service
+                  service: media_player.volume_mute
+                  target:
+                    entity_id: media_player.living_room_tv
+                  data:
+                    is_volume_muted: >
+                      {% if state_attr('media_player.living_room_tv', 'is_volume_muted') %}
+                        false
+                      {% else %}
+                        true
+                      {% endif %}
+
+              # All main lights off
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: template
+                    icon: mdi:lightbulb-multiple-off
+                    content: All Main Lights Off
+                    tap_action:
+                      action: call-service
+                      service: light.turn_off
+                      target:
+                        entity_id:
+                          - light.kitchen_light_switch
+                          - light.great_room_fan_and_light
+
+      # ===== SECTION 4: FRONT DOOR / SECURITY + PRESENCE + MAP =====
+      - type: grid
+        columns: 2
+        cards:
+          - type: heading
+            heading: Front Door
+            heading_style: title
+            icon: mdi:shield-home
+            grid_options:
+              columns: 2
+
+          # Front Door control entities
+          - type: entities
+            title: Front Door
+            state_color: true
+            entities:
+              - entity: switch.front_door_in_home_chime
+                name: In-Home Chime
+              - entity: switch.front_door_motion_detection
+                name: Motion Detection
+              - entity: switch.front_door_motion_detection_2
+                name: Motion Detection (Alt)
+              - entity: number.front_door_volume
+                name: Chime Volume
+              - entity: sensor.front_door_last_activity
+                name: Last Activity
+
+          # Front Door camera card – tap opens Browser Mod popup with live view
+          - type: picture-entity
+            entity: camera.front_door_live_view_2
+            name: Front Door
+            camera_view: live
+            tap_action:
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                data:
+                  title: Front Door
+                  content:
+                    type: picture-entity
+                    entity: camera.front_door_live_view_2
+                    camera_view: live
+
+          # Presence and map, presence first then map
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Presence
+                entities:
+                  - person.paul_sowu
+                  - person.tuella_sowu
+
+              - type: map
+                entities:
+                  - person.paul_sowu
+                  - person.tuella_sowu
+                  - zone.home
+                dark_mode: true
+                hours_to_show: 1
+                default_zoom: 14
+
+      # ===== SECTION 5: KITCHEN RANGE STATUS =====
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Kitchen Range
+            heading_style: title
+            icon: mdi:stove
+            grid_options:
+              columns: full
+
+          - type: custom:mushroom-template-card
+            entity: sensor.kitchen_range_status
+            primary: Kitchen Range
+            secondary: "{{ states('sensor.kitchen_range_status') }}"
+            icon: mdi:stove
+            layout: vertical
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.range_stop

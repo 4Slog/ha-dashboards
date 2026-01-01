@@ -1,0 +1,339 @@
+title: Casa de Sowu — Everything
+
+views:
+  - title: Everything
+    path: everything
+    type: sections
+    max_columns: 4
+
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Casa de Sowu — Everything
+          _All the things in one place • Cameras • TV • Lights/Fans • Thermostat • Calendars • Tasks • Presence • System_
+
+    sections:
+      # ===== QUICK STATUS =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Quick Status
+            heading_style: title
+            icon: mdi:home-heart
+          - type: entities
+            state_color: true
+            entities:
+              - entity: person.paul_sowu
+                name: Paul
+              - entity: person.tuella_sowu
+                name: Tuella
+              - entity: person.kitchen_tab
+                name: Kitchen Tablet
+              - entity: binary_sensor.remote_ui
+                name: Remote UI (Nabu Casa)
+              - entity: weather.forecast_home
+                name: Weather
+              - type: divider
+              - entity: sensor.backup_next_scheduled_automatic_backup
+                name: Next Automatic Backup
+              - entity: sensor.backup_last_successful_automatic_backup
+                name: Last Successful Backup
+              - entity: sensor.backup_backup_manager_state
+                name: Backup Manager State
+              - type: divider
+              - entity: sensor.pauls_ipad_storage
+                name: iPad Storage (% free)
+              - entity: sensor.pauls_ipad_battery_level
+                name: iPad Battery
+              - entity: sensor.pauls_ipad_connection_type
+                name: iPad Connection
+
+      # ===== CAMERAS =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Cameras
+            heading_style: title
+            icon: mdi:camera-outline
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: picture-entity
+                entity: camera.front_door_live_view
+                name: Front Door (Ring)
+                show_state: false
+                tap_action:
+                  action: more-info
+              - type: picture-entity
+                entity: camera.living_room_live_view
+                name: Living Room
+                show_state: false
+                tap_action:
+                  action: more-info
+              - type: picture-entity
+                entity: camera.great_room_live_view
+                name: Great Room
+                show_state: false
+                tap_action:
+                  action: more-info
+              - type: picture-entity
+                entity: camera.front_door
+                name: Blink Front Door
+                show_state: false
+                tap_action:
+                  action: more-info
+
+      # ===== MEDIA & TV =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Media & TV
+            heading_style: title
+            icon: mdi:television
+          - type: media-control
+            entity: media_player.living_room_tv
+          - type: entities
+            entities:
+              - entity: remote.living_room_tv
+                name: TV Remote (Power/Inputs)
+              - entity: number.great_room_volume
+                name: Great Room Volume
+              - entity: number.living_room_volume
+                name: Living Room Volume
+              - entity: number.front_door_volume
+                name: Front Door Volume
+
+      # ===== LIGHTS • FANS • SWITCHES =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Lights • FANS • SWITCHES
+            heading_style: title
+            icon: mdi:lightbulb-group
+          - type: entities
+            state_color: true
+            entities:
+              - entity: light.great_room_fan_and_light
+                name: Great Room Light
+              - entity: fan.great_room_fan_and_light
+                name: Great Room Fan (Fan)
+              - entity: switch.living_room_fan_light
+                name: Great Room Fan (Switch)
+              - type: divider
+              - entity: light.master_bedroom
+                name: Master Bedroom Light
+              - entity: switch.master_bedroom
+                name: Master Bedroom Outlet
+              - entity: switch.m_bedroom_fan
+                name: M Bedroom Fan (Switch)
+              - type: divider
+              - entity: switch.kitchen_light_switch
+                name: Kitchen Light
+              - entity: switch.hallway_switch
+                name: Hallway Switch
+              - entity: switch.outside_switch
+                name: Outside Switch
+
+      # ===== RING / BLINK =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Doorbells & Motion (Ring/Blink)
+            heading_style: title
+            icon: mdi:doorbell-video
+          - type: entities
+            entities:
+              - entity: switch.front_door_in_home_chime
+                name: Ring In-Home Chime
+              - entity: switch.front_door_motion_detection
+                name: Ring Motion Detection
+              - entity: switch.great_room_motion_detection
+                name: Great Room Motion Detection
+              - entity: switch.living_room_motion_detection
+                name: Living Room Motion Detection
+              - type: divider
+              - entity: alarm_control_panel.blink_front_door
+                name: Blink Front Door Arm
+              - entity: switch.front_door_camera_motion_detection
+                name: Blink Motion Detection
+              - entity: sensor.blink_front_door_temperature
+                name: Blink Temperature
+              - entity: sensor.blink_front_door_wi_fi_signal_strength
+                name: Blink Wi-Fi Signal
+              - type: divider
+              - entity: sensor.front_door_battery
+                name: Ring Front Door Battery (%)
+              - entity: sensor.front_door_battery_2
+                name: Blink Front Door Battery (%)
+              - entity: sensor.great_room_battery
+                name: Great Room Battery (%)
+              - entity: sensor.living_room_battery
+                name: Living Room Battery (%)
+
+      # ===== HUBSPACE (Wi-Fi RSSI + Switches) =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Hubspace
+            heading_style: title
+            icon: mdi:home-automation
+          - type: glance
+            columns: 3
+            entities:
+              - entity: sensor.kitchen_light_wifi_rssi
+                name: Kitchen RSSI
+              - entity: sensor.hallway_wifi_rssi
+                name: Hallway RSSI
+              - entity: sensor.outside_wifi_rssi
+                name: Outside RSSI
+          - type: entities
+            entities:
+              - entity: button.hubspace_api_thesowus_gmail_com_generate_debug
+                name: Generate Debug
+              - entity: button.hubspace_api_thesowus_gmail_com_generate_raw
+                name: Generate Raw
+
+      # ===== THERMOSTAT =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Thermostat
+            heading_style: title
+            icon: mdi:thermostat
+          - type: thermostat
+            entity: climate.thermostat
+          - type: gauge
+            name: Current Temp
+            entity: sensor.thermostat_temperature
+            min: 50
+            max: 90
+
+      # ===== CALENDARS =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Upcoming Appointments
+            heading_style: title
+            icon: mdi:calendar-month
+          - type: calendar
+            initial_view: listWeek
+            entities:
+              - calendar.family
+              - calendar.sowu_paul_gmail_com
+              - calendar.thesowus_gmail_com
+              - calendar.birthdays
+              - calendar.augusta_eagles_varsity_boys_basketball
+
+      # ===== TASKS =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Tasks
+            heading_style: title
+            icon: mdi:check-circle-outline
+          - type: todo-list
+            entity: todo.my_tasks
+            name: My Tasks
+          - type: todo-list
+            entity: todo.house_tasks
+            name: House Tasks
+          - type: todo-list
+            entity: todo.dad_s_tasks
+            name: Dad's Tasks
+          - type: todo-list
+            entity: todo.mom_s_tasks
+            name: Mom's Tasks
+          - type: glance
+            columns: 4
+            entities:
+              - todo.my_tasks
+              - todo.house_tasks
+              - todo.dad_s_tasks
+              - todo.mom_s_tasks
+
+      # ===== PRESENCE & BLUETOOTH =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: Presence & Bluetooth
+            heading_style: title
+            icon: mdi:account-group
+          - type: glance
+            columns: 4
+            entities:
+              - entity: device_tracker.dad_s_phone
+                name: Dad
+              - entity: device_tracker.ts
+                name: TS
+              - entity: device_tracker.kitchen_main
+                name: Kitchen Main
+              - entity: device_tracker.pauls_ipad
+                name: iPad
+          - type: entities
+            entities:
+              - entity: binary_sensor.dj_wu_presence
+                name: DJ Wu Presence
+              - entity: binary_sensor.dj_wu_s24_ultra_presence
+                name: DJ Wu S24 Ultra Presence
+              - type: divider
+              - entity: sensor.kitchen_main_beacon_monitor
+                name: Kitchen Main Beacon Monitor
+              - entity: sensor.kitchen_main_ble_transmitter
+                name: Kitchen Main BLE Tx
+              - entity: sensor.kitchen_main_bluetooth_connection
+                name: Kitchen Main BT Connections
+              - entity: sensor.kitchen_main_battery_level
+                name: Kitchen Main Battery
+
+      # ===== SYSTEM • UPDATES • CONNECTIVITY =====
+      - type: grid
+        cards:
+          - type: heading
+            heading: System • Updates • Connectivity
+            heading_style: title
+            icon: mdi:cog-outline
+          - type: entities
+            entities:
+              - entity: update.hacs_update
+                name: HACS Update
+              - entity: update.atomic_calendar_revive_update
+                name: Atomic Calendar Revive
+              - entity: update.layout_card_update
+                name: layout-card
+              - entity: update.card_mod_update
+                name: card-mod
+              - entity: update.firemote_card_update
+                name: HA-Firemote
+              - entity: update.ttlock_update
+                name: TTLock
+              - entity: update.hubspace_homeassistant_update
+                name: Hubspace-Homeassistant
+              - entity: update.alexa_media_player_update
+                name: Alexa Media Player
+              - entity: update.ai_automation_suggester_update
+                name: AI Automation Suggester
+          - type: entities
+            entities:
+              - entity: binary_sensor.great_room_dot_connectivity
+                name: Great Room Dot Connectivity
+              - entity: binary_sensor.office_connectivity
+                name: Great Room Show Connectivity
+              - entity: binary_sensor.t_s_fire_tv_connectivity
+                name: T's Fire TV
+              - entity: binary_sensor.t_s_2nd_fire_tv_connectivity
+                name: T's 2nd Fire TV
+              - entity: binary_sensor.t_s_4th_fire_tv_connectivity
+                name: T's 4th Fire TV
+              - entity: binary_sensor.t_s_fire_blue_connectivity
+                name: T's Fire Blue
+              - entity: binary_sensor.t_s_bose_home_speaker_300_connectivity
+                name: T's Bose 300
+              - entity: binary_sensor.t_s_echo_auto_connectivity
+                name: T's Echo Auto
+              - entity: binary_sensor.living_room_connectivity
+                name: Living Room (Alexa) Connectivity
+              - entity: binary_sensor.mauriece_dot_connectivity
+                name: Mauriece Dot Connectivity

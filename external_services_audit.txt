@@ -1,0 +1,15 @@
+NAMES                  IMAGE                                          STATUS                PORTS
+wyze-bridge            mrlt8/wyze-bridge:latest                       Up 39 hours           
+music_assistant        ghcr.io/music-assistant/server:stable          Up 3 days             
+wyoming-openwakeword   rhasspy/wyoming-openwakeword                   Up 3 days             0.0.0.0:10400->10400/tcp, [::]:10400->10400/tcp
+esphome                ghcr.io/esphome/esphome                        Up 4 days (healthy)   
+ring-mqtt              tsightler/ring-mqtt:latest                     Up 4 days             0.0.0.0:55123->55123/tcp, [::]:55123->55123/tcp, 0.0.0.0:8556->8554/tcp, [::]:8556->8554/tcp
+mosquitto              eclipse-mosquitto:latest                       Up 4 days             0.0.0.0:1883->1883/tcp, [::]:1883->1883/tcp, 0.0.0.0:9001->9001/tcp, [::]:9001->9001/tcp
+homeassistant          ghcr.io/home-assistant/home-assistant:stable   Up 38 hours           
+wyoming-whisper        rhasspy/wyoming-whisper                        Up 4 days             0.0.0.0:10300->10300/tcp, [::]:10300->10300/tcp, 10400/tcp
+wyoming-piper          rhasspy/wyoming-piper                          Up 4 days             0.0.0.0:10200->10200/tcp, [::]:10200->10200/tcp, 10400/tcp
+npm                    jc21/nginx-proxy-manager:latest                Up 4 days             0.0.0.0:80-81->80-81/tcp, [::]:80-81->80-81/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp
+seafile                seafileltd/seafile-mc:latest                   Up 4 days             0.0.0.0:8082->8082/tcp, [::]:8082->8082/tcp, 0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+seafile-db             mariadb:10.11                                  Up 4 days             3306/tcp
+seafile-memcached      memcached:1.6                                  Up 4 days             11211/tcp
+portainer              portainer/portainer-ce:latest                  Up 4 days             0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp, 9443/tcp

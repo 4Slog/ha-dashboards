@@ -1,0 +1,19 @@
+title: Great Room Control
+views:
+  - title: Main
+    path: main
+    cards:
+      - type: weather-forecast
+        entity: weather.home
+      - type: thermostat
+        entity: climate.thermostat
+      - type: entities
+        title: Lights & Fans
+        entities:
+          - light.great_room_fan_and_light
+          - light.lamp
+      - type: calendar
+        title: Upcoming Events
+        entities:
+          - calendar.family
+          - calendar.sowu_paul_gmail_com

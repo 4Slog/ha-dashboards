@@ -1,0 +1,273 @@
+views:
+  - title: Casa de Sowu — Clean
+    type: sections
+    max_columns: 4
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Casa de Sowu
+          _Main console — clean layout_
+
+    sections:
+      # ===== CAMERAS (responsive + centered) =====
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: Cameras
+            icon: mdi:camera-front
+            card_mod:
+              style: |
+                ha-card { text-align: center; }
+
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: picture-entity
+                entity: camera.great_room_live_view
+                name: Great Room (Live)
+                show_state: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 10px rgba(0,0,0,.12);
+                      width: 100%;
+                      max-width: 300px;
+                    }
+              - type: picture-entity
+                entity: camera.front_door_live_view
+                name: Front Door (Live)
+                show_state: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 10px rgba(0,0,0,.12);
+                      width: 100%;
+                      max-width: 300px;
+                    }
+              - type: picture-entity
+                entity: camera.front_door
+                name: Front Door (Still)
+                show_state: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 10px rgba(0,0,0,.12);
+                      width: 100%;
+                      max-width: 300px;
+                    }
+            card_mod:
+              style: |
+                :host {
+                  display: flex;
+                  justify-content: center;
+                  gap: 12px;
+                  width: 100%;
+                  padding: 0 16px;
+                  flex-wrap: wrap;
+                }
+                @media (max-width: 768px) {
+                  :host {
+                    flex-direction: column;
+                    align-items: center;
+                  }
+                }
+        column_span: 4
+
+      # ===== SCHEDULE & TASKS (centered + bounded width) =====
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: Schedule & Tasks
+            icon: mdi:calendar-check
+            card_mod:
+              style: |
+                ha-card { text-align: center; }
+
+          - type: custom:layout-card
+            layout_type: custom:grid-layout
+            layout:
+              grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr))
+              grid-auto-rows: minmax(360px, auto)
+              grid-gap: 16px
+              justify-content: center
+              align-content: start
+              padding: 0 16px
+              max-width: 1400px
+              margin: 0 auto
+            cards:
+              # ===== Calendar =====
+              - type: custom:atomic-calendar-revive
+                entities:
+                  - calendar.thesowus_gmail_com
+                name: Upcoming Appointments
+                defaultMode: Event
+                sortBy: start
+                showDate: false
+                showMonth: false
+                showLocation: true
+                showRelativeTime: true
+                showProgressBar: true
+                maxDaysToShow: 365
+                maxEventCount: 10
+                softLimit: true
+                showHiddenText: true
+                eventTitleColor: "#ffffff"
+                calEventBackgroundColor: "#424242"
+                calEventColorRules:
+                  - color: "#4CAF50" # Paul
+                    text: "Paul"
+                  - color: "#9C27B0" # Tuella
+                    text: "Tuella"
+                  - color: "#F44336" # Mauriece
+                    text: "Mauriece"
+                  - color: "#F44336" # Riece
+                    text: "Riece"
+                cardHeight: 360px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 10px rgba(0,0,0,.12);
+                      height: 360px;
+                      overflow: hidden;
+                      width: 100%;
+                      min-width: 0;
+                    }
+                    ha-card .card-header { font-weight: 700; }
+
+              # ===== Legend =====
+              - type: markdown
+                content: |
+                  <div style="text-align:center; font-size: 0.95rem;">
+                    <strong>Legend:</strong>
+                    <span style="display:inline-flex; align-items:center; gap:6px; margin-left:8px;">
+                      <span style="display:inline-block; width:10px; height:10px; background:#4CAF50; border-radius:50%;"></span> Dad
+                    </span>
+                    <span style="display:inline-flex; align-items:center; gap:6px; margin-left:12px;">
+                      <span style="display:inline-block; width:10px; height:10px; background:#9C27B0; border-radius:50%;"></span> Mom
+                    </span>
+                    <span style="display:inline-flex; align-items:center; gap:6px; margin-left:12px;">
+                      <span style="display:inline-block; width:10px; height:10px; background:#F44336; border-radius:50%;"></span> Kids
+                    </span>
+                  </div>
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+                      height: 80px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    }
+
+              # ===== To-Do Lists =====
+              - type: todo-list
+                entity: todo.my_tasks
+                name: Riece Tasks
+              - type: todo-list
+                entity: todo.dad_s_tasks
+                name: Dad's Tasks
+              - type: todo-list
+                entity: todo.mom_s_tasks
+                name: Mom's Tasks
+              - type: todo-list
+                entity: todo.house_tasks
+                name: House Tasks
+        column_span: 4
+
+      # ===== MEDIA REMOTE (Roku Only) =====
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: Roku Remote
+            icon: mdi:remote-tv
+            card_mod:
+              style: |
+                ha-card { text-align: center; }
+
+          - type: custom:firemote-card
+            entity: media_player.50_hisense_roku_tv
+            device_family: roku
+            device_type: roku-generic-hisense
+            roku_remote_entity: remote.50_hisense_roku_tv
+            visible_name_text: Master Bedroom Roku
+            name_position: top
+            scale: 100
+
+            # Working Roku channel IDs
+            app_launch_1: 2285 # Hulu
+            app_launch_2: 291097 # Disney+
+            app_launch_3: 13 # Prime Video
+            app_launch_4: 12 # Netflix
+            app_launch_5: 837 # YouTube
+        column_span: 4
+
+      # ===== LIGHTS & FANS =====
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: Lights & Fans
+            icon: mdi:lightbulb-group
+            card_mod:
+              style: |
+                ha-card { text-align: center; }
+
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              # --- Lights ---
+              - type: entities
+                title: 💡 Lights
+                show_header_toggle: true
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+                      background-color: var(--card-background-color);
+                      padding: 8px;
+                    }
+                entities:
+                  - entity: light.great_room_fan_and_light
+                    name: Great Room Light
+                    icon: mdi:ceiling-light
+                    state_color: true
+                  - entity: light.m_bedroom_fan
+                    name: Master Bedroom Light
+                    icon: mdi:lamp
+                    state_color: true
+
+              # --- Fans ---
+              - type: entities
+                title: 🌬️ Fans
+                show_header_toggle: true
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+                      background-color: var(--card-background-color);
+                      padding: 8px;
+                    }
+                entities:
+                  - entity: fan.great_room_fan_and_light
+                    name: Great Room Fan
+                    icon: mdi:fan
+                    state_color: true
+                  - entity: fan.m_bedroom_fan
+                    name: Master Bedroom Fan
+                    icon: mdi:fan
+                    state_color: true
+        column_span: 4
