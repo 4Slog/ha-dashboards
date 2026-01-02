@@ -23,7 +23,6 @@ cards:
           grid-template-columns: repeat(6, 1fr)
           gap: 10px
         cards:
-          # Media Button
           - type: custom:mushroom-template-card
             primary: Media
             icon: mdi:lightbulb-group-music
@@ -46,8 +45,10 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card { height: 42px; font-size: 1.3rem !important; border-radius: 12px; }
+                }
 
-          # Lights Button
           - type: custom:mushroom-template-card
             primary: Lights
             icon: mdi:lightbulb-group
@@ -70,8 +71,10 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card { height: 42px; font-size: 1.3rem !important; border-radius: 12px; }
+                }
 
-          # Weather Button
           - type: custom:mushroom-template-card
             primary: Weather
             icon: mdi:weather-partly-cloudy
@@ -94,8 +97,10 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card { height: 42px; font-size: 1.3rem !important; border-radius: 12px; }
+                }
 
-          # Calendar Button
           - type: custom:mushroom-template-card
             primary: Calendar
             icon: mdi:calendar-clock
@@ -118,8 +123,10 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card { height: 42px; font-size: 1.3rem !important; border-radius: 12px; }
+                }
 
-          # Family Button (ACTIVE - WHITE BORDER)
           - type: custom:mushroom-template-card
             primary: Family
             icon: mdi:map-marker-account
@@ -142,15 +149,17 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card { height: 42px; font-size: 1.3rem !important; border-radius: 12px; }
+                }
 
-          # Front Door Button
           - type: custom:mushroom-template-card
-            primary: Front Door
-            icon: mdi:shield-home
+            primary: Cameras
+            icon: mdi:cctv
             icon_color: orange
             tap_action:
               action: navigate
-              navigation_path: /command-center/frontdoor
+              navigation_path: /command-center/cameras
             card_mod:
               style: |
                 ha-card {
@@ -166,8 +175,11 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card { height: 42px; font-size: 1.3rem !important; border-radius: 12px; }
+                }
 
-      # === HEADER ROW (ARROWS + DATE/TIME/GREETING) ===
+      # === HEADER ROW ===
       - type: custom:layout-card
         layout_type: custom:grid-layout
         layout:
@@ -175,7 +187,6 @@ cards:
           gap: 16px
           align-items: center
         cards:
-          # Left Arrow
           - type: custom:button-card
             icon: mdi:chevron-left
             tap_action:
@@ -194,68 +205,44 @@ cards:
                 - color: white
               grid:
                 - grid-template-areas: '"i"'
-
-          # Date
-          - type: markdown
-            content: |
-              {{ now().strftime('%a, %b %d') }}
             card_mod:
               style: |
-                ha-card {
-                  box-shadow: none;
-                  background: transparent;
-                  padding: 8px 0 !important;
-                  text-align: left;
-                  font-size: 1.8rem;
-                  font-weight: 500;
+                @media (max-width: 1400px) {
+                  ha-card { height: 50px !important; width: 50px !important; }
+                  ha-card ha-icon { --mdc-icon-size: 28px; }
                 }
 
-          # Greeting (Center)
+          - type: markdown
+            content: "{{ now().strftime('%a, %b %d') }}"
+            card_mod:
+              style: |
+                ha-card { box-shadow: none; background: transparent; padding: 8px 0 !important; text-align: left; font-size: 1.8rem; font-weight: 500; }
+                @media (max-width: 1400px) { ha-card { font-size: 1.3rem; padding: 4px 0 !important; } }
+
           - type: markdown
             content: |
               {% set h = now().hour %}
-              {% if 5 <= h < 12 %}
-                {% set greet = 'Good morning' %}
-              {% elif 12 <= h < 17 %}
-                {% set greet = 'Good afternoon' %}
-              {% elif 17 <= h < 22 %}
-                {% set greet = 'Good evening' %}
-              {% else %}
-                {% set greet = 'Good night' %}
-              {% endif %}
-              {{ greet }}
+              {% if 5 <= h < 12 %}Good morning
+              {% elif 12 <= h < 17 %}Good afternoon
+              {% elif 17 <= h < 22 %}Good evening
+              {% else %}Good night{% endif %}
             card_mod:
               style: |
-                ha-card {
-                  box-shadow: none;
-                  background: transparent;
-                  padding: 8px 0 !important;
-                  text-align: center;
-                  font-size: 3.2rem;
-                  font-weight: 600;
-                }
+                ha-card { box-shadow: none; background: transparent; padding: 8px 0 !important; text-align: center; font-size: 3.2rem; font-weight: 600; }
+                @media (max-width: 1400px) { ha-card { font-size: 2.0rem; padding: 4px 0 !important; } }
 
-          # Time
           - type: markdown
-            content: |
-              {{ now().strftime('%I:%M %p') }}
+            content: "{{ now().strftime('%I:%M %p') }}"
             card_mod:
               style: |
-                ha-card {
-                  box-shadow: none;
-                  background: transparent;
-                  padding: 8px 0 !important;
-                  text-align: right;
-                  font-size: 1.8rem;
-                  font-weight: 500;
-                }
+                ha-card { box-shadow: none; background: transparent; padding: 8px 0 !important; text-align: right; font-size: 1.8rem; font-weight: 500; }
+                @media (max-width: 1400px) { ha-card { font-size: 1.3rem; padding: 4px 0 !important; } }
 
-          # Right Arrow
           - type: custom:button-card
             icon: mdi:chevron-right
             tap_action:
               action: navigate
-              navigation_path: /command-center/frontdoor
+              navigation_path: /command-center/cameras
             styles:
               card:
                 - height: 70px
@@ -269,8 +256,14 @@ cards:
                 - color: white
               grid:
                 - grid-template-areas: '"i"'
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card { height: 50px !important; width: 50px !important; }
+                  ha-card ha-icon { --mdc-icon-size: 28px; }
+                }
 
-      # === FAMILY LOCATION BANNER (30px height) ===
+      # === FAMILY LOCATION BANNER ===
       - type: custom:button-card
         name: FAMILY LOCATION
         icon: mdi:map-marker-account
@@ -299,30 +292,30 @@ cards:
             - color: white
             - justify-self: start
             - letter-spacing: 0.5px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card { height: 26px !important; }
+              ha-card .name { font-size: 0.95rem !important; }
+            }
 
-      # === 3 PERSON CARDS (Paul, Tuella, Mauriece) ===
+      # === 3 PERSON CARDS ===
       - type: custom:layout-card
         layout_type: custom:grid-layout
         layout:
           grid-template-columns: repeat(3, 1fr)
           gap: 16px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) { ha-card { --gap: 10px; } }
         cards:
-          # === PAUL'S CARD (Life360 + Google Maps) ===
+          # PAUL
           - type: custom:button-card
             entity: person.paul
             name: Paul
             show_entity_picture: true
             show_name: true
             show_state: false
-            entity_picture: |
-              [[[
-                // Get person entity picture
-                const person = states['person.paul'];
-                if (person && person.attributes.entity_picture) {
-                  return person.attributes.entity_picture;
-                }
-                return '/local/default_user.png';
-              ]]]
             custom_fields:
               battery: |
                 [[[
@@ -336,67 +329,10 @@ cards:
               status: |
                 [[[
                   const tracker = states['device_tracker.paul_360'];
-                  const travel = states['sensor.paul_travel_time'];
-                  
                   if (!tracker) return '';
-                  
-                  // At home
-                  if (tracker.state === 'home') {
-                    return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
-                  }
-                  
-                  // Driving with Google Maps ETA
-                  if (tracker.attributes.driving && travel && travel.state !== 'unavailable' && travel.state !== 'unknown') {
-                    const duration = travel.attributes.duration || travel.state;
-                    const distance = travel.attributes.distance || '';
-                    if (duration && !isNaN(parseFloat(duration))) {
-                      const time = Math.round(parseFloat(duration));
-                      return `<span style="font-size: 1.2rem; font-weight: 600;">🚗 ${time} min • ${distance}</span>`;
-                    }
-                  }
-                  
-                  // Driving (no valid ETA)
-                  if (tracker.attributes.driving) {
-                    const speed = tracker.attributes.speed || 0;
-                    if (speed > 0) {
-                      return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving ${speed} mph</span>`;
-                    }
-                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
-                  }
-                  
-                  // Not driving but has travel time
-                  if (travel && travel.state !== 'unavailable' && travel.state !== 'unknown') {
-                    const duration = travel.attributes.duration || travel.state;
-                    const distance = travel.attributes.distance || '';
-                    if (duration && !isNaN(parseFloat(duration))) {
-                      const time = Math.round(parseFloat(duration));
-                      return `<span style="font-size: 1.1rem; font-weight: 600;">📍 ${time} min • ${distance} from home</span>`;
-                    }
-                  }
-                  
-                  // At a place
-                  if (tracker.attributes.place && tracker.attributes.place !== 'null') {
-                    return `<span style="font-size: 1.2rem; font-weight: 600;">📍 At ${tracker.attributes.place}</span>`;
-                  }
-                  
-                  // Away (unknown location)
+                  if (tracker.state === 'home') return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
+                  if (tracker.attributes.driving) return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
                   return `<span style="font-size: 1.3rem; font-weight: 600;">📍 Away</span>`;
-                ]]]
-              location_detail: |
-                [[[
-                  const tracker = states['device_tracker.paul_360'];
-                  
-                  if (!tracker || tracker.state === 'home') return '';
-                  
-                  const address = tracker.attributes.address || '';
-                  if (address && address.length > 0) {
-                    // Shorten address if too long
-                    if (address.length > 50) {
-                      return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address.substring(0, 47)}...</span>`;
-                    }
-                    return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address}</span>`;
-                  }
-                  return '';
                 ]]]
             styles:
               card:
@@ -406,13 +342,12 @@ cards:
                 - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
                 - padding: 16px
               grid:
-                - grid-template-areas: '"i" "n" "battery" "status" "location_detail"'
-                - grid-template-rows: 100px auto auto auto 1fr
+                - grid-template-areas: '"i" "n" "battery" "status"'
+                - grid-template-rows: 100px auto auto 1fr
               img_cell:
                 - width: 100px
                 - height: 100px
                 - border-radius: 50%
-                - object-fit: cover
                 - border: 3px solid white
                 - justify-self: center
                 - margin-bottom: 8px
@@ -430,30 +365,21 @@ cards:
                 status:
                   - justify-self: center
                   - color: white
-                  - margin-bottom: 4px
                   - text-align: center
-                  - padding: 0 8px
-                location_detail:
-                  - justify-self: center
-                  - text-align: center
-                  - padding: 0 8px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card { height: 200px !important; padding: 10px !important; border-radius: 12px !important; }
+                  ha-card .name { font-size: 1.2rem !important; }
+                }
 
-          # === TUELLA'S CARD (Life360 + Google Maps) ===
+          # TUELLA
           - type: custom:button-card
             entity: person.tuella_sowu
             name: Tuella
             show_entity_picture: true
             show_name: true
             show_state: false
-            entity_picture: |
-              [[[
-                // Get person entity picture
-                const person = states['person.tuella_sowu'];
-                if (person && person.attributes.entity_picture) {
-                  return person.attributes.entity_picture;
-                }
-                return '/local/default_user.png';
-              ]]]
             custom_fields:
               battery: |
                 [[[
@@ -467,66 +393,10 @@ cards:
               status: |
                 [[[
                   const tracker = states['device_tracker.tuella_360'];
-                  const travel = states['sensor.tuella_travel_time'];
-                  
                   if (!tracker) return '';
-                  
-                  // At home
-                  if (tracker.state === 'home') {
-                    return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
-                  }
-                  
-                  // Driving with Google Maps ETA
-                  if (tracker.attributes.driving && travel && travel.state !== 'unavailable' && travel.state !== 'unknown') {
-                    const duration = travel.attributes.duration || travel.state;
-                    const distance = travel.attributes.distance || '';
-                    if (duration && !isNaN(parseFloat(duration))) {
-                      const time = Math.round(parseFloat(duration));
-                      return `<span style="font-size: 1.2rem; font-weight: 600;">🚗 ${time} min • ${distance}</span>`;
-                    }
-                  }
-                  
-                  // Driving (no valid ETA)
-                  if (tracker.attributes.driving) {
-                    const speed = tracker.attributes.speed || 0;
-                    if (speed > 0) {
-                      return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving ${speed} mph</span>`;
-                    }
-                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
-                  }
-                  
-                  // Not driving but has travel time
-                  if (travel && travel.state !== 'unavailable' && travel.state !== 'unknown') {
-                    const duration = travel.attributes.duration || travel.state;
-                    const distance = travel.attributes.distance || '';
-                    if (duration && !isNaN(parseFloat(duration))) {
-                      const time = Math.round(parseFloat(duration));
-                      return `<span style="font-size: 1.1rem; font-weight: 600;">📍 ${time} min • ${distance} from home</span>`;
-                    }
-                  }
-                  
-                  // At a place
-                  if (tracker.attributes.place && tracker.attributes.place !== 'null') {
-                    return `<span style="font-size: 1.2rem; font-weight: 600;">📍 At ${tracker.attributes.place}</span>`;
-                  }
-                  
-                  // Away (unknown location)
+                  if (tracker.state === 'home') return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
+                  if (tracker.attributes.driving) return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
                   return `<span style="font-size: 1.3rem; font-weight: 600;">📍 Away</span>`;
-                ]]]
-              location_detail: |
-                [[[
-                  const tracker = states['device_tracker.tuella_360'];
-                  
-                  if (!tracker || tracker.state === 'home') return '';
-                  
-                  const address = tracker.attributes.address || '';
-                  if (address && address.length > 0) {
-                    if (address.length > 50) {
-                      return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address.substring(0, 47)}...</span>`;
-                    }
-                    return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address}</span>`;
-                  }
-                  return '';
                 ]]]
             styles:
               card:
@@ -536,13 +406,12 @@ cards:
                 - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
                 - padding: 16px
               grid:
-                - grid-template-areas: '"i" "n" "battery" "status" "location_detail"'
-                - grid-template-rows: 100px auto auto auto 1fr
+                - grid-template-areas: '"i" "n" "battery" "status"'
+                - grid-template-rows: 100px auto auto 1fr
               img_cell:
                 - width: 100px
                 - height: 100px
                 - border-radius: 50%
-                - object-fit: cover
                 - border: 3px solid white
                 - justify-self: center
                 - margin-bottom: 8px
@@ -560,30 +429,21 @@ cards:
                 status:
                   - justify-self: center
                   - color: white
-                  - margin-bottom: 4px
                   - text-align: center
-                  - padding: 0 8px
-                location_detail:
-                  - justify-self: center
-                  - text-align: center
-                  - padding: 0 8px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card { height: 200px !important; padding: 10px !important; border-radius: 12px !important; }
+                  ha-card .name { font-size: 1.2rem !important; }
+                }
 
-          # === MAURIECE'S CARD (Life360 + Google Maps) ===
+          # MAURIECE
           - type: custom:button-card
             entity: person.mauriece
             name: Mauriece
             show_entity_picture: true
             show_name: true
             show_state: false
-            entity_picture: |
-              [[[
-                // Get person entity picture
-                const person = states['person.mauriece'];
-                if (person && person.attributes.entity_picture) {
-                  return person.attributes.entity_picture;
-                }
-                return '/local/default_user.png';
-              ]]]
             custom_fields:
               battery: |
                 [[[
@@ -597,66 +457,10 @@ cards:
               status: |
                 [[[
                   const tracker = states['device_tracker.mauriece_360'];
-                  const travel = states['sensor.mauriece_travel_time'];
-                  
                   if (!tracker) return '';
-                  
-                  // At home
-                  if (tracker.state === 'home') {
-                    return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
-                  }
-                  
-                  // Driving with Google Maps ETA
-                  if (tracker.attributes.driving && travel && travel.state !== 'unavailable' && travel.state !== 'unknown') {
-                    const duration = travel.attributes.duration || travel.state;
-                    const distance = travel.attributes.distance || '';
-                    if (duration && !isNaN(parseFloat(duration))) {
-                      const time = Math.round(parseFloat(duration));
-                      return `<span style="font-size: 1.2rem; font-weight: 600;">🚗 ${time} min • ${distance}</span>`;
-                    }
-                  }
-                  
-                  // Driving (no valid ETA)
-                  if (tracker.attributes.driving) {
-                    const speed = tracker.attributes.speed || 0;
-                    if (speed > 0) {
-                      return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving ${speed} mph</span>`;
-                    }
-                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
-                  }
-                  
-                  // Not driving but has travel time
-                  if (travel && travel.state !== 'unavailable' && travel.state !== 'unknown') {
-                    const duration = travel.attributes.duration || travel.state;
-                    const distance = travel.attributes.distance || '';
-                    if (duration && !isNaN(parseFloat(duration))) {
-                      const time = Math.round(parseFloat(duration));
-                      return `<span style="font-size: 1.1rem; font-weight: 600;">📍 ${time} min • ${distance} from home</span>`;
-                    }
-                  }
-                  
-                  // At a place
-                  if (tracker.attributes.place && tracker.attributes.place !== 'null') {
-                    return `<span style="font-size: 1.2rem; font-weight: 600;">📍 At ${tracker.attributes.place}</span>`;
-                  }
-                  
-                  // Away (unknown location)
+                  if (tracker.state === 'home') return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
+                  if (tracker.attributes.driving) return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
                   return `<span style="font-size: 1.3rem; font-weight: 600;">📍 Away</span>`;
-                ]]]
-              location_detail: |
-                [[[
-                  const tracker = states['device_tracker.mauriece_360'];
-                  
-                  if (!tracker || tracker.state === 'home') return '';
-                  
-                  const address = tracker.attributes.address || '';
-                  if (address && address.length > 0) {
-                    if (address.length > 50) {
-                      return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address.substring(0, 47)}...</span>`;
-                    }
-                    return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address}</span>`;
-                  }
-                  return '';
                 ]]]
             styles:
               card:
@@ -666,13 +470,12 @@ cards:
                 - box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3)
                 - padding: 16px
               grid:
-                - grid-template-areas: '"i" "n" "battery" "status" "location_detail"'
-                - grid-template-rows: 100px auto auto auto 1fr
+                - grid-template-areas: '"i" "n" "battery" "status"'
+                - grid-template-rows: 100px auto auto 1fr
               img_cell:
                 - width: 100px
                 - height: 100px
                 - border-radius: 50%
-                - object-fit: cover
                 - border: 3px solid white
                 - justify-self: center
                 - margin-bottom: 8px
@@ -690,22 +493,26 @@ cards:
                 status:
                   - justify-self: center
                   - color: white
-                  - margin-bottom: 4px
                   - text-align: center
-                  - padding: 0 8px
-                location_detail:
-                  - justify-self: center
-                  - text-align: center
-                  - padding: 0 8px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card { height: 200px !important; padding: 10px !important; border-radius: 12px !important; }
+                  ha-card .name { font-size: 1.2rem !important; }
+                }
 
-      # === NATIVE HA MAP (70% width, square, centered, bordered) ===
+      # === MAP ===
       - type: custom:layout-card
         layout_type: custom:grid-layout
         layout:
           grid-template-columns: 15% 70% 15%
           gap: 0
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card { --grid-template-columns: 10% 80% 10%; }
+            }
         cards:
-          # Left spacer
           - type: custom:button-card
             color_type: blank-card
             styles:
@@ -713,7 +520,6 @@ cards:
                 - background: transparent
                 - box-shadow: none
 
-          # Native map container
           - type: map
             entities:
               - person.paul
@@ -732,8 +538,13 @@ cards:
                   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
                   overflow: hidden;
                 }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    aspect-ratio: 16 / 9;
+                    border-radius: 12px;
+                  }
+                }
 
-          # Right spacer
           - type: custom:button-card
             color_type: blank-card
             styles:

@@ -46,6 +46,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Lights Button
           - type: custom:mushroom-template-card
@@ -70,6 +77,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Weather Button (ACTIVE - WHITE BORDER)
           - type: custom:mushroom-template-card
@@ -94,6 +108,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Calendar Button
           - type: custom:mushroom-template-card
@@ -118,6 +139,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Family Button
           - type: custom:mushroom-template-card
@@ -142,15 +170,22 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Front Door Button
           - type: custom:mushroom-template-card
-            primary: Front Door
-            icon: mdi:shield-home
+            primary: Cameras
+            icon: mdi:cctv
             icon_color: orange
             tap_action:
               action: navigate
-              navigation_path: /command-center/frontdoor
+              navigation_path: /command-center/cameras
             card_mod:
               style: |
                 ha-card {
@@ -166,6 +201,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
       # === HEADER ROW (ARROWS + DATE/TIME/GREETING) ===
       - type: custom:layout-card
@@ -194,6 +236,20 @@ cards:
                 - color: white
               grid:
                 - grid-template-areas: '"i"'
+            card_mod:
+              style: |
+                ha-card {
+                  transition: all 0.3s ease;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 50px !important;
+                    width: 50px !important;
+                  }
+                  ha-card ha-icon {
+                    --mdc-icon-size: 28px;
+                  }
+                }
 
           # Date
           - type: markdown
@@ -208,6 +264,12 @@ cards:
                   text-align: left;
                   font-size: 1.8rem;
                   font-weight: 500;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    font-size: 1.3rem;
+                    padding: 4px 0 !important;
+                  }
                 }
 
           # Greeting (Center)
@@ -234,6 +296,12 @@ cards:
                   font-size: 3.2rem;
                   font-weight: 600;
                 }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    font-size: 2.0rem;
+                    padding: 4px 0 !important;
+                  }
+                }
 
           # Time
           - type: markdown
@@ -248,6 +316,12 @@ cards:
                   text-align: right;
                   font-size: 1.8rem;
                   font-weight: 500;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    font-size: 1.3rem;
+                    padding: 4px 0 !important;
+                  }
                 }
 
           # Right Arrow
@@ -269,6 +343,20 @@ cards:
                 - color: white
               grid:
                 - grid-template-areas: '"i"'
+            card_mod:
+              style: |
+                ha-card {
+                  transition: all 0.3s ease;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 50px !important;
+                    width: 50px !important;
+                  }
+                  ha-card ha-icon {
+                    --mdc-icon-size: 28px;
+                  }
+                }
 
       # === WEATHER & COMFORT BANNER (30px height) ===
       - type: custom:button-card
@@ -299,6 +387,16 @@ cards:
             - color: white
             - justify-self: start
             - letter-spacing: 0.5px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                height: 26px !important;
+              }
+              ha-card .name {
+                font-size: 0.95rem !important;
+              }
+            }
 
       # === MAIN WEATHER GRID (3 columns) ===
       - type: custom:layout-card
@@ -306,6 +404,13 @@ cards:
         layout:
           grid-template-columns: repeat(3, 1fr)
           gap: 16px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                --gap: 10px;
+              }
+            }
         cards:
           # Weather Forecast
           - type: weather-forecast
@@ -319,6 +424,13 @@ cards:
                   border-radius: 16px;
                   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    min-height: 200px;
+                    font-size: 1rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Thermostat
           - type: thermostat
@@ -331,6 +443,13 @@ cards:
                   font-size: 1.2rem !important;
                   border-radius: 16px;
                   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    min-height: 200px;
+                    font-size: 1rem !important;
+                    border-radius: 12px;
+                  }
                 }
 
           # HVAC Auto Comfort Control (with Indoor Avg built-in)
@@ -423,11 +542,27 @@ cards:
                 styles:
                   card:
                     - background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 100%)
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    min-height: 200px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 36px !important;
+                    height: 36px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.1rem !important;
+                  }
+                }
 
       # === ROOM TEMPERATURES BANNER (30px height) ===
       - type: custom:button-card
         name: ROOM TEMPERATURES
-        icon: mdi:lightbulb-group-thermometer-outline
+        icon: mdi:thermometer
         show_name: true
         show_icon: true
         tap_action:
@@ -453,6 +588,16 @@ cards:
             - color: white
             - justify-self: start
             - letter-spacing: 0.5px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                height: 26px !important;
+              }
+              ha-card .name {
+                font-size: 0.95rem !important;
+              }
+            }
 
       # === INDIVIDUAL ROOM TEMPS (3 columns) ===
       - type: custom:layout-card
@@ -460,6 +605,13 @@ cards:
         layout:
           grid-template-columns: repeat(3, 1fr)
           gap: 16px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                --gap: 10px;
+              }
+            }
         cards:
           # Master Bedroom
           - type: tile
@@ -474,6 +626,13 @@ cards:
                   font-size: 1.2rem !important;
                   border-radius: 16px;
                   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    min-height: 100px;
+                    font-size: 1rem !important;
+                    border-radius: 12px;
+                  }
                 }
 
           # Galley
@@ -490,6 +649,13 @@ cards:
                   border-radius: 16px;
                   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    min-height: 100px;
+                    font-size: 1rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Blue Room
           - type: tile
@@ -504,4 +670,11 @@ cards:
                   font-size: 1.2rem !important;
                   border-radius: 16px;
                   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    min-height: 100px;
+                    font-size: 1rem !important;
+                    border-radius: 12px;
+                  }
                 }

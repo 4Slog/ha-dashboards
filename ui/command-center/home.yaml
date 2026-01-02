@@ -180,12 +180,12 @@ cards:
 
           # Front Door Button
           - type: custom:mushroom-template-card
-            primary: Front Door
-            icon: mdi:shield-home
+            primary: Cameras
+            icon: mdi:cctv
             icon_color: orange
             tap_action:
               action: navigate
-              navigation_path: /command-center/frontdoor
+              navigation_path: /command-center/cameras
             card_mod:
               style: |
                 ha-card {
