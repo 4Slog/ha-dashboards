@@ -67,7 +67,7 @@ lovelace:
       type: module
 
 
-  # ===== Dashboards =====
+# ===== Dashboards =====
   dashboards:
     command-center-show8:
       mode: yaml
@@ -130,14 +130,20 @@ lovelace:
       icon: mdi:tablet-dashboard
       show_in_sidebar: true
       require_admin: false
-      filename: dashboards/command_center.yaml 
+      filename: dashboards/command_center.yaml
     galaxy-command:
       mode: yaml
       title: Galaxy Command
       icon: mdi:cellphone-android
       show_in_sidebar: true
       filename: dashboards/galaxy.yaml
-
+    tablet-control-center:
+      mode: yaml
+      title: Tablet Control
+      icon: mdi:tablet-dashboard
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/tablet_control_center.yaml
     lovelace-home-media:
       mode: yaml
       title: Home Media
@@ -145,9 +151,6 @@ lovelace:
       show_in_sidebar: true
       require_admin: false
       filename: dashboards/home_media.yaml
-
-
-
     mobile-dashboard:
       mode: yaml
       title: Mobile
@@ -155,6 +158,7 @@ lovelace:
       show_in_sidebar: true
       require_admin: false
       filename: dashboards/mobile_dashboard.yaml
+
 # =======================
 #  OPTIONAL COMPONENTS
 # =======================
