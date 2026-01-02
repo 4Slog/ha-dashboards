@@ -1,0 +1,50 @@
+type: vertical-stack
+cards:
+  - type: heading
+    heading: Front Door
+    heading_style: title
+    icon: mdi:shield-home
+    card_mod:
+      style: |
+        ha-card {
+          font-size: 1.4rem !important;
+        }
+
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: entities
+        title: Front Door
+        state_color: true
+        entities:
+          - entity: switch.front_door_in_home_chime
+            name: In-Home Chime
+          - entity: switch.front_door_motion_detection
+            name: Motion Detection
+          - entity: switch.front_door_motion_detection_2
+            name: Motion Detection (Alt)
+          - entity: number.front_door_volume
+            name: Chime Volume
+          - entity: sensor.front_door_last_activity
+            name: Last Activity
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 1.15rem !important;
+              min-height: 320px;
+              border-radius: 16px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+      - type: picture-entity
+        entity: camera.front_door_live_view_2
+        name: Front Door
+        camera_view: live
+        card_mod:
+          style: |
+            ha-card {
+              min-height: 320px;
+              border-radius: 16px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }

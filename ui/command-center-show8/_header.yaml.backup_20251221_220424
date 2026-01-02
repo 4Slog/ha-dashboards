@@ -1,0 +1,144 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+layout:
+  grid-template-columns: 1fr
+  grid-auto-rows: min-content
+  gap: 10px
+
+cards:
+  # =========================
+  # ROW 1: NAV RIBBON (6)
+  # =========================
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: repeat(6, 1fr)
+      gap: 10px
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Media
+        icon: mdi:lightbulb-group-music
+        icon_color: blue
+        tap_action:
+          action: navigate
+          navigation_path: /show8/media
+
+      - type: custom:mushroom-template-card
+        primary: Lights
+        icon: mdi:lightbulb-group
+        icon_color: purple
+        tap_action:
+          action: navigate
+          navigation_path: /show8/home
+
+      - type: custom:mushroom-template-card
+        primary: Weather
+        icon: mdi:weather-partly-cloudy
+        icon_color: blue
+        tap_action:
+          action: navigate
+          navigation_path: /show8/weather
+
+      - type: custom:mushroom-template-card
+        primary: Calendar
+        icon: mdi:calendar-clock
+        icon_color: green
+        tap_action:
+          action: navigate
+          navigation_path: /show8/calendar
+
+      - type: custom:mushroom-template-card
+        primary: Family
+        icon: mdi:map-marker-account
+        icon_color: purple
+        tap_action:
+          action: navigate
+          navigation_path: /show8/family
+
+      - type: custom:mushroom-template-card
+        primary: Front Door
+        icon: mdi:door
+        icon_color: red
+        tap_action:
+          action: navigate
+          navigation_path: /show8/frontdoor
+
+  # ==========================================
+  # ROW 2:  ←  DATE  GREETING  TIME  →
+  # ==========================================
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 60px 1fr 2fr 1fr 60px
+      align-items: center
+      gap: 8px
+    cards:
+      - type: custom:button-card
+        icon: mdi:chevron-left
+        tap_action:
+          action: navigate
+          navigation_path: /show8/media
+        styles:
+          card:
+            - height: 52px
+
+      - type: markdown
+        content: |
+          {{ now().strftime('%a, %b %d') }}
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+              padding: 0 !important;
+              text-align: center;
+              font-size: 1.15rem;
+              font-weight: 550;
+            }
+
+      - type: markdown
+        content: |
+          {% set h = now().hour %}
+          {% if 5 <= h < 12 %}
+            {% set greet = 'Good morning' %}
+          {% elif 12 <= h < 17 %}
+            {% set greet = 'Good afternoon' %}
+          {% elif 17 <= h < 22 %}
+            {% set greet = 'Good evening' %}
+          {% else %}
+            {% set greet = 'Good night' %}
+          {% endif %}
+          {{ greet }}
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+              padding: 0 !important;
+              text-align: center;
+              font-size: 1.35rem;
+              font-weight: 650;
+            }
+
+      - type: markdown
+        content: |
+          {{ now().strftime('%I:%M %p') }}
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+              padding: 0 !important;
+              text-align: center;
+              font-size: 1.20rem;
+              font-weight: 600;
+            }
+
+      - type: custom:button-card
+        icon: mdi:chevron-right
+        tap_action:
+          action: navigate
+          navigation_path: /show8/home
+        styles:
+          card:
+            - height: 52px

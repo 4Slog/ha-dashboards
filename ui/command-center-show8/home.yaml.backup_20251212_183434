@@ -1,0 +1,1027 @@
+title: Home
+path: home
+icon: mdi:home
+panel: true
+theme: default
+
+cards:
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr
+      grid-auto-rows: min-content
+      justify-content: stretch
+      align_content: start
+      gap: 16px
+      padding: 16px
+
+    cards:
+      # === FLOATING LEFT ARROW ===
+      - type: custom:button-card
+        name: " "
+        icon: mdi:chevron-left
+        tap_action:
+          action: navigate
+          navigation_path: /command-center/frontdoor
+        styles:
+          card:
+            - position: fixed
+            - left: 20px
+            - bottom: 50%
+            - transform: translateY(50%)
+            - width: 60px
+            - height: 60px
+            - border-radius: 50%
+            - background: rgba(74, 158, 255, 0.9)
+            - box-shadow: 0 4px 20px rgba(74, 158, 255, 0.5)
+            - border: 2px solid rgba(255, 255, 255, 0.3)
+            - z-index: 9999
+            - cursor: pointer
+          icon:
+            - width: 36px
+            - height: 36px
+            - color: white
+          grid:
+            - grid-template-areas: '"i"'
+
+      # === FLOATING RIGHT ARROW ===
+      - type: custom:button-card
+        name: " "
+        icon: mdi:chevron-right
+        tap_action:
+          action: navigate
+          navigation_path: /command-center/weather
+        styles:
+          card:
+            - position: fixed
+            - right: 20px
+            - bottom: 50%
+            - transform: translateY(50%)
+            - width: 60px
+            - height: 60px
+            - border-radius: 50%
+            - background: rgba(74, 158, 255, 0.9)
+            - box-shadow: 0 4px 20px rgba(74, 158, 255, 0.5)
+            - border: 2px solid rgba(255, 255, 255, 0.3)
+            - z-index: 9999
+            - cursor: pointer
+          icon:
+            - width: 36px
+            - height: 36px
+            - color: white
+          grid:
+            - grid-template-areas: '"i"'
+
+      # === HEADER (DATE | GREETING | TIME) - SYMMETRICAL ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: auto 1fr auto
+          gap: 32px
+        cards:
+          # LEFT: Date
+          - type: markdown
+            content: |
+              {{ now().strftime('%A, %b %d') }}
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  background: transparent;
+                  padding: 8px 0 !important;
+                  text-align: left;
+                  font-size: 1.8rem;
+                  font-weight: 500;
+                }
+
+          # CENTER: Greeting
+          - type: markdown
+            content: |
+              {% set h = now().hour %}
+              {% if 5 <= h < 12 %}
+                {% set greet = 'Good morning' %}
+              {% elif 12 <= h < 17 %}
+                {% set greet = 'Good afternoon' %}
+              {% elif 17 <= h < 22 %}
+                {% set greet = 'Good evening' %}
+              {% else %}
+                {% set greet = 'Good night' %}
+              {% endif %}
+              {{ greet }}
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  background: transparent;
+                  padding: 8px 0 !important;
+                  text-align: center;
+                  font-size: 3.2rem;
+                  font-weight: 600;
+                }
+
+          # RIGHT: Time
+          - type: markdown
+            content: |
+              {{ now().strftime('%I:%M %p') }}
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                  background: transparent;
+                  padding: 8px 0 !important;
+                  text-align: right;
+                  font-size: 1.8rem;
+                  font-weight: 500;
+                }
+
+      # === NAVIGATION RIBBON (THINNER WITH ACTIVE HIGHLIGHT) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(4, 1fr)
+          gap: 12px
+        cards:
+          # Weather Button
+          - type: custom:button-card
+            name: Weather
+            icon: mdi:weather-partly-cloudy
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/weather
+            show_name: true
+            show_icon: true
+            styles:
+              card:
+                - height: 50px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)
+                - box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3)
+                - border: 2px solid rgba(255, 255, 255, 0.2)
+                - padding: 4px
+              grid:
+                - grid-template-areas: '"i n"'
+                - grid-template-columns: auto 1fr
+                - gap: 8px
+              icon:
+                - width: 24px
+                - height: 24px
+                - color: white
+                - filter: drop-shadow(0 2px 4px rgba(79, 172, 254, 0.4))
+              name:
+                - font-size: 1rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 6px rgba(0,0,0,0.4)
+                - justify-self: start
+                - margin-left: 4px
+
+          # Calendar Button
+          - type: custom:button-card
+            name: Calendar
+            icon: mdi:calendar-clock
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/calendar
+            show_name: true
+            show_icon: true
+            styles:
+              card:
+                - height: 50px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)
+                - box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3)
+                - border: 2px solid rgba(255, 255, 255, 0.2)
+                - padding: 4px
+              grid:
+                - grid-template-areas: '"i n"'
+                - grid-template-columns: auto 1fr
+                - gap: 8px
+              icon:
+                - width: 24px
+                - height: 24px
+                - color: white
+                - filter: drop-shadow(0 2px 4px rgba(67, 233, 123, 0.4))
+              name:
+                - font-size: 1rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 6px rgba(0,0,0,0.4)
+                - justify-self: start
+                - margin-left: 4px
+
+          # Family Button
+          - type: custom:button-card
+            name: Family
+            icon: mdi:map-marker-account
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/family
+            show_name: true
+            show_icon: true
+            styles:
+              card:
+                - height: 50px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)
+                - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
+                - border: 2px solid rgba(255, 255, 255, 0.2)
+                - padding: 4px
+              grid:
+                - grid-template-areas: '"i n"'
+                - grid-template-columns: auto 1fr
+                - gap: 8px
+              icon:
+                - width: 24px
+                - height: 24px
+                - color: white
+                - filter: drop-shadow(0 2px 4px rgba(250, 112, 154, 0.4))
+              name:
+                - font-size: 1rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 6px rgba(0,0,0,0.4)
+                - justify-self: start
+                - margin-left: 4px
+
+          # Front Door Button (ACTIVE - Current Page)
+          - type: custom:button-card
+            name: Front Door
+            icon: mdi:shield-home
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/frontdoor
+            show_name: true
+            show_icon: true
+            styles:
+              card:
+                - height: 50px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)
+                - box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3)
+                - border: 2px solid rgba(255, 255, 255, 0.2)
+                - padding: 4px
+              grid:
+                - grid-template-areas: '"i n"'
+                - grid-template-columns: auto 1fr
+                - gap: 8px
+              icon:
+                - width: 24px
+                - height: 24px
+                - color: white
+                - filter: drop-shadow(0 2px 4px rgba(240, 147, 251, 0.4))
+              name:
+                - font-size: 1rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 6px rgba(0,0,0,0.4)
+                - justify-self: start
+                - margin-left: 4px
+
+      # === LIGHTS SECTION BANNER ===
+      - type: custom:button-card
+        name: LIGHTS
+        icon: mdi:lightbulb-group-outline
+        show_name: true
+        show_icon: true
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 50px
+            - border-radius: 12px
+            - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+            - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
+            - border: none
+            - padding: 0 16px
+          grid:
+            - grid-template-areas: '"i n"'
+            - grid-template-columns: auto 1fr
+          icon:
+            - width: 28px
+            - height: 28px
+            - color: white
+            - margin-right: 12px
+          name:
+            - font-size: 1.5rem
+            - font-weight: 700
+            - color: white
+            - text-shadow: 0 2px 4px rgba(0,0,0,0.2)
+            - justify-self: start
+            - letter-spacing: 1px
+
+      # === LIGHTS & CONTROLS GRID (3 columns x 3 rows) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 1fr 1fr 1fr
+          gap: 12px
+        cards:
+          # ROW 1 COL 1: Great Room Light
+          - type: custom:button-card
+            entity: light.great_room_fan_and_light
+            name: Great Room Light
+            icon: mdi:lightbulb
+            show_name: true
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `linear-gradient(135deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${Math.max(0,r-40)}, ${Math.max(0,g-40)}, ${Math.max(0,b-40)}) 100%)`;
+                      }
+                      return 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `0 6px 20px rgba(${r}, ${g}, ${b}, 0.4)`;
+                      }
+                      return '0 4px 12px rgba(0,0,0,0.2)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "s"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `drop-shadow(0 0 12px rgba(${r}, ${g}, ${b}, 0.9))`;
+                      }
+                      return 'none';
+                    ]]]
+                - border-radius: 50%
+                - padding: 10px
+                - background: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const brightness = entity.attributes.brightness || 255;
+                        const percent = (brightness / 255) * 270;
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `conic-gradient(rgb(${r}, ${g}, ${b}) ${percent}deg, rgba(255,255,255,0.2) ${percent}deg)`;
+                      }
+                      return 'transparent';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              state:
+                - font-size: 1rem
+                - color: rgba(255, 255, 255, 0.8)
+                - justify-self: center
+                - margin-top: 4px
+
+          # ROW 1 COL 2: Great Room Fan
+          - type: custom:button-card
+            entity: fan.great_room_fan_and_light
+            name: Great Room Fan
+            icon: mdi:fan
+            show_name: true
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      return entity.state === 'on' 
+                        ? 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)'
+                        : 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      return entity.state === 'on'
+                        ? '0 6px 20px rgba(0, 210, 255, 0.4)'
+                        : '0 4px 12px rgba(0,0,0,0.2)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "s"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      return entity.state === 'on'
+                        ? 'drop-shadow(0 0 12px rgba(0, 210, 255, 0.9))'
+                        : 'none';
+                    ]]]
+                - animation: |
+                    [[[
+                      return entity.state === 'on' ? 'rotation 2s linear infinite' : 'none';
+                    ]]]
+                - border-radius: 50%
+                - padding: 10px
+                - background: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const speed = entity.attributes.percentage || 0;
+                        const percent = (speed / 100) * 270;
+                        return `conic-gradient(rgba(0, 210, 255, 1) ${percent}deg, rgba(255,255,255,0.2) ${percent}deg)`;
+                      }
+                      return 'transparent';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              state:
+                - font-size: 1rem
+                - color: rgba(255, 255, 255, 0.8)
+                - justify-self: center
+                - margin-top: 4px
+
+          # ROW 1 COL 3: Common Area Lights
+          - type: custom:button-card
+            entity: script.toggle_main_lights
+            name: Common Area Lights
+            icon: mdi:lightbulb-multiple
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: call-service
+              service: script.toggle_main_lights
+            custom_fields:
+              status: |
+                [[[
+                  const lights = [
+                    states['light.great_room_fan_and_light'].state,
+                    states['light.dining_room_main_light'].state,
+                    states['light.kitchen_light_switch'].state,
+                    states['switch.master_hallway'].state
+                  ];
+                  const onCount = lights.filter(s => s === 'on').length;
+                  return `<span style="font-size: 1rem; color: rgba(255,255,255,0.8);">${onCount} of 4 on</span>`;
+                ]]]
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      const lights = [
+                        states['light.great_room_fan_and_light'].state,
+                        states['light.dining_room_main_light'].state,
+                        states['light.kitchen_light_switch'].state,
+                        states['switch.master_hallway'].state
+                      ];
+                      const onCount = lights.filter(s => s === 'on').length;
+                      
+                      if (onCount === 0) {
+                        return 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                      }
+                      
+                      const brightness = 40 + (onCount * 15);
+                      const r = Math.floor(255 * brightness / 100);
+                      const g = Math.floor(215 * brightness / 100);
+                      const b = 0;
+                      
+                      return `linear-gradient(135deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${Math.floor(255 * brightness / 100)}, ${Math.floor(165 * brightness / 100)}, 0) 100%)`;
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      const lights = [
+                        states['light.great_room_fan_and_light'].state,
+                        states['light.dining_room_main_light'].state,
+                        states['light.kitchen_light_switch'].state,
+                        states['switch.master_hallway'].state
+                      ];
+                      const onCount = lights.filter(s => s === 'on').length;
+                      
+                      if (onCount === 0) {
+                        return '0 4px 12px rgba(0,0,0,0.2)';
+                      }
+                      
+                      const intensity = 0.1 + (onCount * 0.075);
+                      return `0 6px 20px rgba(255, 215, 0, ${intensity})`;
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "status"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      const lights = [
+                        states['light.great_room_fan_and_light'].state,
+                        states['light.dining_room_main_light'].state,
+                        states['light.kitchen_light_switch'].state,
+                        states['switch.master_hallway'].state
+                      ];
+                      const onCount = lights.filter(s => s === 'on').length;
+                      
+                      if (onCount === 0) {
+                        return 'none';
+                      }
+                      
+                      const intensity = 0.2 + (onCount * 0.15);
+                      return `drop-shadow(0 0 12px rgba(255, 215, 0, ${intensity}))`;
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+                - text-align: center
+              custom_fields:
+                status:
+                  - justify-self: center
+                  - margin-top: 4px
+
+          # ROW 2 COL 1: Dining Room Light
+          - type: custom:button-card
+            entity: light.dining_room_main_light
+            name: Dining Room Light
+            icon: mdi:lightbulb
+            show_name: true
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `linear-gradient(135deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${Math.max(0,r-40)}, ${Math.max(0,g-40)}, ${Math.max(0,b-40)}) 100%)`;
+                      }
+                      return 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `0 6px 20px rgba(${r}, ${g}, ${b}, 0.4)`;
+                      }
+                      return '0 4px 12px rgba(0,0,0,0.2)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "s"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `drop-shadow(0 0 12px rgba(${r}, ${g}, ${b}, 0.9))`;
+                      }
+                      return 'none';
+                    ]]]
+                - border-radius: 50%
+                - padding: 10px
+                - background: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const brightness = entity.attributes.brightness || 255;
+                        const percent = (brightness / 255) * 270;
+                        const r = entity.attributes.rgb_color ? entity.attributes.rgb_color[0] : 255;
+                        const g = entity.attributes.rgb_color ? entity.attributes.rgb_color[1] : 200;
+                        const b = entity.attributes.rgb_color ? entity.attributes.rgb_color[2] : 100;
+                        return `conic-gradient(rgb(${r}, ${g}, ${b}) ${percent}deg, rgba(255,255,255,0.2) ${percent}deg)`;
+                      }
+                      return 'transparent';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              state:
+                - font-size: 1rem
+                - color: rgba(255, 255, 255, 0.8)
+                - justify-self: center
+                - margin-top: 4px
+
+          # ROW 2 COL 2: Dining Room Fan
+          - type: custom:button-card
+            entity: fan.dining_room_main_fan
+            name: Dining Room Fan
+            icon: mdi:fan
+            show_name: true
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      return entity.state === 'on' 
+                        ? 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)'
+                        : 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      return entity.state === 'on'
+                        ? '0 6px 20px rgba(0, 210, 255, 0.4)'
+                        : '0 4px 12px rgba(0,0,0,0.2)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "s"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      return entity.state === 'on'
+                        ? 'drop-shadow(0 0 12px rgba(0, 210, 255, 0.9))'
+                        : 'none';
+                    ]]]
+                - animation: |
+                    [[[
+                      return entity.state === 'on' ? 'rotation 2s linear infinite' : 'none';
+                    ]]]
+                - border-radius: 50%
+                - padding: 10px
+                - background: |
+                    [[[
+                      if (entity.state === 'on') {
+                        const speed = entity.attributes.percentage || 0;
+                        const percent = (speed / 100) * 270;
+                        return `conic-gradient(rgba(0, 210, 255, 1) ${percent}deg, rgba(255,255,255,0.2) ${percent}deg)`;
+                      }
+                      return 'transparent';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              state:
+                - font-size: 1rem
+                - color: rgba(255, 255, 255, 0.8)
+                - justify-self: center
+                - margin-top: 4px
+
+          # ROW 2 COL 3: Mute TV
+          - type: custom:button-card
+            entity: media_player.living_room_tv_2
+            name: Mute TV
+            icon: mdi:volume-high
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: call-service
+              service: media_player.volume_mute
+              service_data:
+                is_volume_muted: true
+                entity_id: media_player.living_room_tv_2
+            double_tap_action:
+              action: call-service
+              service: media_player.volume_mute
+              service_data:
+                is_volume_muted: false
+                entity_id: media_player.living_room_tv_2
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%)
+                - box-shadow: 0 6px 20px rgba(255, 81, 47, 0.4)
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: drop-shadow(0 0 12px rgba(255, 81, 47, 0.8))
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+
+          # ROW 3 COL 1: Kitchen Light
+          - type: custom:button-card
+            entity: light.kitchen_light_switch
+            name: Kitchen Light
+            icon: mdi:lightbulb
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: toggle
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      return entity.state === 'on' 
+                        ? 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
+                        : 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      return entity.state === 'on'
+                        ? '0 6px 20px rgba(255, 215, 0, 0.4)'
+                        : '0 4px 12px rgba(0,0,0,0.2)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "s"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      return entity.state === 'on'
+                        ? 'drop-shadow(0 0 12px rgba(255, 215, 0, 0.8))'
+                        : 'none';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              state:
+                - font-size: 1rem
+                - color: rgba(255, 255, 255, 0.8)
+                - justify-self: center
+                - margin-top: 4px
+
+          # ROW 3 COL 2: Master Hallway Light
+          - type: custom:button-card
+            entity: switch.master_hallway
+            name: Master Hallway
+            icon: mdi:lightbulb
+            show_name: true
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      return entity.state === 'on' 
+                        ? 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
+                        : 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      return entity.state === 'on'
+                        ? '0 6px 20px rgba(255, 215, 0, 0.4)'
+                        : '0 4px 12px rgba(0,0,0,0.2)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "s"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      return entity.state === 'on'
+                        ? 'drop-shadow(0 0 12px rgba(255, 215, 0, 0.8))'
+                        : 'none';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              state:
+                - font-size: 1rem
+                - color: rgba(255, 255, 255, 0.8)
+                - justify-self: center
+                - margin-top: 4px
+
+          # ROW 3 COL 3: Study Blinds
+          - type: custom:button-card
+            entity: cover.blind_tilt_5b8c
+            name: Study Blinds
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: call-service
+              service: cover.set_cover_tilt_position
+              service_data:
+                entity_id: cover.blind_tilt_5b8c
+                tilt_position: |
+                  [[[
+                    const pos = entity.attributes.current_tilt_position;
+                    if (pos <= 5 || pos >= 95) {
+                      return 70;
+                    }
+                    return 100;
+                  ]]]
+            hold_action:
+              action: more-info
+            custom_fields:
+              motion: |
+                [[[
+                  const state = entity.state;
+                  if (state === 'opening') {
+                    return `<span style="font-size: 1.1rem; color: #000000; font-weight: 700;">OPENING...</span>`;
+                  }
+                  if (state === 'closing') {
+                    return `<span style="font-size: 1.1rem; color: #000000; font-weight: 700;">CLOSING...</span>`;
+                  }
+                  return '';
+                ]]]
+              tilt: |
+                [[[
+                  const pos = entity.attributes.current_tilt_position || 0;
+                  return `<span style="font-size: 1rem; color: rgba(255,255,255,0.9);">${pos}%</span>`;
+                ]]]
+              battery: |
+                [[[
+                  const battery = states['sensor.blind_tilt_5b8c_battery'];
+                  if (battery) {
+                    return `<span style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">🔋 ${battery.state}%</span>`;
+                  }
+                  return '';
+                ]]]
+            styles:
+              card:
+                - height: 200px
+                - border-radius: 16px
+                - background: |
+                    [[[
+                      const state = entity.state;
+                      const pos = entity.attributes.current_tilt_position || 0;
+                      
+                      if (state === 'opening') {
+                        return 'linear-gradient(135deg, #00FF00 0%, #00DD00 100%)';
+                      }
+                      
+                      if (state === 'closing') {
+                        return 'linear-gradient(135deg, #FF00FF 0%, #DD00DD 100%)';
+                      }
+                      
+                      if (pos <= 5 || pos >= 95) {
+                        return 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)';
+                      }
+                      return 'linear-gradient(135deg, #F7971E 0%, #FFD200 100%)';
+                    ]]]
+                - box-shadow: |
+                    [[[
+                      const state = entity.state;
+                      const pos = entity.attributes.current_tilt_position || 0;
+                      
+                      if (state === 'opening') {
+                        return '0 0 30px rgba(0, 255, 0, 0.16), 0 0 60px rgba(0, 255, 0, 0.08)';
+                      }
+                      
+                      if (state === 'closing') {
+                        return '0 0 30px rgba(255, 0, 255, 0.16), 0 0 60px rgba(255, 0, 255, 0.08)';
+                      }
+                      
+                      if (pos <= 5 || pos >= 95) {
+                        return '0 4px 12px rgba(0,0,0,0.2)';
+                      }
+                      return '0 6px 20px rgba(247, 151, 30, 0.4)';
+                    ]]]
+                - border: 2px solid rgba(255, 255, 255, 0.3)
+                - padding: 16px
+                - animation: |
+                    [[[
+                      const state = entity.state;
+                      if (state === 'opening' || state === 'closing') {
+                        return 'pulse 1.5s ease-in-out infinite';
+                      }
+                      return 'none';
+                    ]]]
+              grid:
+                - grid-template-areas: '"i" "n" "motion" "tilt" "battery"'
+                - grid-template-columns: 1fr
+                - grid-template-rows: 1fr auto auto auto auto
+              icon:
+                - width: 64px
+                - height: 64px
+                - color: white
+                - filter: |
+                    [[[
+                      const pos = entity.attributes.current_tilt_position || 0;
+                      if (pos <= 5 || pos >= 95) {
+                        return 'none';
+                      }
+                      return 'drop-shadow(0 0 12px rgba(247, 151, 30, 0.8))';
+                    ]]]
+              name:
+                - font-size: 1.25rem
+                - font-weight: 600
+                - color: white
+                - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
+                - margin-top: 8px
+                - justify-self: center
+              img_cell:
+                - justify-self: center
+              custom_fields:
+                motion:
+                  - justify-self: center
+                  - margin-top: 4px
+                  - font-weight: 700
+                  - letter-spacing: 1px
+                tilt:
+                  - justify-self: center
+                  - margin-top: 4px
+                  - font-weight: 600
+                battery:
+                  - justify-self: center
+                  - margin-top: 4px
+            icon: |
+              [[[
+                const pos = entity.attributes.current_tilt_position || 0;
+                if (pos <= 5 || pos >= 95) {
+                  return 'mdi:blinds';
+                }
+                return 'mdi:blinds-horizontal';
+              ]]]

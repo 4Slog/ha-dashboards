@@ -1,0 +1,300 @@
+title: Weather
+path: weather
+icon: mdi:weather-partly-cloudy
+panel: true
+theme: default
+
+cards:
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr
+      grid-auto-rows: min-content
+      justify-content: stretch
+      align_content: start
+      gap: 16px
+      padding: 16px
+    cards:
+      - !include _header.yaml
+
+      # === HEADER (DATE | GREETING | TIME) ===
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:chevron-left
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/home
+            styles:
+              card:
+                - height: 70px
+                - width: 70px
+                - border-radius: 50%
+                - background: rgba(74, 158, 255, 0.95)
+                - box-shadow: 0 4px 16px rgba(74, 158, 255, 0.5)
+              icon:
+                - width: 42px
+                - height: 42px
+                - color: white
+              grid:
+                - grid-template-areas: '"i"'
+          - type: custom:button-card
+            color_type: blank-card
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+          - type: custom:button-card
+            icon: mdi:chevron-right
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/calendar
+            styles:
+              card:
+                - height: 70px
+                - width: 70px
+                - border-radius: 50%
+                - background: rgba(74, 158, 255, 0.95)
+                - box-shadow: 0 4px 16px rgba(74, 158, 255, 0.5)
+              icon:
+                - width: 42px
+                - height: 42px
+                - color: white
+              grid:
+                - grid-template-areas: '"i"'
+
+      # === WEATHER & COMFORT BANNER (30px height) ===
+      - type: custom:button-card
+        name: WEATHER & COMFORT
+        icon: mdi:weather-partly-cloudy
+        show_name: true
+        show_icon: true
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 30px
+            - border-radius: 8px
+            - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+            - box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3)
+            - padding: 0 12px
+          grid:
+            - grid-template-areas: '"i n"'
+            - grid-template-columns: auto 1fr
+          icon:
+            - width: 18px
+            - height: 18px
+            - color: white
+            - margin-right: 8px
+          name:
+            - font-size: 1.1rem
+            - font-weight: 700
+            - color: white
+            - justify-self: start
+            - letter-spacing: 0.5px
+
+      # === MAIN WEATHER GRID (3 columns) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(3, 1fr)
+          gap: 16px
+        cards:
+          # Weather Forecast
+          - type: weather-forecast
+            entity: weather.forecast_home
+            show_forecast: true
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 280px;
+                  font-size: 1.2rem !important;
+                  border-radius: 16px;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+          # Thermostat
+          - type: thermostat
+            entity: climate.thermostat
+            name: Thermostat
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 280px;
+                  font-size: 1.2rem !important;
+                  border-radius: 16px;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+          # HVAC Auto Comfort Control (with Indoor Avg built-in)
+          - type: custom:button-card
+            entity: input_boolean.hvac_auto_comfort
+            name: |
+              [[[
+                return entity.state === 'on' ? 'AUTO COMFORT' : 'MANUAL MODE';
+              ]]]
+            icon: |
+              [[[
+                return entity.state === 'on' ? 'mdi:thermostat-auto' : 'mdi:thermostat';
+              ]]]
+            tap_action:
+              action: toggle
+            show_state: false
+            show_name: true
+            show_icon: true
+            custom_fields:
+              band: |
+                [[[
+                  return entity.state === 'on' ? '<span>Comfort Band: 71-73°F</span>' : '<span>Auto Disabled</span>';
+                ]]]
+              temp: |
+                [[[
+                  const avgTemp = states['sensor.average_home_temperature'];
+                  if (avgTemp && avgTemp.state !== 'unknown' && avgTemp.state !== 'unavailable') {
+                    return `<span style="font-size: 2.5rem; font-weight: 700;">${avgTemp.state}°F</span>`;
+                  }
+                  return '<span style="font-size: 2.5rem; font-weight: 700;">--°F</span>';
+                ]]]
+              label: |
+                [[[
+                  return '<span>Indoor Average</span>';
+                ]]]
+              status: |
+                [[[
+                  return entity.state === 'on' ? '<span>✓ Maintaining Temperature</span>' : '<span>Thermostat Manual Control</span>';
+                ]]]
+            styles:
+              card:
+                - min-height: 280px
+                - border-radius: 16px
+                - box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+                - padding: 20px
+                - transition: all 0.3s ease
+              grid:
+                - grid-template-areas: '"i" "n" "band" "temp" "label" "status"'
+                - grid-template-rows: 60px auto auto auto auto 1fr
+              icon:
+                - width: 50px
+                - height: 50px
+                - color: white
+                - justify-self: center
+                - margin-bottom: 8px
+              name:
+                - font-size: 1.4rem
+                - font-weight: 700
+                - color: white
+                - justify-self: center
+                - margin-bottom: 6px
+                - letter-spacing: 0.5px
+              custom_fields:
+                band:
+                  - justify-self: center
+                  - font-size: 1rem
+                  - color: rgba(255, 255, 255, 0.9)
+                  - margin-bottom: 12px
+                temp:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 2px
+                label:
+                  - justify-self: center
+                  - font-size: 0.95rem
+                  - color: rgba(255, 255, 255, 0.85)
+                  - margin-bottom: 12px
+                status:
+                  - justify-self: center
+                  - font-size: 1rem
+                  - color: rgba(255, 255, 255, 0.9)
+                  - text-align: center
+                  - padding: 0 8px
+            state:
+              - value: 'on'
+                styles:
+                  card:
+                    - background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)
+              - value: 'off'
+                styles:
+                  card:
+                    - background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 100%)
+
+      # === ROOM TEMPERATURES BANNER (30px height) ===
+      - type: custom:button-card
+        name: ROOM TEMPERATURES
+        icon: mdi:lightbulb-group-thermometer-outline
+        show_name: true
+        show_icon: true
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 30px
+            - border-radius: 8px
+            - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+            - box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3)
+            - padding: 0 12px
+          grid:
+            - grid-template-areas: '"i n"'
+            - grid-template-columns: auto 1fr
+          icon:
+            - width: 18px
+            - height: 18px
+            - color: white
+            - margin-right: 8px
+          name:
+            - font-size: 1.1rem
+            - font-weight: 700
+            - color: white
+            - justify-self: start
+            - letter-spacing: 0.5px
+
+      # === INDIVIDUAL ROOM TEMPS (3 columns) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(3, 1fr)
+          gap: 16px
+        cards:
+          # Master Bedroom
+          - type: tile
+            entity: sensor.lumi_lumi_weather_temperature
+            name: Master Bedroom
+            color: purple
+            vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 140px;
+                  font-size: 1.2rem !important;
+                  border-radius: 16px;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+          # Galley
+          - type: tile
+            entity: sensor.temp_bedroom_wing_temperature
+            name: Galley
+            color: green
+            vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 140px;
+                  font-size: 1.2rem !important;
+                  border-radius: 16px;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+          # Blue Room
+          - type: tile
+            entity: sensor.temp_bedroom_wing_temperature_2
+            name: Blue Room
+            color: blue
+            vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 140px;
+                  font-size: 1.2rem !important;
+                  border-radius: 16px;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }

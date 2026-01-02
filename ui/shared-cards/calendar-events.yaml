@@ -1,0 +1,42 @@
+type: vertical-stack
+cards:
+  - type: heading
+    heading: Today
+    heading_style: title
+    icon: mdi:calendar-clock
+    card_mod:
+      style: |
+        ha-card {
+          font-size: 1.4rem !important;
+        }
+
+  - type: custom:atomic-calendar-revive
+    name: Upcoming Appointments
+    enableModeChange: false
+    defaultMode: Event
+    maxDaysToShow: 30
+    maxEventCount: 50
+    showMonth: false
+    showWeek: false
+    showDate: false
+    showProgressBar: false
+    showCurrentEventLine: false
+    sortByStartTime: true
+    hideFinishedEvents: true
+    hoursOnSameLine: true
+    timeFormat: 12
+    refreshInterval: 60
+    entities:
+      - entity: calendar.thesowus_gmail_com
+      - entity: calendar.sowu_paul_gmail_com
+      - entity: calendar.family
+      - entity: calendar.augusta_eagles_varsity_boys_basketball
+    card_mod:
+      style: |
+        ha-card {
+          max-height: 600px;
+          overflow-y: auto;
+          font-size: 1.15rem !important;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }

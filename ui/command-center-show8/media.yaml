@@ -1,0 +1,348 @@
+title: Media
+path: media
+icon: mdi:music
+panel: true
+theme: default
+
+cards:
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr
+      grid-auto-rows: min-content
+      justify-content: stretch
+      align-content: start
+      gap: 16px
+      padding: 16px
+    cards:
+      - !include _header.yaml
+
+      # === MEDIA BANNER ===
+      - type: custom:button-card
+        name: NOW PLAYING
+        icon: mdi:music
+        show_name: true
+        show_icon: true
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 50px
+            - border-radius: 12px
+            - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+            - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
+            - padding: 0 16px
+          grid:
+            - grid-template-areas: '"i n"'
+            - grid-template-columns: auto 1fr
+          icon:
+            - width: 28px
+            - height: 28px
+            - color: white
+            - margin-right: 12px
+          name:
+            - font-size: 1.5rem
+            - font-weight: 700
+            - color: white
+            - justify-self: start
+            - letter-spacing: 1px
+
+      # === MEDIA PLAYER SECTION ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 240px 1fr
+          gap: 16px
+        cards:
+          # Left: Album Art
+          - type: picture-entity
+            entity: media_player.spotify_paul_sowu
+            show_name: false
+            show_state: false
+            camera_image: media_player.spotify_paul_sowu
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 16px;
+                  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                  height: 240px;
+                  width: 240px;
+                }
+
+          # Right: Controls
+          - type: vertical-stack
+            cards:
+              # Song Title
+              - type: markdown
+                content: |
+                  {% if states.media_player.spotify_paul_sowu.attributes.media_title %}
+                  **{{ states.media_player.spotify_paul_sowu.attributes.media_title }}**
+                  {% else %}
+                  **No media playing**
+                  {% endif %}
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: transparent;
+                      box-shadow: none;
+                      font-size: 1.4rem;
+                      text-align: center;
+                      padding: 8px !important;
+                    }
+
+              # Artist
+              - type: markdown
+                content: |
+                  {% if states.media_player.spotify_paul_sowu.attributes.media_artist %}
+                  {{ states.media_player.spotify_paul_sowu.attributes.media_artist }}
+                  {% else %}
+                  Ready to play
+                  {% endif %}
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: transparent;
+                      box-shadow: none;
+                      font-size: 1.1rem;
+                      text-align: center;
+                      padding: 0 !important;
+                      margin-top: -12px !important;
+                      color: rgba(255,255,255,0.7);
+                    }
+
+              # Playback Controls
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    icon: mdi:shuffle
+                    tap_action:
+                      action: call-service
+                      service: media_player.shuffle_set
+                      service_data:
+                        entity_id: media_player.spotify_paul_sowu
+                        shuffle: true
+                    styles:
+                      card:
+                        - height: 60px
+                        - border-radius: 12px
+                        - background: rgba(74, 158, 255, 0.2)
+                      icon:
+                        - width: 32px
+                        - height: 32px
+                        - color: white
+
+                  - type: custom:button-card
+                    icon: mdi:skip-previous
+                    tap_action:
+                      action: call-service
+                      service: media_player.media_previous_track
+                      service_data:
+                        entity_id: media_player.spotify_paul_sowu
+                    styles:
+                      card:
+                        - height: 60px
+                        - border-radius: 12px
+                        - background: rgba(74, 158, 255, 0.3)
+                      icon:
+                        - width: 36px
+                        - height: 36px
+                        - color: white
+
+                  - type: custom:button-card
+                    icon: |
+                      [[[
+                        if (states['media_player.spotify_paul_sowu'].state === 'playing') {
+                          return 'mdi:pause';
+                        } else {
+                          return 'mdi:play';
+                        }
+                      ]]]
+                    tap_action:
+                      action: call-service
+                      service: media_player.media_play_pause
+                      service_data:
+                        entity_id: media_player.spotify_paul_sowu
+                    styles:
+                      card:
+                        - height: 60px
+                        - border-radius: 50%
+                        - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+                        - box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5)
+                      icon:
+                        - width: 40px
+                        - height: 40px
+                        - color: white
+
+                  - type: custom:button-card
+                    icon: mdi:skip-next
+                    tap_action:
+                      action: call-service
+                      service: media_player.media_next_track
+                      service_data:
+                        entity_id: media_player.spotify_paul_sowu
+                    styles:
+                      card:
+                        - height: 60px
+                        - border-radius: 12px
+                        - background: rgba(74, 158, 255, 0.3)
+                      icon:
+                        - width: 36px
+                        - height: 36px
+                        - color: white
+
+                  - type: custom:button-card
+                    icon: mdi:repeat
+                    tap_action:
+                      action: call-service
+                      service: media_player.repeat_set
+                      service_data:
+                        entity_id: media_player.spotify_paul_sowu
+                        repeat: all
+                    styles:
+                      card:
+                        - height: 60px
+                        - border-radius: 12px
+                        - background: rgba(74, 158, 255, 0.2)
+                      icon:
+                        - width: 32px
+                        - height: 32px
+                        - color: white
+
+              # Volume Control
+              - type: custom:slider-entity-row
+                entity: media_player.spotify_paul_sowu
+                name: Volume
+                icon: mdi:volume-high
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: rgba(74, 158, 255, 0.1);
+                      border-radius: 12px;
+                      padding: 8px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                    }
+
+      # === QUICK PLAYLISTS BANNER ===
+      - type: custom:button-card
+        name: QUICK PLAYLISTS
+        icon: mdi:playlist-music
+        show_name: true
+        show_icon: true
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 50px
+            - border-radius: 12px
+            - background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)
+            - box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3)
+            - padding: 0 16px
+            - margin-top: 8px
+          grid:
+            - grid-template-areas: '"i n"'
+            - grid-template-columns: auto 1fr
+          icon:
+            - width: 28px
+            - height: 28px
+            - color: white
+            - margin-right: 12px
+          name:
+            - font-size: 1.5rem
+            - font-weight: 700
+            - color: white
+            - justify-self: start
+            - letter-spacing: 1px
+
+      # === PLAYLIST GRID ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(3, 1fr)
+          gap: 12px
+        cards:
+          # Afrobeats
+          - type: custom:button-card
+            name: Afrobeats
+            icon: mdi:music-circle
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: call-service
+              service: media_player.play_media
+              service_data:
+                entity_id: media_player.spotify_paul_sowu
+                media_content_type: playlist
+                media_content_id: spotify:playlist:16EIqiWgTZthuA32e1KrZw
+            styles:
+              card:
+                - height: 100px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)
+                - box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3)
+              icon:
+                - width: 40px
+                - height: 40px
+                - color: white
+              name:
+                - font-size: 1.3rem
+                - font-weight: 600
+                - color: white
+                - margin-top: 8px
+
+          # Dancehall
+          - type: custom:button-card
+            name: Dancehall
+            icon: mdi:music-note
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: call-service
+              service: media_player.play_media
+              service_data:
+                entity_id: media_player.spotify_paul_sowu
+                media_content_type: playlist
+                media_content_id: spotify:playlist:1LjTwJW7vz5MiEVZCwBOhr
+            styles:
+              card:
+                - height: 100px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)
+                - box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3)
+              icon:
+                - width: 40px
+                - height: 40px
+                - color: white
+              name:
+                - font-size: 1.3rem
+                - font-weight: 600
+                - color: white
+                - margin-top: 8px
+
+          # Old Afrobeats
+          - type: custom:button-card
+            name: Old Afrobeats
+            icon: mdi:music-box
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: call-service
+              service: media_player.play_media
+              service_data:
+                entity_id: media_player.spotify_paul_sowu
+                media_content_type: playlist
+                media_content_id: spotify:playlist:0pwtPFYePn1xdpavFkurnh
+            styles:
+              card:
+                - height: 100px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)
+                - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
+              icon:
+                - width: 40px
+                - height: 40px
+                - color: white
+              name:
+                - font-size: 1.3rem
+                - font-weight: 600
+                - color: white
+                - margin-top: 8px

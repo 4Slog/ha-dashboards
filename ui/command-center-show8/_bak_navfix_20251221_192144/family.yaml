@@ -1,0 +1,494 @@
+title: Family
+path: family
+icon: mdi:map-marker-account
+panel: true
+theme: default
+
+cards:
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr
+      grid-auto-rows: min-content
+      justify-content: stretch
+      align_content: start
+      gap: 16px
+      padding: 16px
+    cards:
+      - !include _header.yaml
+
+      # === HEADER (DATE | GREETING | TIME) ===
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:chevron-left
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/calendar
+            styles:
+              card:
+                - height: 70px
+                - width: 70px
+                - border-radius: 50%
+                - object-fit: cover
+                - background: rgba(74, 158, 255, 0.95)
+                - box-shadow: 0 4px 16px rgba(74, 158, 255, 0.5)
+              icon:
+                - width: 42px
+                - height: 42px
+                - color: white
+              grid:
+                - grid-template-areas: '"i"'
+          - type: custom:button-card
+            color_type: blank-card
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+          - type: custom:button-card
+            icon: mdi:chevron-right
+            tap_action:
+              action: navigate
+              navigation_path: /command-center/frontdoor
+            styles:
+              card:
+                - height: 70px
+                - width: 70px
+                - border-radius: 50%
+                - object-fit: cover
+                - background: rgba(74, 158, 255, 0.95)
+                - box-shadow: 0 4px 16px rgba(74, 158, 255, 0.5)
+              icon:
+                - width: 42px
+                - height: 42px
+                - color: white
+              grid:
+                - grid-template-areas: '"i"'
+
+      # === FAMILY LOCATION BANNER (30px height) ===
+      - type: custom:button-card
+        name: FAMILY LOCATION
+        icon: mdi:map-marker-account
+        show_name: true
+        show_icon: true
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 30px
+            - border-radius: 8px
+            - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+            - box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3)
+            - padding: 0 12px
+          grid:
+            - grid-template-areas: '"i n"'
+            - grid-template-columns: auto 1fr
+          icon:
+            - width: 18px
+            - height: 18px
+            - color: white
+            - margin-right: 8px
+          name:
+            - font-size: 1.1rem
+            - font-weight: 700
+            - color: white
+            - justify-self: start
+            - letter-spacing: 0.5px
+
+      # === 3 PERSON CARDS (Paul, Tuella, Mauriece) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(3, 1fr)
+          gap: 16px
+        cards:
+          # === PAUL'S CARD (Life360 + Waze) ===
+          - type: custom:button-card
+            entity: device_tracker.paul_360
+            name: Paul
+            show_entity_picture: true
+            show_name: true
+            show_state: false
+            show_entity_picture: false
+            icon: mdi:account
+            custom_fields:
+              battery: |
+                [[[
+                  const tracker = states['device_tracker.paul_360'];
+                  if (tracker && tracker.attributes.battery_level) {
+                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                    return `<span style="font-size: 1.1rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+                  }
+                  return '';
+                ]]]
+              status: |
+                [[[
+                  const tracker = states['device_tracker.paul_360'];
+                  const waze = states['sensor.paul_time_to_home'];
+                  
+                  if (!tracker) return '';
+                  
+                  // At home
+                  if (tracker.state === 'home') {
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
+                  }
+                  
+                  // Driving with Waze ETA
+                  if (tracker.attributes.driving && waze && waze.state !== 'unavailable' && parseFloat(waze.state) > 0) {
+                    const time = Math.round(parseFloat(waze.state));
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving - ${time} min to home</span>`;
+                  }
+                  
+                  // Driving (no valid ETA)
+                  if (tracker.attributes.driving) {
+                    const speed = tracker.attributes.speed || 0;
+                    if (speed > 0) {
+                      return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving ${speed} mph</span>`;
+                    }
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
+                  }
+                  
+                  // At a place
+                  if (tracker.attributes.place && tracker.attributes.place !== 'null') {
+                    return `<span style="font-size: 1.2rem; font-weight: 600;">📍 At ${tracker.attributes.place}</span>`;
+                  }
+                  
+                  // Away (unknown location)
+                  return `<span style="font-size: 1.3rem; font-weight: 600;">📍 Away</span>`;
+                ]]]
+              location_detail: |
+                [[[
+                  const tracker = states['device_tracker.paul_360'];
+                  
+                  if (!tracker || tracker.state === 'home') return '';
+                  
+                  const address = tracker.attributes.address || '';
+                  if (address && address.length > 0) {
+                    // Shorten address if too long
+                    if (address.length > 50) {
+                      return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address.substring(0, 47)}...</span>`;
+                    }
+                    return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address}</span>`;
+                  }
+                  return '';
+                ]]]
+            styles:
+              card:
+                - height: 260px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+                - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "battery" "status" "location_detail"'
+                - grid-template-rows: 100px auto auto auto 1fr
+              img_cell:
+                - width: 100px
+                - height: 100px
+                - border-radius: 50%
+                - object-fit: cover
+                - border: 3px solid white
+                - justify-self: center
+                - margin-bottom: 8px
+              name:
+                - font-size: 1.5rem
+                - font-weight: 700
+                - color: white
+                - justify-self: center
+                - margin-bottom: 8px
+              custom_fields:
+                battery:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 8px
+                status:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 4px
+                  - text-align: center
+                  - padding: 0 8px
+                location_detail:
+                  - justify-self: center
+                  - text-align: center
+                  - padding: 0 8px
+
+          # === TUELLA'S CARD (Life360 + Waze) ===
+          - type: custom:button-card
+            entity: device_tracker.tuella_360
+            name: Tuella
+            show_entity_picture: true
+            show_name: true
+            show_state: false
+            entity_picture: |
+              [[[
+                // Use HA user picture, not Life360 picture
+                const person = states['person.tuella_sowu'];
+                if (person && person.attributes.entity_picture) {
+                  const pic = person.attributes.entity_picture;
+                  if (!pic.includes('life360.com')) {
+                    return pic;
+                  }
+                }
+                return '/local/default_user.png';
+              ]]]
+            custom_fields:
+              battery: |
+                [[[
+                  const tracker = states['device_tracker.tuella_360'];
+                  if (tracker && tracker.attributes.battery_level) {
+                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                    return `<span style="font-size: 1.1rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+                  }
+                  return '';
+                ]]]
+              status: |
+                [[[
+                  const tracker = states['device_tracker.tuella_360'];
+                  const waze = states['sensor.tuella_time_to_home'];
+                  
+                  if (!tracker) return '';
+                  
+                  // At home
+                  if (tracker.state === 'home') {
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
+                  }
+                  
+                  // Driving with Waze ETA
+                  if (tracker.attributes.driving && waze && waze.state !== 'unavailable' && parseFloat(waze.state) > 0) {
+                    const time = Math.round(parseFloat(waze.state));
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving - ${time} min to home</span>`;
+                  }
+                  
+                  // Driving (no valid ETA)
+                  if (tracker.attributes.driving) {
+                    const speed = tracker.attributes.speed || 0;
+                    if (speed > 0) {
+                      return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving ${speed} mph</span>`;
+                    }
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
+                  }
+                  
+                  // At a place
+                  if (tracker.attributes.place && tracker.attributes.place !== 'null') {
+                    return `<span style="font-size: 1.2rem; font-weight: 600;">📍 At ${tracker.attributes.place}</span>`;
+                  }
+                  
+                  // Away (unknown location)
+                  return `<span style="font-size: 1.3rem; font-weight: 600;">📍 Away</span>`;
+                ]]]
+              location_detail: |
+                [[[
+                  const tracker = states['device_tracker.tuella_360'];
+                  
+                  if (!tracker || tracker.state === 'home') return '';
+                  
+                  const address = tracker.attributes.address || '';
+                  if (address && address.length > 0) {
+                    if (address.length > 50) {
+                      return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address.substring(0, 47)}...</span>`;
+                    }
+                    return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address}</span>`;
+                  }
+                  return '';
+                ]]]
+            styles:
+              card:
+                - height: 260px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)
+                - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "battery" "status" "location_detail"'
+                - grid-template-rows: 100px auto auto auto 1fr
+              img_cell:
+                - width: 100px
+                - height: 100px
+                - border-radius: 50%
+                - object-fit: cover
+                - border: 3px solid white
+                - justify-self: center
+                - margin-bottom: 8px
+              name:
+                - font-size: 1.5rem
+                - font-weight: 700
+                - color: white
+                - justify-self: center
+                - margin-bottom: 8px
+              custom_fields:
+                battery:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 8px
+                status:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 4px
+                  - text-align: center
+                  - padding: 0 8px
+                location_detail:
+                  - justify-self: center
+                  - text-align: center
+                  - padding: 0 8px
+
+          # === MAURIECE'S CARD (Life360 + Waze) ===
+          - type: custom:button-card
+            entity: device_tracker.mauriece_360
+            name: Mauriece
+            show_entity_picture: true
+            show_name: true
+            show_state: false
+            entity_picture: |
+              [[[
+                // Use HA user picture, not Life360 picture
+                const person = states['person.mauriece'];
+                if (person && person.attributes.entity_picture) {
+                  const pic = person.attributes.entity_picture;
+                  if (!pic.includes('life360.com')) {
+                    return pic;
+                  }
+                }
+                return '/local/default_user.png';
+              ]]]
+            custom_fields:
+              battery: |
+                [[[
+                  const tracker = states['device_tracker.mauriece_360'];
+                  if (tracker && tracker.attributes.battery_level) {
+                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                    return `<span style="font-size: 1.1rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+                  }
+                  return '';
+                ]]]
+              status: |
+                [[[
+                  const tracker = states['device_tracker.mauriece_360'];
+                  const waze = states['sensor.mauriece_time_to_home'];
+                  
+                  if (!tracker) return '';
+                  
+                  // At home
+                  if (tracker.state === 'home') {
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🏠 Home</span>`;
+                  }
+                  
+                  // Driving with Waze ETA
+                  if (tracker.attributes.driving && waze && waze.state !== 'unavailable' && parseFloat(waze.state) > 0) {
+                    const time = Math.round(parseFloat(waze.state));
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving - ${time} min to home</span>`;
+                  }
+                  
+                  // Driving (no valid ETA)
+                  if (tracker.attributes.driving) {
+                    const speed = tracker.attributes.speed || 0;
+                    if (speed > 0) {
+                      return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving ${speed} mph</span>`;
+                    }
+                    return `<span style="font-size: 1.3rem; font-weight: 600;">🚗 Driving</span>`;
+                  }
+                  
+                  // At a place
+                  if (tracker.attributes.place && tracker.attributes.place !== 'null') {
+                    return `<span style="font-size: 1.2rem; font-weight: 600;">📍 At ${tracker.attributes.place}</span>`;
+                  }
+                  
+                  // Away (unknown location)
+                  return `<span style="font-size: 1.3rem; font-weight: 600;">📍 Away</span>`;
+                ]]]
+              location_detail: |
+                [[[
+                  const tracker = states['device_tracker.mauriece_360'];
+                  
+                  if (!tracker || tracker.state === 'home') return '';
+                  
+                  const address = tracker.attributes.address || '';
+                  if (address && address.length > 0) {
+                    if (address.length > 50) {
+                      return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address.substring(0, 47)}...</span>`;
+                    }
+                    return `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${address}</span>`;
+                  }
+                  return '';
+                ]]]
+            styles:
+              card:
+                - height: 260px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)
+                - box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3)
+                - padding: 16px
+              grid:
+                - grid-template-areas: '"i" "n" "battery" "status" "location_detail"'
+                - grid-template-rows: 100px auto auto auto 1fr
+              img_cell:
+                - width: 100px
+                - height: 100px
+                - border-radius: 50%
+                - object-fit: cover
+                - border: 3px solid white
+                - justify-self: center
+                - margin-bottom: 8px
+              name:
+                - font-size: 1.5rem
+                - font-weight: 700
+                - color: white
+                - justify-self: center
+                - margin-bottom: 8px
+              custom_fields:
+                battery:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 8px
+                status:
+                  - justify-self: center
+                  - color: white
+                  - margin-bottom: 4px
+                  - text-align: center
+                  - padding: 0 8px
+                location_detail:
+                  - justify-self: center
+                  - text-align: center
+                  - padding: 0 8px
+
+      # === NATIVE HA MAP (70% width, square, centered, bordered) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 15% 70% 15%
+          gap: 0
+        cards:
+          # Left spacer
+          - type: custom:button-card
+            color_type: blank-card
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+
+          # Native map container
+          - type: map
+            entities:
+              - device_tracker.paul_360
+              - device_tracker.tuella_360
+              - device_tracker.mauriece_360
+              - zone.home
+            hours_to_show: 0.5
+            default_zoom: 15
+            dark_mode: true
+            card_mod:
+              style: |
+                ha-card {
+                  aspect-ratio: 1 / 1;
+                  border-radius: 16px;
+                  border: 3px solid rgba(102, 126, 234, 0.5);
+                  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                  overflow: hidden;
+                }
+
+          # Right spacer
+          - type: custom:button-card
+            color_type: blank-card
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none

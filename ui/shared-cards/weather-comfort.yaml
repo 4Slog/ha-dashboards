@@ -1,0 +1,54 @@
+type: vertical-stack
+cards:
+  - type: heading
+    heading: Weather & Comfort
+    heading_style: title
+    icon: mdi:weather-partly-cloudy
+    card_mod:
+      style: |
+        ha-card {
+          font-size: 1.4rem !important;
+        }
+
+  - type: grid
+    columns: 3
+    square: false
+    cards:
+      - type: weather-forecast
+        entity: weather.forecast_home
+        show_forecast: true
+        card_mod:
+          style: |
+            ha-card {
+              min-height: 280px;
+              font-size: 1.15rem !important;
+              border-radius: 16px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+      - type: thermostat
+        entity: climate.thermostat
+        name: Thermostat
+        card_mod:
+          style: |
+            ha-card {
+              min-height: 280px;
+              font-size: 1.15rem !important;
+              border-radius: 16px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+      - type: tile
+        entity: sensor.average_home_temperature
+        name: Indoor Average
+        color: blue
+        card_mod:
+          style: |
+            ha-card {
+              min-height: 280px;
+              display: flex;
+              align-items: center;
+              font-size: 1.3rem !important;
+              border-radius: 16px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }

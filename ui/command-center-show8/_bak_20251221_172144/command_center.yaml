@@ -1,0 +1,6 @@
+views:
+  - !include ../ui/command-center/home.yaml
+  - !include ../ui/command-center/weather.yaml
+  - !include ../ui/command-center/calendar.yaml
+  - !include ../ui/command-center/family.yaml
+  - !include ../ui/command-center/frontdoor.yaml

@@ -1,0 +1,102 @@
+type: vertical-stack
+cards:
+  - type: heading
+    heading: Family Location
+    heading_style: title
+    icon: mdi:map-marker-account
+    card_mod:
+      style: |
+        ha-card {
+          font-size: 1.4rem !important;
+        }
+
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr 2fr
+      gap: 16px
+    cards:
+      # LEFT COLUMN: Person cards and batteries
+      - type: vertical-stack
+        cards:
+          # Paul
+          - type: custom:mushroom-person-card
+            entity: person.paul_sowu
+            use_entity_picture: true
+            layout: vertical
+            primary_info: name
+            secondary_info: state
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 16px;
+                  font-size: 1.2rem !important;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: entity
+                entity: sensor.paul_s_phone_battery_level
+                name: Battery
+              - type: entity
+                entity: sensor.paul_s_phone_battery_state
+                name: Charging
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 16px;
+                  font-size: 1.1rem !important;
+                  margin-top: -8px;
+                  margin-bottom: 16px;
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+
+          # Tuella
+          - type: custom:mushroom-person-card
+            entity: person.tuella_sowu
+            use_entity_picture: true
+            layout: vertical
+            primary_info: name
+            secondary_info: state
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 16px;
+                  font-size: 1.2rem !important;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: entity
+                entity: sensor.tuellas_samsung_battery_level
+                name: Battery
+              - type: entity
+                entity: sensor.tuellas_samsung_battery_state
+                name: Charging
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 16px;
+                  font-size: 1.1rem !important;
+                  margin-top: -8px;
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+
+      # RIGHT COLUMN: Map
+      - type: map
+        entities:
+          - person.paul_sowu
+          - person.tuella_sowu
+          - zone.home
+        hours_to_show: 2
+        default_zoom: 13
+        dark_mode: true
+        card_mod:
+          style: |
+            ha-card {
+              min-height: 500px;
+              border-radius: 16px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }

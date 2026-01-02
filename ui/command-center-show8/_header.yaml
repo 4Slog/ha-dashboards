@@ -1,0 +1,228 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+layout:
+  grid-template-columns: 1fr
+  grid-auto-rows: min-content
+  gap: 10px
+
+cards:
+  # =========================
+  # ROW 1: NAV RIBBON (6)
+  # =========================
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: repeat(6, 1fr)
+      gap: 10px
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Media
+        icon: mdi:music
+        icon_color: blue
+        tap_action:
+          action: navigate
+          navigation_path: /command-center-show8/media
+        card_mod:
+          style: |
+            ha-card {
+              height: 50px;
+              background: {% if is_state_attr('page', 'current', 'media') %}rgba(74, 158, 255, 0.3){% else %}rgba(74, 158, 255, 0.15){% endif %};
+              border: 2px solid white;
+              border-radius: 12px;
+              box-shadow: {% if is_state_attr('page', 'current', 'media') %}0 4px 16px rgba(74, 158, 255, 0.4){% else %}0 2px 8px rgba(0,0,0,0.15){% endif %};
+              transition: all 0.3s ease;
+            }
+
+      - type: custom:mushroom-template-card
+        primary: Lights
+        icon: mdi:lightbulb-group
+        icon_color: purple
+        tap_action:
+          action: navigate
+          navigation_path: /command-center-show8/home
+        card_mod:
+          style: |
+            ha-card {
+              height: 50px;
+              background: rgba(138, 43, 226, 0.15);
+              border: 2px solid white;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+              transition: all 0.3s ease;
+            }
+
+      - type: custom:mushroom-template-card
+        primary: Weather
+        icon: mdi:weather-partly-cloudy
+        icon_color: blue
+        tap_action:
+          action: navigate
+          navigation_path: /command-center-show8/weather
+        card_mod:
+          style: |
+            ha-card {
+              height: 50px;
+              background: rgba(74, 158, 255, 0.15);
+              border: 2px solid white;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+              transition: all 0.3s ease;
+            }
+
+      - type: custom:mushroom-template-card
+        primary: Calendar
+        icon: mdi:calendar-clock
+        icon_color: green
+        tap_action:
+          action: navigate
+          navigation_path: /command-center-show8/calendar
+        card_mod:
+          style: |
+            ha-card {
+              height: 50px;
+              background: rgba(67, 233, 123, 0.15);
+              border: 2px solid white;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+              transition: all 0.3s ease;
+            }
+
+      - type: custom:mushroom-template-card
+        primary: Family
+        icon: mdi:map-marker-account
+        icon_color: purple
+        tap_action:
+          action: navigate
+          navigation_path: /command-center-show8/family
+        card_mod:
+          style: |
+            ha-card {
+              height: 50px;
+              background: rgba(250, 112, 154, 0.15);
+              border: 2px solid white;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+              transition: all 0.3s ease;
+            }
+
+      - type: custom:mushroom-template-card
+        primary: Front Door
+        icon: mdi:door
+        icon_color: red
+        tap_action:
+          action: navigate
+          navigation_path: /command-center-show8/frontdoor
+        card_mod:
+          style: |
+            ha-card {
+              height: 50px;
+              background: rgba(245, 87, 108, 0.15);
+              border: 2px solid white;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+              transition: all 0.3s ease;
+            }
+
+  # ==========================================
+  # ROW 2:  ←  DATE  GREETING  TIME  →
+  # ==========================================
+  - type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 70px 1fr 2fr 1fr 70px
+      align-items: center
+      gap: 8px
+    cards:
+      - type: custom:button-card
+        icon: mdi:chevron-left
+        tap_action:
+          action: fire-dom-event
+          browser_mod:
+            command: navigate
+            navigation_path: previous
+        styles:
+          card:
+            - height: 70px
+            - width: 70px
+            - border-radius: 50%
+            - background: rgba(74, 158, 255, 0.95)
+            - box-shadow: 0 4px 16px rgba(74, 158, 255, 0.5)
+          icon:
+            - width: 42px
+            - height: 42px
+            - color: white
+          grid:
+            - grid-template-areas: '"i"'
+
+      - type: markdown
+        content: |
+          {{ now().strftime('%a, %b %d') }}
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+              padding: 0 !important;
+              text-align: center;
+              font-size: 1.15rem;
+              font-weight: 550;
+            }
+
+      - type: markdown
+        content: |
+          {% set h = now().hour %}
+          {% if 5 <= h < 12 %}
+            {% set greet = 'Good morning' %}
+          {% elif 12 <= h < 17 %}
+            {% set greet = 'Good afternoon' %}
+          {% elif 17 <= h < 22 %}
+            {% set greet = 'Good evening' %}
+          {% else %}
+            {% set greet = 'Good night' %}
+          {% endif %}
+          {{ greet }}
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+              padding: 0 !important;
+              text-align: center;
+              font-size: 1.8rem;
+              font-weight: 700;
+            }
+
+      - type: markdown
+        content: |
+          {{ now().strftime('%I:%M %p') }}
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+              padding: 0 !important;
+              text-align: center;
+              font-size: 1.20rem;
+              font-weight: 600;
+            }
+
+      - type: custom:button-card
+        icon: mdi:chevron-right
+        tap_action:
+          action: fire-dom-event
+          browser_mod:
+            command: navigate
+            navigation_path: next
+        styles:
+          card:
+            - height: 70px
+            - width: 70px
+            - border-radius: 50%
+            - background: rgba(74, 158, 255, 0.95)
+            - box-shadow: 0 4px 16px rgba(74, 158, 255, 0.5)
+          icon:
+            - width: 42px
+            - height: 42px
+            - color: white
+          grid:
+            - grid-template-areas: '"i"'
