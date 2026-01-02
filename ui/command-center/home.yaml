@@ -46,6 +46,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Lights Button (ACTIVE - WHITE BORDER)
           - type: custom:mushroom-template-card
@@ -70,6 +77,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Weather Button
           - type: custom:mushroom-template-card
@@ -94,6 +108,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Calendar Button
           - type: custom:mushroom-template-card
@@ -118,6 +139,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Family Button
           - type: custom:mushroom-template-card
@@ -142,6 +170,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
           # Front Door Button
           - type: custom:mushroom-template-card
@@ -166,6 +201,13 @@ cards:
                   justify-content: center;
                 }
                 ha-card:active { transform: scale(0.98); }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 42px;
+                    font-size: 1.3rem !important;
+                    border-radius: 12px;
+                  }
+                }
 
       # === HEADER ROW (ARROWS + DATE/TIME/GREETING) ===
       - type: custom:layout-card
@@ -174,6 +216,14 @@ cards:
           grid-template-columns: 70px auto 1fr auto 70px
           gap: 16px
           align-items: center
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                --grid-template-columns: 50px auto 1fr auto 50px;
+                --gap: 10px;
+              }
+            }
         cards:
           # Left Arrow
           - type: custom:button-card
@@ -194,6 +244,20 @@ cards:
                 - color: white
               grid:
                 - grid-template-areas: '"i"'
+            card_mod:
+              style: |
+                ha-card {
+                  transition: all 0.3s ease;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 50px !important;
+                    width: 50px !important;
+                  }
+                  ha-card ha-icon {
+                    --mdc-icon-size: 28px;
+                  }
+                }
 
           # Date
           - type: markdown
@@ -208,6 +272,12 @@ cards:
                   text-align: left;
                   font-size: 1.8rem;
                   font-weight: 500;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    font-size: 1.3rem;
+                    padding: 4px 0 !important;
+                  }
                 }
 
           # Greeting (Center)
@@ -234,6 +304,12 @@ cards:
                   font-size: 3.2rem;
                   font-weight: 600;
                 }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    font-size: 2.0rem;
+                    padding: 4px 0 !important;
+                  }
+                }
 
           # Time
           - type: markdown
@@ -248,6 +324,12 @@ cards:
                   text-align: right;
                   font-size: 1.8rem;
                   font-weight: 500;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    font-size: 1.3rem;
+                    padding: 4px 0 !important;
+                  }
                 }
 
           # Right Arrow
@@ -269,6 +351,20 @@ cards:
                 - color: white
               grid:
                 - grid-template-areas: '"i"'
+            card_mod:
+              style: |
+                ha-card {
+                  transition: all 0.3s ease;
+                }
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 50px !important;
+                    width: 50px !important;
+                  }
+                  ha-card ha-icon {
+                    --mdc-icon-size: 28px;
+                  }
+                }
 
       # === LIGHTS BANNER ===
       - type: custom:button-card
@@ -299,6 +395,16 @@ cards:
             - color: white
             - justify-self: start
             - letter-spacing: 1px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                height: 36px !important;
+              }
+              ha-card .name {
+                font-size: 1.1rem !important;
+              }
+            }
       
       # === LIGHTS GRID (3x3) ===
       - type: custom:layout-card
@@ -306,6 +412,13 @@ cards:
         layout:
           grid-template-columns: 1fr 1fr 1fr
           gap: 12px
+        card_mod:
+          style: |
+            @media (max-width: 1400px) {
+              ha-card {
+                --gap: 8px;
+              }
+            }
         cards:
           # === ROW 1 COL 1: Great Room Light ===
           - type: custom:button-card
@@ -389,6 +502,26 @@ cards:
                 - color: rgba(255, 255, 255, 0.8)
                 - justify-self: center
                 - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                  ha-card .state {
+                    font-size: 0.85rem !important;
+                  }
+                }
 
           # === ROW 1 COL 2: Great Room Fan ===
           - type: custom:button-card
@@ -461,6 +594,26 @@ cards:
                 - color: rgba(255, 255, 255, 0.8)
                 - justify-self: center
                 - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                  ha-card .state {
+                    font-size: 0.85rem !important;
+                  }
+                }
 
           # === ROW 1 COL 3: Common Area Lights ===
           - type: custom:button-card
@@ -565,6 +718,23 @@ cards:
                 status:
                   - justify-self: center
                   - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                }
 
           # === ROW 2 COL 1: Dining Room Light ===
           - type: custom:button-card
@@ -648,6 +818,26 @@ cards:
                 - color: rgba(255, 255, 255, 0.8)
                 - justify-self: center
                 - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                  ha-card .state {
+                    font-size: 0.85rem !important;
+                  }
+                }
 
           # === ROW 2 COL 2: Dining Room Fan ===
           - type: custom:button-card
@@ -720,6 +910,26 @@ cards:
                 - color: rgba(255, 255, 255, 0.8)
                 - justify-self: center
                 - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                  ha-card .state {
+                    font-size: 0.85rem !important;
+                  }
+                }
 
           # === ROW 2 COL 3: Mute TV ===
           - type: custom:button-card
@@ -764,6 +974,23 @@ cards:
                 - text-shadow: 0 2px 4px rgba(0,0,0,0.3)
                 - margin-top: 8px
                 - justify-self: center
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                }
 
           # === ROW 3 COL 1: Kitchen Light ===
           - type: custom:button-card
@@ -818,6 +1045,26 @@ cards:
                 - color: rgba(255, 255, 255, 0.8)
                 - justify-self: center
                 - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                  ha-card .state {
+                    font-size: 0.85rem !important;
+                  }
+                }
 
           # === ROW 3 COL 2: Master Hallway ===
           - type: custom:button-card
@@ -873,6 +1120,26 @@ cards:
                 - color: rgba(255, 255, 255, 0.8)
                 - justify-self: center
                 - margin-top: 4px
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                  ha-card .state {
+                    font-size: 0.85rem !important;
+                  }
+                }
 
           # === ROW 3 COL 3: Study Blinds ===
           - type: custom:button-card
@@ -1016,3 +1283,20 @@ cards:
                 }
                 return 'mdi:blinds-horizontal';
               ]]]
+            card_mod:
+              style: |
+                @media (max-width: 1400px) {
+                  ha-card {
+                    height: 160px !important;
+                    padding: 12px !important;
+                    border-radius: 12px !important;
+                  }
+                  ha-card .icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                  }
+                  ha-card .name {
+                    font-size: 1.05rem !important;
+                    margin-top: 4px !important;
+                  }
+                }
