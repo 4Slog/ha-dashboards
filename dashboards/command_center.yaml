@@ -5,3 +5,4 @@ views:
   - !include ../ui/command-center/calendar.yaml
   - !include ../ui/command-center/family.yaml
   - !include ../ui/command-center/cameras.yaml
+  - !include ../ui/command-center/sticky_test.yaml
