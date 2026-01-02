@@ -1,6 +1,6 @@
 title: Media
 path: media
-icon: mdi:lightbulb-group-music
+icon: mdi:spotify
 panel: true
 theme: default
 
@@ -26,7 +26,7 @@ cards:
           # Media Button (ACTIVE - WHITE BORDER)
           - type: custom:mushroom-template-card
             primary: Media
-            icon: mdi:lightbulb-group-music
+            icon: mdi:spotify
             icon_color: blue
             tap_action:
               action: navigate
@@ -61,7 +61,7 @@ cards:
             icon_color: purple
             tap_action:
               action: navigate
-              navigation_path: /command-center/home
+              navigation_path: /command-center/lights
             card_mod:
               style: |
                 ha-card {
@@ -329,7 +329,7 @@ cards:
             icon: mdi:chevron-right
             tap_action:
               action: navigate
-              navigation_path: /command-center/home
+              navigation_path: /command-center/lights
             styles:
               card:
                 - height: 70px
@@ -368,7 +368,7 @@ cards:
         cards:
           - type: custom:button-card
             name: HOME MEDIA
-            icon: mdi:lightbulb-group-music
+            icon: mdi:spotify
             show_name: true
             show_icon: true
             tap_action:
