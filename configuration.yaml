@@ -179,6 +179,10 @@ http:
 
   ip_ban_enabled: true
   login_attempts_threshold: 5
+  cors_allowed_origins:
+    - https://app.casadesowu.com
+    - http://app.casadesowu.com
+    - http://10.0.0.60:8090
 
 # =======================
 #  TEMPLATE SENSORS
