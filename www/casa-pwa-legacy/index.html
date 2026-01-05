@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0d12">
+  <meta name="description" content="Casa de Sowu Smart Home Control">
+  
+  <title>Casa de Sowu</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Material Design Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+  
+  <!-- Leaflet.js for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div id="app">
+    
+    <!-- Connection Status -->
+    <div id="connection-banner" class="connection-banner hidden">
+      <span class="mdi mdi-wifi-off"></span>
+      <span>Reconnecting to Home Assistant...</span>
+    </div>
+
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="setup-screen">
+      <div class="setup-container">
+        <div class="setup-logo">
+          <span class="mdi mdi-home-automation"></span>
+        </div>
+        <h1>Casa de Sowu</h1>
+        <p>Smart Home Control</p>
+        
+        <button type="button" class="btn-connect" id="btn-login">
+          <span class="mdi mdi-login"></span>
+          Sign in with Home Assistant
+        </button>
+        
+        <div class="login-status" id="login-status"></div>
+        
+        <details class="advanced-setup">
+          <summary>Advanced Setup</summary>
+          <form id="setup-form">
+            <div class="input-group">
+              <label for="ha-url">Home Assistant URL</label>
+              <input type="url" id="ha-url" value="https://ha.casadesowu.com" required>
+            </div>
+            
+            <div class="input-group">
+              <label for="ha-token">Long-Lived Access Token</label>
+              <input type="password" id="ha-token" placeholder="Paste your token here" required>
+              <small>Profile → Security → Long-Lived Access Tokens</small>
+            </div>
+            
+            <button type="submit" class="btn-connect btn-secondary">
+              <span class="mdi mdi-connection"></span>
+              Connect with Token
+            </button>
+          </form>
+        </details>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="main-app hidden">
+      
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <span class="header-date" id="header-date"></span>
+        </div>
+        <div class="header-center">
+          <h1 class="header-greeting" id="header-greeting"></h1>
+        </div>
+        <div class="header-right">
+          <span class="header-time" id="header-time"></span>
+        </div>
+      </header>
+
+      <!-- Top Navigation Ribbon -->
+      <nav class="top-nav" id="top-nav">
+        <button class="top-nav-btn" data-page="media">
+          <span class="mdi mdi-music"></span>
+          <span>Media</span>
+        </button>
+        <button class="top-nav-btn active" data-page="lights">
+          <span class="mdi mdi-lightbulb-group"></span>
+          <span>Lights</span>
+        </button>
+        <button class="top-nav-btn" data-page="weather">
+          <span class="mdi mdi-thermometer"></span>
+          <span>Weather</span>
+        </button>
+        <button class="top-nav-btn" data-page="calendar">
+          <span class="mdi mdi-calendar"></span>
+          <span>Calendar</span>
+        </button>
+        <button class="top-nav-btn" data-page="family">
+          <span class="mdi mdi-map-marker"></span>
+          <span>Family</span>
+        </button>
+        <button class="top-nav-btn" data-page="cameras">
+          <span class="mdi mdi-cctv"></span>
+          <span>Cameras</span>
+        </button>
+      </nav>
+
+      <!-- Page Container -->
+      <main class="pages-container" id="pages-container">
+        
+        <!-- MEDIA PAGE -->
+        <section class="page" id="page-media" data-page="media">
+          <div class="page-content">
+            <div class="media-player" id="media-player">
+              <div class="album-art" id="album-art">
+                <span class="mdi mdi-music"></span>
+              </div>
+              <div class="track-info">
+                <div class="track-title" id="track-title">Not Playing</div>
+                <div class="track-artist" id="track-artist">Select a speaker to start</div>
+                <div class="track-album" id="track-album"></div>
+              </div>
+              
+              <!-- Progress Bar -->
+              <div class="progress-container">
+                <span class="progress-time" id="progress-current">0:00</span>
+                <div class="progress-bar" id="progress-bar">
+                  <div class="progress-fill" id="progress-fill"></div>
+                  <div class="progress-handle" id="progress-handle"></div>
+                </div>
+                <span class="progress-time" id="progress-total">0:00</span>
+              </div>
+              
+              <div class="playback-controls">
+                <button class="ctrl-btn" id="btn-shuffle" title="Shuffle">
+                  <span class="mdi mdi-shuffle"></span>
+                </button>
+                <button class="ctrl-btn" id="btn-prev" title="Previous">
+                  <span class="mdi mdi-skip-previous"></span>
+                </button>
+                <button class="ctrl-btn ctrl-btn-main" id="btn-play" title="Play/Pause">
+                  <span class="mdi mdi-play"></span>
+                </button>
+                <button class="ctrl-btn" id="btn-next" title="Next">
+                  <span class="mdi mdi-skip-next"></span>
+                </button>
+                <button class="ctrl-btn" id="btn-repeat" title="Repeat">
+                  <span class="mdi mdi-repeat"></span>
+                </button>
+              </div>
+              
+              <!-- Volume Slider -->
+              <div class="volume-container">
+                <span class="mdi mdi-volume-medium" id="volume-icon"></span>
+                <div class="volume-bar" id="volume-bar">
+                  <div class="volume-fill" id="volume-fill"></div>
+                  <div class="volume-handle" id="volume-handle"></div>
+                </div>
+                <span class="volume-percent" id="volume-percent">50%</span>
+              </div>
+            </div>
+            
+            <!-- Speaker Selection -->
+            <div class="section-header small">
+              <span class="mdi mdi-speaker-multiple"></span>
+              <span>Speakers</span>
+            </div>
+            
+            <div class="speaker-grid" id="speaker-grid">
+              <label class="speaker-item" data-entity="media_player.spotify_paul_sowu" data-name="Casa de Sowu" data-type="spotify">
+                <input type="radio" name="speaker" class="speaker-radio" checked>
+                <span class="mdi mdi-bluetooth-audio"></span>
+                <span class="speaker-name">Casa de Sowu</span>
+                <span class="speaker-status"></span>
+              </label>
+              <label class="speaker-item" data-entity="media_player.spotify_paul_sowu" data-name="Living Room TV" data-type="spotify">
+                <input type="radio" name="speaker" class="speaker-radio">
+                <span class="mdi mdi-television"></span>
+                <span class="speaker-name">Living Room TV</span>
+                <span class="speaker-status"></span>
+              </label>
+            </div>
+            
+            <!-- Quick Playlists -->
+            <div class="section-header small">
+              <span class="mdi mdi-playlist-music"></span>
+              <span>Quick Playlists</span>
+            </div>
+            
+            <div class="playlist-grid" id="playlist-grid">
+              <button class="playlist-btn" data-playlist="spotify:playlist:37i9dQZF1EQqedj0y9Uwvu">
+                <span class="mdi mdi-music-note"></span>
+                <span>2010s Mix</span>
+              </button>
+              <button class="playlist-btn" data-playlist="spotify:playlist:0pwtPFYePn1xdpavFkurnh">
+                <span class="mdi mdi-music-circle"></span>
+                <span>Old Afrobeats</span>
+              </button>
+              <button class="playlist-btn" data-playlist="spotify:playlist:37i9dQZF1DWWDLvD3P5wOG">
+                <span class="mdi mdi-palm-tree"></span>
+                <span>Dancehall</span>
+              </button>
+              <button class="playlist-btn" data-playlist="spotify:playlist:2pGzShubDBpEOhINK1g7ih">
+                <span class="mdi mdi-fire"></span>
+                <span>2025 Mix</span>
+              </button>
+            </div>
+            
+            <!-- Browse All Playlists -->
+            <div class="section-header small">
+              <span class="mdi mdi-folder-music"></span>
+              <span>All Playlists</span>
+            </div>
+            
+            <button class="browse-playlists-btn" id="browse-playlists-btn">
+              <span class="mdi mdi-playlist-music"></span>
+              <span>Browse All Playlists</span>
+              <span class="playlist-count" id="playlist-count">0</span>
+              <span class="mdi mdi-chevron-right"></span>
+            </button>
+            
+            <!-- Up Next Queue -->
+            <div class="section-header small">
+              <span class="mdi mdi-playlist-play"></span>
+              <span>Up Next</span>
+              <button class="refresh-queue-btn" id="refresh-queue-btn">
+                <span class="mdi mdi-refresh"></span>
+              </button>
+            </div>
+            
+            <div class="queue-list" id="queue-list">
+              <div class="queue-empty">No tracks in queue</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LIGHTS PAGE -->
+        <section class="page" id="page-lights" data-page="lights">
+          <div class="page-content">
+            <div class="device-grid" id="lights-grid">
+              <!-- Common Area Master Toggle -->
+              <div class="device-card master-toggle" data-entity="script.toggle_main_lights" data-type="script">
+                <div class="device-icon">
+                  <span class="mdi mdi-lightbulb-multiple"></span>
+                </div>
+                <div class="device-name">Common Area</div>
+                <div class="device-state" id="master-state">0/4 On</div>
+              </div>
+              
+              <!-- Great Room Light -->
+              <div class="device-card" data-entity="light.great_room_fan_and_light" data-type="light">
+                <div class="device-icon">
+                  <span class="mdi mdi-lightbulb"></span>
+                </div>
+                <div class="device-name">Great Room</div>
+                <div class="device-state">Off</div>
+                <div class="device-brightness"></div>
+              </div>
+              
+              <!-- Great Room Fan -->
+              <div class="device-card" data-entity="fan.great_room_fan_and_light" data-type="fan">
+                <div class="device-icon">
+                  <span class="mdi mdi-fan"></span>
+                </div>
+                <div class="device-name">Great Room Fan</div>
+                <div class="device-state">Off</div>
+              </div>
+              
+              <!-- Dining Room Light -->
+              <div class="device-card" data-entity="light.dining_room_main_light" data-type="light">
+                <div class="device-icon">
+                  <span class="mdi mdi-lightbulb"></span>
+                </div>
+                <div class="device-name">Dining Room</div>
+                <div class="device-state">Off</div>
+                <div class="device-brightness"></div>
+              </div>
+              
+              <!-- Dining Room Fan -->
+              <div class="device-card" data-entity="fan.dining_room_main_fan" data-type="fan">
+                <div class="device-icon">
+                  <span class="mdi mdi-fan"></span>
+                </div>
+                <div class="device-name">Dining Fan</div>
+                <div class="device-state">Off</div>
+              </div>
+              
+              <!-- Kitchen Light -->
+              <div class="device-card" data-entity="light.kitchen_light_switch" data-type="light">
+                <div class="device-icon">
+                  <span class="mdi mdi-lightbulb"></span>
+                </div>
+                <div class="device-name">Kitchen</div>
+                <div class="device-state">Off</div>
+              </div>
+              
+              <!-- Master Hallway -->
+              <div class="device-card" data-entity="switch.master_hallway" data-type="switch">
+                <div class="device-icon">
+                  <span class="mdi mdi-lightbulb"></span>
+                </div>
+                <div class="device-name">Master Hallway</div>
+                <div class="device-state">Off</div>
+              </div>
+              
+              <!-- Master Bedroom Light -->
+              <div class="device-card" data-entity="light.master_bedroom" data-type="light">
+                <div class="device-icon">
+                  <span class="mdi mdi-lightbulb"></span>
+                </div>
+                <div class="device-name">Master Bedroom</div>
+                <div class="device-state">Off</div>
+                <div class="device-brightness"></div>
+              </div>
+              
+              <!-- Master Bedroom Fan -->
+              <div class="device-card" data-entity="fan.master_bedroom" data-type="fan">
+                <div class="device-icon">
+                  <span class="mdi mdi-fan"></span>
+                </div>
+                <div class="device-name">Master Fan</div>
+                <div class="device-state">Off</div>
+              </div>
+              
+              <!-- Study Blinds -->
+              <div class="device-card blinds-card" data-entity="cover.blind_tilt_5b8c" data-type="cover">
+                <div class="device-icon">
+                  <span class="mdi mdi-blinds"></span>
+                </div>
+                <div class="device-name">Study Blinds</div>
+                <div class="device-state">Closed</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WEATHER PAGE -->
+        <section class="page" id="page-weather" data-page="weather">
+          <div class="page-content">
+            <div class="weather-grid">
+              <!-- Current Weather -->
+              <div class="weather-card forecast-card" id="forecast-card">
+                <div class="weather-main">
+                  <span class="weather-icon mdi mdi-weather-cloudy"></span>
+                  <span class="weather-temp" id="weather-temp">--°</span>
+                </div>
+                <div class="weather-condition" id="weather-condition">Loading...</div>
+                <div class="weather-details">
+                  <span><span class="mdi mdi-water-percent"></span> <span id="weather-humidity">--</span>%</span>
+                  <span><span class="mdi mdi-weather-windy"></span> <span id="weather-wind">--</span> mph</span>
+                </div>
+              </div>
+              
+              <!-- Thermostat -->
+              <div class="weather-card thermostat-card" id="thermostat-card">
+                <div class="thermostat-display">
+                  <div class="thermostat-current" id="thermostat-current">--°</div>
+                  <div class="thermostat-label">Current</div>
+                </div>
+                <div class="thermostat-controls">
+                  <button class="temp-btn" id="temp-down">
+                    <span class="mdi mdi-minus"></span>
+                  </button>
+                  <div class="thermostat-target">
+                    <span id="thermostat-target">--</span>°
+                    <small id="hvac-mode">Off</small>
+                  </div>
+                  <button class="temp-btn" id="temp-up">
+                    <span class="mdi mdi-plus"></span>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Auto Comfort -->
+              <div class="weather-card comfort-card" id="comfort-card" data-entity="input_boolean.hvac_auto_comfort">
+                <div class="comfort-icon">
+                  <span class="mdi mdi-thermostat-auto"></span>
+                </div>
+                <div class="comfort-info">
+                  <div class="comfort-title">Auto Comfort</div>
+                  <div class="comfort-band">71-73°F Band</div>
+                </div>
+                <div class="comfort-toggle">
+                  <div class="toggle-switch" id="comfort-toggle">
+                    <div class="toggle-knob"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="section-header small">
+              <span class="mdi mdi-thermometer"></span>
+              <span>Room Temperatures</span>
+            </div>
+            
+            <div class="room-temps-grid">
+              <div class="room-temp-card" data-entity="sensor.lumi_lumi_weather_temperature">
+                <span class="room-name">Master Bedroom</span>
+                <span class="room-temp" id="temp-master">--°</span>
+              </div>
+              <div class="room-temp-card" data-entity="sensor.temp_bedroom_wing_temperature">
+                <span class="room-name">Galley</span>
+                <span class="room-temp" id="temp-galley">--°</span>
+              </div>
+              <div class="room-temp-card" data-entity="sensor.temp_bedroom_wing_temperature_2">
+                <span class="room-name">Blue Room</span>
+                <span class="room-temp" id="temp-blue">--°</span>
+              </div>
+              <div class="room-temp-card highlight" data-entity="sensor.average_home_temperature">
+                <span class="room-name">Average</span>
+                <span class="room-temp" id="temp-avg">--°</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CALENDAR PAGE -->
+        <section class="page" id="page-calendar" data-page="calendar">
+          <div class="page-content">
+            <div class="section-header">
+              <span class="mdi mdi-calendar-today"></span>
+              <span>Upcoming Events</span>
+            </div>
+            
+            <div class="calendar-events" id="calendar-events">
+              <div class="event-loading">
+                <span class="mdi mdi-loading mdi-spin"></span>
+                Loading events...
+              </div>
+            </div>
+            
+            <div class="section-header small">
+              <span class="mdi mdi-clipboard-check"></span>
+              <span>Family Tasks</span>
+            </div>
+            
+            <div class="tasks-grid">
+              <div class="task-list" id="tasks-house">
+                <div class="task-header">
+                  <span class="mdi mdi-home"></span> House
+                </div>
+                <div class="task-items"></div>
+              </div>
+              <div class="task-list" id="tasks-paul">
+                <div class="task-header">
+                  <span class="mdi mdi-account"></span> Paul
+                </div>
+                <div class="task-items"></div>
+              </div>
+              <div class="task-list" id="tasks-tuella">
+                <div class="task-header">
+                  <span class="mdi mdi-account"></span> Tuella
+                </div>
+                <div class="task-items"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAMILY PAGE -->
+        <section class="page" id="page-family" data-page="family">
+          <div class="page-content">
+            <div class="section-header">
+              <span class="mdi mdi-account-group"></span>
+              <span>Family Location</span>
+            </div>
+            
+            <div class="family-grid" id="family-grid">
+              <!-- Paul -->
+              <div class="family-card" data-person="person.paul">
+                <div class="family-avatar paul">
+                  <span>P</span>
+                </div>
+                <div class="family-info">
+                  <div class="family-name">Paul</div>
+                  <div class="family-status" id="status-paul">Loading...</div>
+                  <div class="family-location" id="location-paul"></div>
+                </div>
+                <div class="family-battery" id="battery-paul"></div>
+              </div>
+              
+              <!-- Tuella -->
+              <div class="family-card" data-person="person.tuella_sowu">
+                <div class="family-avatar tuella">
+                  <span>T</span>
+                </div>
+                <div class="family-info">
+                  <div class="family-name">Tuella</div>
+                  <div class="family-status" id="status-tuella">Loading...</div>
+                  <div class="family-location" id="location-tuella"></div>
+                </div>
+                <div class="family-battery" id="battery-tuella"></div>
+              </div>
+              
+              <!-- Mauriece -->
+              <div class="family-card" data-person="person.mauriece">
+                <div class="family-avatar mauriece">
+                  <span>M</span>
+                </div>
+                <div class="family-info">
+                  <div class="family-name">Mauriece</div>
+                  <div class="family-status" id="status-mauriece">Loading...</div>
+                  <div class="family-location" id="location-mauriece"></div>
+                </div>
+                <div class="family-battery" id="battery-mauriece"></div>
+              </div>
+            </div>
+            
+            <div class="map-container" id="map-container">
+              <div id="family-map"></div>
+              <div class="map-controls">
+                <button class="map-ctrl-btn" id="map-satellite" title="Satellite View">
+                  <span class="mdi mdi-satellite-variant"></span>
+                </button>
+                <button class="map-ctrl-btn" id="map-street" title="Street View">
+                  <span class="mdi mdi-map"></span>
+                </button>
+                <button class="map-ctrl-btn" id="map-center" title="Center on Home">
+                  <span class="mdi mdi-home"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CAMERAS PAGE -->
+        <section class="page" id="page-cameras" data-page="cameras">
+          <div class="page-content">
+            <div class="section-header">
+              <span class="mdi mdi-cctv"></span>
+              <span>Security Cameras</span>
+            </div>
+            
+            <div class="camera-featured" id="camera-featured">
+              <div class="camera-stream" data-camera="camera.10_0_0_60">
+                <img id="camera-main-img" src="" alt="Front Door">
+                <div class="camera-label">Front Door</div>
+                <div class="camera-loading" id="camera-main-loading">
+                  <span class="mdi mdi-loading mdi-spin"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="camera-grid">
+              <div class="camera-thumb" data-camera="camera.wyze_cam">
+                <img id="camera-wyze-img" src="" alt="Wyze Cam">
+                <div class="camera-label">Wyze Cam</div>
+              </div>
+              <div class="camera-thumb" data-camera="camera.pan_cam">
+                <img id="camera-pan-img" src="" alt="Pan Cam">
+                <div class="camera-label">Pan Cam</div>
+              </div>
+              <div class="camera-thumb" data-camera="camera.redbase">
+                <img id="camera-redbase-img" src="" alt="Redbase">
+                <div class="camera-label">Redbase</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Navigation -->
+      <nav class="bottom-nav" id="bottom-nav">
+        <button class="nav-btn" data-page="media">
+          <span class="mdi mdi-music"></span>
+          <span>Media</span>
+        </button>
+        <button class="nav-btn active" data-page="lights">
+          <span class="mdi mdi-lightbulb-group"></span>
+          <span>Lights</span>
+        </button>
+        <button class="nav-btn" data-page="weather">
+          <span class="mdi mdi-thermometer"></span>
+          <span>Weather</span>
+        </button>
+        <button class="nav-btn" data-page="calendar">
+          <span class="mdi mdi-calendar"></span>
+          <span>Calendar</span>
+        </button>
+        <button class="nav-btn" data-page="family">
+          <span class="mdi mdi-map-marker"></span>
+          <span>Family</span>
+        </button>
+        <button class="nav-btn" data-page="cameras">
+          <span class="mdi mdi-cctv"></span>
+          <span>Cameras</span>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- Device Control Modal -->
+    <div id="device-modal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="modal-title" id="modal-title">Device Control</span>
+          <button class="modal-close" id="modal-close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Light Controls -->
+          <div id="light-controls" class="control-section hidden">
+            <div class="control-row">
+              <label><span class="mdi mdi-brightness-6"></span> Brightness</label>
+              <input type="range" id="brightness-slider" min="0" max="100" value="100">
+              <span id="brightness-value">100%</span>
+            </div>
+            <div class="control-row" id="color-temp-row">
+              <label><span class="mdi mdi-thermometer"></span> Color Temp</label>
+              <input type="range" id="color-temp-slider" min="2700" max="6500" value="4000">
+              <span id="color-temp-value">4000K</span>
+            </div>
+          </div>
+          <!-- Fan Controls -->
+          <div id="fan-controls" class="control-section hidden">
+            <div class="control-row">
+              <label><span class="mdi mdi-fan"></span> Speed</label>
+              <input type="range" id="fan-speed-slider" min="0" max="100" step="17" value="50">
+              <span id="fan-speed-value">50%</span>
+            </div>
+            <div class="control-row">
+              <label><span class="mdi mdi-leaf"></span> Mode</label>
+              <div class="preset-buttons" id="fan-presets">
+                <button class="preset-btn" data-preset="fresh">Fresh</button>
+                <button class="preset-btn" data-preset="nature">Nature</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><span class="mdi mdi-rotate-3d-variant"></span> Direction</label>
+              <div class="preset-buttons" id="fan-direction">
+                <button class="preset-btn" data-direction="forward">Forward</button>
+                <button class="preset-btn" data-direction="reverse">Reverse</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playlist Browser Modal -->
+    <div id="playlist-modal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <span class="modal-title">Browse Playlists</span>
+          <button class="modal-close" id="playlist-modal-close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="playlist-search">
+            <span class="mdi mdi-magnify"></span>
+            <input type="text" id="playlist-search-input" placeholder="Search playlists...">
+          </div>
+          <div class="playlist-browser" id="playlist-browser">
+            <div class="playlist-loading">
+              <span class="mdi mdi-loading mdi-spin"></span>
+              Loading playlists...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+</body>
+</html>
