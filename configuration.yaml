@@ -27,6 +27,16 @@ frontend:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+input_select:
+  featured_camera:
+    name: Featured Camera
+    options:
+      - front_door
+      - wyze_cam
+      - pan_cam
+      - redbase
+    initial: front_door
+    icon: mdi:cctv
 
 # =======================
 #  BROWSER MOD
