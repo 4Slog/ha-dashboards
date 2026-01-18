@@ -70,257 +70,34 @@ cards:
                   ha-card .name { font-size: 0.95rem !important; }
                 }
 
-          # === NOW PLAYING SECTION ===
-          - type: custom:layout-card
-            layout_type: custom:grid-layout
-            layout:
-              grid-template-columns: 300px 1fr
-              gap: 20px
-              align-items: start
+          # === MAIN SPOTIFY PLAYER (Mini Media Player) ===
+          - type: custom:mini-media-player
+            entity: media_player.spotifyplus_paul_sowu
+            name: Spotify
+            icon: mdi:spotify
+            artwork: full-cover
+            source: full
+            sound_mode: full
+            info: scroll
+            volume_stateless: false
+            toggle_power: false
+            show_progress: true
+            show_shuffle: true
+            show_source: true
+            show_tts: false
             card_mod:
               style: |
                 ha-card {
-                  background: rgba(255,255,255,0.03);
                   border-radius: 16px;
-                  padding: 16px;
-                  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+                  overflow: hidden;
+                  --mmp-accent-color: #1DB954;
                 }
                 @media (max-width: 1400px) {
-                  ha-card { padding: 12px; }
+                  ha-card { border-radius: 12px; }
                 }
-                @media (max-width: 900px) {
-                  :host {
-                    --layout-card-grid-template-columns: 1fr !important;
-                  }
-                }
-            cards:
-              # Album Art
-              - type: custom:button-card
-                entity: media_player.spotifyplus_paul_sowu
-                show_name: false
-                show_icon: false
-                show_state: false
-                tap_action:
-                  action: more-info
-                styles:
-                  card:
-                    - width: 300px
-                    - height: 300px
-                    - border-radius: 12px
-                    - background-image: url("{{ state_attr('media_player.spotifyplus_paul_sowu', 'entity_picture') }}")
-                    - background-size: cover
-                    - background-position: center
-                    - box-shadow: 0 8px 32px rgba(0,0,0,0.4)
-                card_mod:
-                  style: |
-                    @media (max-width: 1400px) {
-                      ha-card { width: 200px !important; height: 200px !important; }
-                    }
-                    @media (max-width: 900px) {
-                      ha-card { width: 100% !important; height: 250px !important; }
-                    }
 
-              # Track Info + Controls
-              - type: custom:layout-card
-                layout_type: custom:grid-layout
-                layout:
-                  grid-template-columns: 1fr
-                  gap: 12px
-                card_mod:
-                  style: |
-                    ha-card { background: transparent; box-shadow: none; }
-                cards:
-                  # Track Name
-                  - type: markdown
-                    content: |
-                      {{ state_attr('media_player.spotifyplus_paul_sowu', 'media_title') or 'Not Playing' }}
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: transparent;
-                          box-shadow: none;
-                          padding: 0 !important;
-                        }
-                        ha-markdown {
-                          font-size: 1.8rem !important;
-                          font-weight: 700;
-                          color: white;
-                        }
-                        @media (max-width: 1400px) {
-                          ha-markdown { font-size: 1.4rem !important; }
-                        }
-
-                  # Artist Name
-                  - type: markdown
-                    content: |
-                      {{ state_attr('media_player.spotifyplus_paul_sowu', 'media_artist') or '' }}
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: transparent;
-                          box-shadow: none;
-                          padding: 0 !important;
-                          margin-top: -8px;
-                        }
-                        ha-markdown {
-                          font-size: 1.2rem !important;
-                          font-weight: 400;
-                          color: rgba(255,255,255,0.7);
-                        }
-                        @media (max-width: 1400px) {
-                          ha-markdown { font-size: 1rem !important; }
-                        }
-
-                  # Playback Controls
-                  - type: custom:layout-card
-                    layout_type: custom:grid-layout
-                    layout:
-                      grid-template-columns: repeat(5, auto)
-                      gap: 12px
-                      justify-content: start
-                    card_mod:
-                      style: |
-                        ha-card { background: transparent; box-shadow: none; margin-top: 8px; }
-                    cards:
-                      # Shuffle
-                      - type: custom:button-card
-                        entity: media_player.spotifyplus_paul_sowu
-                        icon: mdi:shuffle
-                        show_name: false
-                        tap_action:
-                          action: call-service
-                          service: media_player.shuffle_set
-                          service_data:
-                            shuffle: true
-                          target:
-                            entity_id: media_player.spotifyplus_paul_sowu
-                        styles:
-                          card:
-                            - width: 50px
-                            - height: 50px
-                            - border-radius: 50%
-                            - background: rgba(255,255,255,0.1)
-                          icon:
-                            - width: 24px
-                            - height: 24px
-                            - color: white
-                        card_mod:
-                          style: |
-                            @media (max-width: 1400px) {
-                              ha-card { width: 40px !important; height: 40px !important; }
-                            }
-
-                      # Previous
-                      - type: custom:button-card
-                        entity: media_player.spotifyplus_paul_sowu
-                        icon: mdi:skip-previous
-                        show_name: false
-                        tap_action:
-                          action: call-service
-                          service: media_player.media_previous_track
-                          target:
-                            entity_id: media_player.spotifyplus_paul_sowu
-                        styles:
-                          card:
-                            - width: 50px
-                            - height: 50px
-                            - border-radius: 50%
-                            - background: rgba(255,255,255,0.1)
-                          icon:
-                            - width: 28px
-                            - height: 28px
-                            - color: white
-                        card_mod:
-                          style: |
-                            @media (max-width: 1400px) {
-                              ha-card { width: 40px !important; height: 40px !important; }
-                            }
-
-                      # Play/Pause
-                      - type: custom:button-card
-                        entity: media_player.spotifyplus_paul_sowu
-                        show_name: false
-                        tap_action:
-                          action: call-service
-                          service: media_player.media_play_pause
-                          target:
-                            entity_id: media_player.spotifyplus_paul_sowu
-                        icon: |
-                          [[[
-                            return (entity && entity.state === 'playing') ? 'mdi:pause' : 'mdi:play';
-                          ]]]
-                        styles:
-                          card:
-                            - width: 65px
-                            - height: 65px
-                            - border-radius: 50%
-                            - background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%)
-                            - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                          icon:
-                            - width: 32px
-                            - height: 32px
-                            - color: white
-                        card_mod:
-                          style: |
-                            @media (max-width: 1400px) {
-                              ha-card { width: 54px !important; height: 54px !important; }
-                            }
-
-                      # Next
-                      - type: custom:button-card
-                        entity: media_player.spotifyplus_paul_sowu
-                        icon: mdi:skip-next
-                        show_name: false
-                        tap_action:
-                          action: call-service
-                          service: media_player.media_next_track
-                          target:
-                            entity_id: media_player.spotifyplus_paul_sowu
-                        styles:
-                          card:
-                            - width: 50px
-                            - height: 50px
-                            - border-radius: 50%
-                            - background: rgba(255,255,255,0.1)
-                          icon:
-                            - width: 28px
-                            - height: 28px
-                            - color: white
-                        card_mod:
-                          style: |
-                            @media (max-width: 1400px) {
-                              ha-card { width: 40px !important; height: 40px !important; }
-                            }
-
-                      # Repeat
-                      - type: custom:button-card
-                        entity: media_player.spotifyplus_paul_sowu
-                        icon: mdi:repeat
-                        show_name: false
-                        tap_action:
-                          action: call-service
-                          service: media_player.repeat_set
-                          service_data:
-                            repeat: all
-                          target:
-                            entity_id: media_player.spotifyplus_paul_sowu
-                        styles:
-                          card:
-                            - width: 50px
-                            - height: 50px
-                            - border-radius: 50%
-                            - background: rgba(255,255,255,0.1)
-                          icon:
-                            - width: 24px
-                            - height: 24px
-                            - color: white
-                        card_mod:
-                          style: |
-                            @media (max-width: 1400px) {
-                              ha-card { width: 40px !important; height: 40px !important; }
-                            }
-
-          # === SPEAKERS SECTION ===
+          # === SPEAKERS BANNER ===
           - type: custom:button-card
             name: SPEAKERS
             icon: mdi:speaker-multiple
@@ -355,7 +132,7 @@ cards:
                   ha-card { height: 26px !important; }
                 }
 
-          # Speaker Grid
+          # === SPEAKER GRID ===
           - type: custom:layout-card
             layout_type: custom:grid-layout
             layout:
@@ -367,12 +144,19 @@ cards:
                   :host { --layout-card-grid-template-columns: repeat(2, 1fr) !important; }
                 }
             cards:
-              # Kitchen Dot
-              - type: custom:button-card
+              # Kitchen Dot - Mini Media Player
+              - type: custom:mini-media-player
                 entity: media_player.kitchen_dot
                 name: Kitchen Dot
                 icon: mdi:speaker
-                show_state: true
+                artwork: none
+                source: icon
+                sound_mode: icon
+                info: short
+                volume_stateless: false
+                toggle_power: true
+                show_progress: false
+                show_source: false
                 tap_action:
                   action: call-service
                   service: spotifyplus.player_transfer_playback
@@ -380,42 +164,32 @@ cards:
                     entity_id: media_player.spotifyplus_paul_sowu
                     device_id: G090LF1072041T5W
                     play: true
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #1DB954
-                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
+                    ha-card {
+                      border-radius: 12px;
+                      background: rgba(255,255,255,0.05);
+                      border: 2px solid rgba(255,255,255,0.1);
+                      --mmp-accent-color: #1DB954;
+                    }
+                    ha-card[data-state="playing"] {
+                      border-color: #1DB954;
+                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
                     }
 
               # Family Dot
-              - type: custom:button-card
+              - type: custom:mini-media-player
                 entity: media_player.family_dot
                 name: Family Dot
                 icon: mdi:speaker
-                show_state: true
+                artwork: none
+                source: icon
+                sound_mode: icon
+                info: short
+                volume_stateless: false
+                toggle_power: true
+                show_progress: false
+                show_source: false
                 tap_action:
                   action: call-service
                   service: spotifyplus.player_transfer_playback
@@ -423,42 +197,32 @@ cards:
                     entity_id: media_player.spotifyplus_paul_sowu
                     device_id: G6G0XG07940401ME
                     play: true
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #1DB954
-                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
+                    ha-card {
+                      border-radius: 12px;
+                      background: rgba(255,255,255,0.05);
+                      border: 2px solid rgba(255,255,255,0.1);
+                      --mmp-accent-color: #1DB954;
+                    }
+                    ha-card[data-state="playing"] {
+                      border-color: #1DB954;
+                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
                     }
 
               # Show 8
-              - type: custom:button-card
+              - type: custom:mini-media-player
                 entity: media_player.show_8
                 name: Show 8
                 icon: mdi:tablet
-                show_state: true
+                artwork: none
+                source: icon
+                sound_mode: icon
+                info: short
+                volume_stateless: false
+                toggle_power: true
+                show_progress: false
+                show_source: false
                 tap_action:
                   action: call-service
                   service: spotifyplus.player_transfer_playback
@@ -466,42 +230,32 @@ cards:
                     entity_id: media_player.spotifyplus_paul_sowu
                     device_id: G000RA09913409J6
                     play: true
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #1DB954
-                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
+                    ha-card {
+                      border-radius: 12px;
+                      background: rgba(255,255,255,0.05);
+                      border: 2px solid rgba(255,255,255,0.1);
+                      --mmp-accent-color: #1DB954;
+                    }
+                    ha-card[data-state="playing"] {
+                      border-color: #1DB954;
+                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
                     }
 
               # Great Room Show
-              - type: custom:button-card
+              - type: custom:mini-media-player
                 entity: media_player.office
                 name: Great Room
                 icon: mdi:tablet
-                show_state: true
+                artwork: none
+                source: icon
+                sound_mode: icon
+                info: short
+                volume_stateless: false
+                toggle_power: true
+                show_progress: false
+                show_source: false
                 tap_action:
                   action: call-service
                   service: spotifyplus.player_transfer_playback
@@ -509,280 +263,116 @@ cards:
                     entity_id: media_player.spotifyplus_paul_sowu
                     device_id: G6G1MK0823260RCW
                     play: true
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #1DB954
-                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
+                    ha-card {
+                      border-radius: 12px;
+                      background: rgba(255,255,255,0.05);
+                      border: 2px solid rgba(255,255,255,0.1);
+                      --mmp-accent-color: #1DB954;
+                    }
+                    ha-card[data-state="playing"] {
+                      border-color: #1DB954;
+                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
                     }
 
               # Living Room TV
-              - type: custom:button-card
+              - type: custom:mini-media-player
                 entity: media_player.living_room_tv
                 name: Living Room TV
                 icon: mdi:television
-                show_state: true
-                tap_action:
-                  action: call-service
-                  service: spotifyplus.player_transfer_playback
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    device_id: 5dec3d0a-f758-d925-cf9f-62b3824fdb4c
-                    play: true
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #1DB954
-                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
+                artwork: none
+                source: icon
+                sound_mode: icon
+                info: short
+                volume_stateless: false
+                toggle_power: true
+                show_progress: false
+                show_source: false
                 card_mod:
                   style: |
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
+                    ha-card {
+                      border-radius: 12px;
+                      background: rgba(255,255,255,0.05);
+                      border: 2px solid rgba(255,255,255,0.1);
+                      --mmp-accent-color: #1DB954;
+                    }
+                    ha-card[data-state="playing"] {
+                      border-color: #1DB954;
+                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
                     }
 
-              # VLC Server Speaker
-              - type: custom:button-card
+              # VLC Server
+              - type: custom:mini-media-player
                 entity: media_player.vlc_telnet
                 name: Server
                 icon: mdi:speaker-wireless
-                show_state: true
-                tap_action:
-                  action: more-info
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #1DB954
-                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
+                artwork: none
+                source: icon
+                sound_mode: icon
+                info: short
+                volume_stateless: false
+                toggle_power: true
+                show_progress: false
+                show_source: false
                 card_mod:
                   style: |
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
+                    ha-card {
+                      border-radius: 12px;
+                      background: rgba(255,255,255,0.05);
+                      border: 2px solid rgba(255,255,255,0.1);
+                      --mmp-accent-color: #1DB954;
+                    }
+                    ha-card[data-state="playing"] {
+                      border-color: #1DB954;
+                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
                     }
 
-          # === PLAYLISTS SECTION ===
+          # === BROWSE MUSIC BUTTON ===
           - type: custom:button-card
-            name: QUICK PLAYLISTS
+            name: Browse Music Library
             icon: mdi:playlist-music
             show_name: true
             show_icon: true
             tap_action:
-              action: none
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                data:
+                  title: Spotify Library
+                  content:
+                    type: media-control
+                    entity: media_player.spotifyplus_paul_sowu
+            hold_action:
+              action: more-info
+              entity: media_player.spotifyplus_paul_sowu
             styles:
               card:
-                - height: 30px
-                - border-radius: 8px
-                - background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)
-                - box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3)
-                - padding: 0 12px
+                - height: 60px
+                - border-radius: 12px
+                - background: linear-gradient(135deg, rgba(29, 185, 84, 0.2) 0%, rgba(25, 20, 20, 0.4) 100%)
+                - border: 2px solid rgba(29, 185, 84, 0.3)
+                - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.2)
                 - margin-top: 8px
               grid:
                 - grid-template-areas: '"i n"'
                 - grid-template-columns: auto 1fr
               icon:
-                - width: 18px
-                - height: 18px
-                - color: white
-                - margin-right: 8px
+                - width: 28px
+                - height: 28px
+                - color: '#1DB954'
+                - margin-right: 12px
               name:
                 - font-size: 1.1rem
-                - font-weight: 700
+                - font-weight: 600
                 - color: white
                 - justify-self: start
             card_mod:
               style: |
+                ha-card:hover {
+                  border-color: #1DB954;
+                  box-shadow: 0 6px 24px rgba(29, 185, 84, 0.4);
+                }
                 @media (max-width: 1400px) {
-                  ha-card { height: 26px !important; }
+                  ha-card { height: 50px !important; }
                 }
-
-          # Playlist Grid
-          - type: custom:layout-card
-            layout_type: custom:grid-layout
-            layout:
-              grid-template-columns: repeat(4, 1fr)
-              gap: 12px
-            card_mod:
-              style: |
-                @media (max-width: 900px) {
-                  :host { --layout-card-grid-template-columns: repeat(2, 1fr) !important; }
-                }
-            cards:
-              # 2010s Mix
-              - type: custom:button-card
-                name: 2010s Mix
-                icon: mdi:music-note
-                tap_action:
-                  action: call-service
-                  service: spotifyplus.player_media_play_context
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    context_uri: spotify:playlist:37i9dQZF1EQqedj0y9Uwvu
-                styles:
-                  card:
-                    - height: 80px
-                    - border-radius: 12px
-                    - background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 28px
-                    - height: 28px
-                    - color: white
-                  name:
-                    - font-size: 0.95rem
-                    - font-weight: 600
-                card_mod:
-                  style: |
-                    ha-card:hover { border-color: rgba(255,255,255,0.3); }
-                    @media (max-width: 1400px) {
-                      ha-card { height: 65px !important; }
-                    }
-
-              # Old Afrobeats
-              - type: custom:button-card
-                name: Old Afrobeats
-                icon: mdi:music-circle
-                tap_action:
-                  action: call-service
-                  service: spotifyplus.player_media_play_context
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    context_uri: spotify:playlist:0pwtPFYePn1xdpavFkurnh
-                styles:
-                  card:
-                    - height: 80px
-                    - border-radius: 12px
-                    - background: linear-gradient(135deg, rgba(240, 147, 251, 0.3) 0%, rgba(245, 87, 108, 0.3) 100%)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 28px
-                    - height: 28px
-                    - color: white
-                  name:
-                    - font-size: 0.95rem
-                    - font-weight: 600
-                card_mod:
-                  style: |
-                    ha-card:hover { border-color: rgba(255,255,255,0.3); }
-                    @media (max-width: 1400px) {
-                      ha-card { height: 65px !important; }
-                    }
-
-              # Dancehall
-              - type: custom:button-card
-                name: Dancehall
-                icon: mdi:palm-tree
-                tap_action:
-                  action: call-service
-                  service: spotifyplus.player_media_play_context
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    context_uri: spotify:playlist:37i9dQZF1DWWDLvD3P5wOG
-                styles:
-                  card:
-                    - height: 80px
-                    - border-radius: 12px
-                    - background: linear-gradient(135deg, rgba(67, 233, 123, 0.3) 0%, rgba(56, 249, 215, 0.3) 100%)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 28px
-                    - height: 28px
-                    - color: white
-                  name:
-                    - font-size: 0.95rem
-                    - font-weight: 600
-                card_mod:
-                  style: |
-                    ha-card:hover { border-color: rgba(255,255,255,0.3); }
-                    @media (max-width: 1400px) {
-                      ha-card { height: 65px !important; }
-                    }
-
-              # 2025 Mix
-              - type: custom:button-card
-                name: 2025 Mix
-                icon: mdi:fire
-                tap_action:
-                  action: call-service
-                  service: spotifyplus.player_media_play_context
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    context_uri: spotify:playlist:2pGzShubDBpEOhINK1g7ih
-                styles:
-                  card:
-                    - height: 80px
-                    - border-radius: 12px
-                    - background: linear-gradient(135deg, rgba(255, 154, 0, 0.3) 0%, rgba(255, 89, 0, 0.3) 100%)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                  icon:
-                    - width: 28px
-                    - height: 28px
-                    - color: white
-                  name:
-                    - font-size: 0.95rem
-                    - font-weight: 600
-                card_mod:
-                  style: |
-                    ha-card:hover { border-color: rgba(255,255,255,0.3); }
-                    @media (max-width: 1400px) {
-                      ha-card { height: 65px !important; }
-                    }

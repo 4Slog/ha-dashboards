@@ -75,6 +75,8 @@ lovelace:
       type: module
     - url: /hacsfiles/hass-swipe-navigation/swipe-navigation.js
       type: module
+    - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
+      type: module
 
 
 # ===== Dashboards =====
