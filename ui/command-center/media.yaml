@@ -162,7 +162,7 @@ cards:
                   service: spotifyplus.player_transfer_playback
                   service_data:
                     entity_id: media_player.spotifyplus_paul_sowu
-                    device_id: G090LF1072041T5W
+                    device_name: "Kitchen dot"
                     play: true
                 card_mod:
                   style: |
@@ -195,7 +195,7 @@ cards:
                   service: spotifyplus.player_transfer_playback
                   service_data:
                     entity_id: media_player.spotifyplus_paul_sowu
-                    device_id: G6G0XG07940401ME
+                    device_name: "Family dot"
                     play: true
                 card_mod:
                   style: |
@@ -228,7 +228,7 @@ cards:
                   service: spotifyplus.player_transfer_playback
                   service_data:
                     entity_id: media_player.spotifyplus_paul_sowu
-                    device_id: G000RA09913409J6
+                    device_name: "Show 8"
                     play: true
                 card_mod:
                   style: |
@@ -261,7 +261,7 @@ cards:
                   service: spotifyplus.player_transfer_playback
                   service_data:
                     entity_id: media_player.spotifyplus_paul_sowu
-                    device_id: G6G1MK0823260RCW
+                    device_name: "Casa de Sowu"
                     play: true
                 card_mod:
                   style: |
