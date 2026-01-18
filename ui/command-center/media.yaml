@@ -144,188 +144,362 @@ cards:
                   :host { --layout-card-grid-template-columns: repeat(2, 1fr) !important; }
                 }
             cards:
-              # Kitchen Dot - Mini Media Player
-              - type: custom:mini-media-player
+              # Kitchen Dot
+              - type: custom:button-card
                 entity: media_player.kitchen_dot
                 name: Kitchen Dot
                 icon: mdi:speaker
-                artwork: none
-                source: icon
-                sound_mode: icon
-                info: short
-                volume_stateless: false
-                toggle_power: true
-                show_progress: false
-                show_source: false
+                show_state: true
                 tap_action:
                   action: call-service
-                  service: spotifyplus.player_transfer_playback
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    device_name: "Kitchen dot"
-                    play: true
+                  service: script.spotify_transfer_kitchen
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #1DB954
+                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
+                      icon:
+                        - color: '#1DB954'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                  - value: "unavailable"
+                    styles:
+                      card:
+                        - opacity: 0.5
+                      icon:
+                        - color: 'rgba(255,255,255,0.3)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card {
-                      border-radius: 12px;
-                      background: rgba(255,255,255,0.05);
-                      border: 2px solid rgba(255,255,255,0.1);
-                      --mmp-accent-color: #1DB954;
+                    ha-card:hover { 
+                      border-color: rgba(29, 185, 84, 0.5);
+                      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
-                    ha-card[data-state="playing"] {
-                      border-color: #1DB954;
-                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
                     }
 
               # Family Dot
-              - type: custom:mini-media-player
+              - type: custom:button-card
                 entity: media_player.family_dot
                 name: Family Dot
                 icon: mdi:speaker
-                artwork: none
-                source: icon
-                sound_mode: icon
-                info: short
-                volume_stateless: false
-                toggle_power: true
-                show_progress: false
-                show_source: false
+                show_state: true
                 tap_action:
                   action: call-service
-                  service: spotifyplus.player_transfer_playback
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    device_name: "Family dot"
-                    play: true
+                  service: script.spotify_transfer_family
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #1DB954
+                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
+                      icon:
+                        - color: '#1DB954'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                  - value: "unavailable"
+                    styles:
+                      card:
+                        - opacity: 0.5
+                      icon:
+                        - color: 'rgba(255,255,255,0.3)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card {
-                      border-radius: 12px;
-                      background: rgba(255,255,255,0.05);
-                      border: 2px solid rgba(255,255,255,0.1);
-                      --mmp-accent-color: #1DB954;
+                    ha-card:hover { 
+                      border-color: rgba(29, 185, 84, 0.5);
+                      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
-                    ha-card[data-state="playing"] {
-                      border-color: #1DB954;
-                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
                     }
 
               # Show 8
-              - type: custom:mini-media-player
+              - type: custom:button-card
                 entity: media_player.show_8
                 name: Show 8
                 icon: mdi:tablet
-                artwork: none
-                source: icon
-                sound_mode: icon
-                info: short
-                volume_stateless: false
-                toggle_power: true
-                show_progress: false
-                show_source: false
+                show_state: true
                 tap_action:
                   action: call-service
-                  service: spotifyplus.player_transfer_playback
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    device_name: "Show 8"
-                    play: true
+                  service: script.spotify_transfer_show8
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #1DB954
+                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
+                      icon:
+                        - color: '#1DB954'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                  - value: "unavailable"
+                    styles:
+                      card:
+                        - opacity: 0.5
+                      icon:
+                        - color: 'rgba(255,255,255,0.3)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card {
-                      border-radius: 12px;
-                      background: rgba(255,255,255,0.05);
-                      border: 2px solid rgba(255,255,255,0.1);
-                      --mmp-accent-color: #1DB954;
+                    ha-card:hover { 
+                      border-color: rgba(29, 185, 84, 0.5);
+                      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
-                    ha-card[data-state="playing"] {
-                      border-color: #1DB954;
-                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
                     }
 
-              # Great Room Show
-              - type: custom:mini-media-player
+              # Great Room
+              - type: custom:button-card
                 entity: media_player.office
                 name: Great Room
                 icon: mdi:tablet
-                artwork: none
-                source: icon
-                sound_mode: icon
-                info: short
-                volume_stateless: false
-                toggle_power: true
-                show_progress: false
-                show_source: false
+                show_state: true
                 tap_action:
                   action: call-service
-                  service: spotifyplus.player_transfer_playback
-                  service_data:
-                    entity_id: media_player.spotifyplus_paul_sowu
-                    device_name: "Casa de Sowu"
-                    play: true
+                  service: script.spotify_transfer_greatroom
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #1DB954
+                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
+                      icon:
+                        - color: '#1DB954'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                  - value: "unavailable"
+                    styles:
+                      card:
+                        - opacity: 0.5
+                      icon:
+                        - color: 'rgba(255,255,255,0.3)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card {
-                      border-radius: 12px;
-                      background: rgba(255,255,255,0.05);
-                      border: 2px solid rgba(255,255,255,0.1);
-                      --mmp-accent-color: #1DB954;
+                    ha-card:hover { 
+                      border-color: rgba(29, 185, 84, 0.5);
+                      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
-                    ha-card[data-state="playing"] {
-                      border-color: #1DB954;
-                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
                     }
 
-              # Living Room TV
-              - type: custom:mini-media-player
+              # Living Room TV (no Spotify - just media control)
+              - type: custom:button-card
                 entity: media_player.living_room_tv
                 name: Living Room TV
                 icon: mdi:television
-                artwork: none
-                source: icon
-                sound_mode: icon
-                info: short
-                volume_stateless: false
-                toggle_power: true
-                show_progress: false
-                show_source: false
+                show_state: true
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #667eea
+                        - box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4)
+                      icon:
+                        - color: '#667eea'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                  - value: "off"
+                    styles:
+                      card:
+                        - opacity: 0.5
+                      icon:
+                        - color: 'rgba(255,255,255,0.3)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card {
-                      border-radius: 12px;
-                      background: rgba(255,255,255,0.05);
-                      border: 2px solid rgba(255,255,255,0.1);
-                      --mmp-accent-color: #1DB954;
+                    ha-card:hover { 
+                      border-color: rgba(102, 126, 234, 0.5);
+                      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
                     }
-                    ha-card[data-state="playing"] {
-                      border-color: #1DB954;
-                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
                     }
 
-              # VLC Server
-              - type: custom:mini-media-player
+              # Server Speaker (no Spotify - just media control)
+              - type: custom:button-card
                 entity: media_player.vlc_telnet
                 name: Server
                 icon: mdi:speaker-wireless
-                artwork: none
-                source: icon
-                sound_mode: icon
-                info: short
-                volume_stateless: false
-                toggle_power: true
-                show_progress: false
-                show_source: false
+                show_state: true
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #667eea
+                        - box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4)
+                      icon:
+                        - color: '#667eea'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card {
-                      border-radius: 12px;
-                      background: rgba(255,255,255,0.05);
-                      border: 2px solid rgba(255,255,255,0.1);
-                      --mmp-accent-color: #1DB954;
+                    ha-card:hover { 
+                      border-color: rgba(102, 126, 234, 0.5);
+                      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
                     }
-                    ha-card[data-state="playing"] {
-                      border-color: #1DB954;
-                      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4);
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
                     }
 
           # === BROWSE MUSIC BUTTON ===
@@ -335,14 +509,8 @@ cards:
             show_name: true
             show_icon: true
             tap_action:
-              action: fire-dom-event
-              browser_mod:
-                service: browser_mod.popup
-                data:
-                  title: Spotify Library
-                  content:
-                    type: media-control
-                    entity: media_player.spotifyplus_paul_sowu
+              action: more-info
+              entity: media_player.spotifyplus_paul_sowu
             hold_action:
               action: more-info
               entity: media_player.spotifyplus_paul_sowu

@@ -38,3 +38,43 @@ toggle_main_lights:
           target:
             entity_id:
               - switch.master_hallway
+
+# ============================================
+# Spotify Transfer Scripts (added by big bro)
+# ============================================
+
+spotify_transfer_kitchen:
+  alias: "Spotify to Kitchen Dot"
+  sequence:
+    - service: spotifyplus.player_transfer_playback
+      data:
+        entity_id: media_player.spotifyplus_paul_sowu
+        device_name: "Kitchen dot"
+        play: true
+
+spotify_transfer_family:
+  alias: "Spotify to Family Dot"
+  sequence:
+    - service: spotifyplus.player_transfer_playback
+      data:
+        entity_id: media_player.spotifyplus_paul_sowu
+        device_name: "Family dot"
+        play: true
+
+spotify_transfer_show8:
+  alias: "Spotify to Show 8"
+  sequence:
+    - service: spotifyplus.player_transfer_playback
+      data:
+        entity_id: media_player.spotifyplus_paul_sowu
+        device_name: "Show 8"
+        play: true
+
+spotify_transfer_greatroom:
+  alias: "Spotify to Great Room"
+  sequence:
+    - service: spotifyplus.player_transfer_playback
+      data:
+        entity_id: media_player.spotifyplus_paul_sowu
+        device_name: "Casa de Sowu"
+        play: true
