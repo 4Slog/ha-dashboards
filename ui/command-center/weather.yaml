@@ -152,6 +152,7 @@ cards:
                 ]]]
             styles:
               card:
+                - height: 280px
                 - min-height: 280px
                 - border-radius: 16px
                 - box-shadow: 0 4px 12px rgba(0,0,0,0.15)
@@ -207,6 +208,7 @@ cards:
               style: |
                 @media (max-width: 1400px) {
                   ha-card {
+                    height: 200px !important;
                     min-height: 200px !important;
                     padding: 12px !important;
                     border-radius: 12px !important;
