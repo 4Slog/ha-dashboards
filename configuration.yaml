@@ -239,6 +239,10 @@ input_boolean:
   hp_presence:
     name: HP Presence
     icon: mdi:motion-sensor
+  media_photos_visible:
+    name: Media Photos Visible
+    initial: on
+    icon: mdi:image-multiple
 
 # =======================
 #  DEVICE TRACKER - MAURIECE iPHONE
@@ -249,47 +253,6 @@ device_tracker:
       mauriece_iphone: 10.0.0.64
     count: 3
     consider_home: 180  # Consider home for 3 minutes after last seen
-
-# =======================
-#  WAZE TRAVEL TIME
-# =======================
-sensor:
-    
-    
-
-# =======================
-#  DEVICE TRACKER - MAURIECE iPHONE
-# =======================
-device_tracker:
-  - platform: ping
-    hosts:
-      mauriece_iphone: 10.0.0.64
-    count: 3
-    consider_home: 180  # Consider home for 3 minutes after last seen
-
-# =======================
-#  WAZE TRAVEL TIME (Use UI Integration Instead)
-# =======================
-# NOTE: Waze Travel Time is now configured via:
-# Settings → Devices & Services → Add Integration → Waze Travel Time
-# We'll set this up in the UI after this restart
-
-# =======================
-#  DEVICE TRACKER - MAURIECE iPHONE
-# =======================
-device_tracker:
-  - platform: ping
-    hosts:
-      mauriece_iphone: 10.0.0.64
-    count: 3
-    consider_home: 180  # Consider home for 3 minutes after last seen
-
-# =======================
-#  WAZE TRAVEL TIME (Use UI Integration Instead)
-# =======================
-# NOTE: Waze Travel Time is now configured via:
-# Settings → Devices & Services → Add Integration → Waze Travel Time
-# We'll set this up in the UI after this restart
 
 # =======================
 #  HOME ZONE
@@ -300,53 +263,6 @@ zone:
     longitude: -82.1132485
     radius: 100
     icon: mdi:home
-
-# =======================
-#  DEVICE TRACKER - MAURIECE iPHONE
-# =======================
-device_tracker:
-  - platform: ping
-    hosts:
-      mauriece_iphone: 10.0.0.64
-    count: 3
-    consider_home: 180  # Consider home for 3 minutes after last seen
-
-# =======================
-#  WAZE TRAVEL TIME
-# =======================
-sensor:
-    
-    
-
-# =======================
-#  DEVICE TRACKER - MAURIECE iPHONE
-# =======================
-device_tracker:
-  - platform: ping
-    hosts:
-      mauriece_iphone: 10.0.0.64
-    count: 3
-    consider_home: 180  # Consider home for 3 minutes after last seen
-
-# =======================
-#  WAZE TRAVEL TIME (Use UI Integration Instead)
-# =======================
-# NOTE: Waze Travel Time is now configured via:
-# Settings → Devices & Services → Add Integration → Waze Travel Time
-# We'll set this up in the UI after this restart
-
-# Input Booleans for UI controls
-input_boolean:
-  media_photos_visible:
-    name: Media Photos Visible
-    initial: on
-    icon: mdi:image-multiple
-
-
-  hvac_auto_comfort:
-    name: HVAC Auto Comfort
-    initial: off
-    icon: mdi:thermostat-auto
 
 camera: !include cameras.yaml
 ffmpeg:
