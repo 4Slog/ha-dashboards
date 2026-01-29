@@ -57,6 +57,12 @@ lovelace:
       type: module
     - url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js
       type: module
+    - url: /hacsfiles/week-planner-card/week-planner-card.js
+      type: module
+    - url: /hacsfiles/config-template-card/config-template-card.js
+      type: module
+    - url: /hacsfiles/bubble-card/bubble-card.js
+      type: module
     - url: /hacsfiles/auto-entities/auto-entities.js
       type: module
     - url: /hacsfiles/lovelace-mushroom/mushroom.js
