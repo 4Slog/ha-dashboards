@@ -1,6 +1,7 @@
 views:
   - !include ../ui/command-center/lights.yaml
   - !include ../ui/command-center/calendar.yaml
+  - !include ../ui/command-center/calendar-skylight.yaml
   - !include ../ui/command-center/weather.yaml
   - !include ../ui/command-center/cameras.yaml
   - !include ../ui/command-center/family.yaml
