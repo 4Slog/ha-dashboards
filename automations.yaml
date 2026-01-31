@@ -166,3 +166,40 @@
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.hp_presence
+
+- id: doorbell_fullscreen_camera_fully_kiosk
+  alias: "Doorbell - Show Camera on Kitchen Tablet (Fully Kiosk)"
+  description: "When doorbell rings, wake tablet and show front door camera fullscreen"
+  mode: single
+  max_exceeded: silent
+
+  trigger:
+    - platform: state
+      entity_id: event.front_door_ding_2
+      not_from:
+        - "unknown"
+        - "unavailable"
+
+  action:
+    # Step 1: Wake the screen
+    - service: fully_kiosk.turn_screen_on
+      target:
+        device_id: a7d6569ad4d0ec18c24a1be99059f13f
+
+    # Step 2: Load fullscreen camera view
+    - service: fully_kiosk.load_url
+      target:
+        device_id: a7d6569ad4d0ec18c24a1be99059f13f
+      data:
+        url: "http://10.0.0.60:8123/kitchen-tablet/doorbell-fullscreen"
+
+    # Step 3: Wait 45 seconds
+    - delay:
+        seconds: 45
+
+    # Step 4: Return to main dashboard
+    - service: fully_kiosk.load_url
+      target:
+        device_id: a7d6569ad4d0ec18c24a1be99059f13f
+      data:
+        url: "http://10.0.0.60:8123/kitchen-tablet/kitchen_tablet"

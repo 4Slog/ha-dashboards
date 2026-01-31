@@ -1,4 +1,27 @@
 views:
+  # ===========================================
+  # DOORBELL FULLSCREEN VIEW
+  # Hidden view for doorbell automation
+  # ===========================================
+  - title: Doorbell
+    path: doorbell-fullscreen
+    type: panel
+    visible: false
+    cards:
+      - type: custom:webrtc-camera
+        entity: camera.10_0_0_60
+        ui: true
+        style: |
+          ha-card {
+            height: 100vh !important;
+            width: 100vw !important;
+            background: black !important;
+            border-radius: 0 !important;
+          }
+          video {
+            object-fit: contain !important;
+          }
+
   - title: Control Center
     path: kitchen_tablet
     icon: mdi:tablet-dashboard
