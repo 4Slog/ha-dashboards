@@ -66,11 +66,11 @@ cards:
         name: Loblolly
         show_state: false
         camera_view: live
-      - type: picture-entity
+      - type: custom:webrtc-camera
         entity: camera.front_porch_live_view
         name: Front Porch
         show_state: false
-        camera_view: live
+        ui: true
       - type: picture-entity
         entity: camera.wyze_cam
         name: Wyze Cam
