@@ -47,7 +47,7 @@ browser_mod:
 #  LOVELACE DASHBOARDS
 # =======================
 lovelace:
-  mode: yaml
+  resource_mode: yaml
 
   # ===== Custom Card Resources =====
   resources:
