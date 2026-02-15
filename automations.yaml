@@ -116,6 +116,7 @@
           entity: camera.front_door_live_view_2
           camera_view: live
         timeout: 30000
+
 - id: main_lights_master_on
   alias: Main Lights Master On
   mode: single
@@ -182,16 +183,16 @@
 
   action:
     # Step 1: Wake the screen
-    - service: fully_kiosk.turn_screen_on
+    - service: switch.turn_on
       target:
-        device_id: a7d6569ad4d0ec18c24a1be99059f13f
+        entity_id: switch.kitchentablet_screen
 
     # Step 2: Load fullscreen camera view
     - service: fully_kiosk.load_url
       target:
         device_id: a7d6569ad4d0ec18c24a1be99059f13f
       data:
-        url: "http://10.0.0.60:8123/kitchen-tablet/doorbell-fullscreen"
+        url: "http://10.0.0.60:8123/command-center/doorbell-fullscreen"
 
     # Step 3: Wait 45 seconds
     - delay:
@@ -202,4 +203,4 @@
       target:
         device_id: a7d6569ad4d0ec18c24a1be99059f13f
       data:
-        url: "http://10.0.0.60:8123/kitchen-tablet/kitchen_tablet"
+        url: "http://10.0.0.60:8123/command-center/media"
