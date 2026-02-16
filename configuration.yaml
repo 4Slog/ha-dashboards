@@ -7,13 +7,9 @@
 default_config:
 
 # =======================
-#  BLUETOOTH - PREFER TP-LINK ADAPTER WITH ACTIVE SCANNING
+#  BLUETOOTH
 # =======================
 bluetooth:
-  adapters:
-    - "CC:B0:DA:B1:44:68"  # TP-Link adapter (hci1) - more powerful
-    - "E0:D3:62:64:47:D2"  # Built-in adapter (hci0) - fallback
-  passive: false  # Enable active scanning for SwitchBot
 
 # =======================
 #  FRONTEND & THEMES
