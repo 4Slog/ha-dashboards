@@ -248,6 +248,10 @@ input_boolean:
     name: Media Photos Visible
     initial: on
     icon: mdi:image-multiple
+  study_blinds_auto:
+    name: Study Blinds Auto Schedule
+    initial: on
+    icon: mdi:blinds-horizontal
 
 # =======================
 #  DEVICE TRACKER - MAURIECE iPHONE

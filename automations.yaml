@@ -204,3 +204,53 @@
         device_id: a7d6569ad4d0ec18c24a1be99059f13f
       data:
         url: "http://10.0.0.60:8123/command-center/media"
+
+- id: study_blinds_open_weekday
+  alias: "Study Blinds - Open Weekday Morning"
+  description: "Tilt study blinds open at 7:55 AM Mon-Fri for wife's work schedule"
+  mode: single
+  trigger:
+    - platform: time
+      at: "07:55:00"
+  condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: input_boolean.study_blinds_auto
+      state: "on"
+  action:
+    - service: cover.set_cover_tilt_position
+      target:
+        entity_id: cover.blind_tilt_5b8c
+      data:
+        tilt_position: 70
+
+- id: study_blinds_close_weekday
+  alias: "Study Blinds - Close Weekday Evening"
+  description: "Tilt study blinds closed at 5:30 PM Mon-Fri after wife's work"
+  mode: single
+  trigger:
+    - platform: time
+      at: "17:30:00"
+  condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: input_boolean.study_blinds_auto
+      state: "on"
+  action:
+    - service: cover.set_cover_tilt_position
+      target:
+        entity_id: cover.blind_tilt_5b8c
+      data:
+        tilt_position: 100
