@@ -83,55 +83,55 @@ lovelace:
       mode: yaml
       title: Command Center (Show 8)
       icon: mdi:tablet-dashboard
-      show_in_sidebar: true
+      show_in_sidebar: false
       filename: dashboards/command_center_show8.yaml
     casa-de-sowu:
       mode: yaml
       title: Casa de Sowu
       icon: mdi:home
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/casa_de_sowu.yaml
     kitchen-tablet:
       mode: yaml
       title: Kitchen Tablet
       icon: mdi:tablet-dashboard
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/kitchen_tablet.yaml
     casa-dynamic:
       mode: yaml
       title: Casa Dynamic
       icon: mdi:home-lightbulb
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/casa_dynamic.yaml
     great-room:
       mode: yaml
       title: Great Room
       icon: mdi:television
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/great_room.yaml
     fire-tv-master:
       mode: yaml
       title: Master TV
       icon: mdi:television-classic
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/fire_tv_master.yaml
     hp-dashboard:
       mode: yaml
       title: HP Dash
       icon: mdi:monitor
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/hp_dashboard.yaml
     hp-control-center:
       mode: yaml
       title: Control Center
       icon: mdi:monitor-dashboard
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/hp_control_center.yaml
     command-center:
@@ -145,20 +145,20 @@ lovelace:
       mode: yaml
       title: Galaxy Command
       icon: mdi:cellphone-android
-      show_in_sidebar: true
+      show_in_sidebar: false
       filename: dashboards/galaxy.yaml
     tablet-control-center:
       mode: yaml
       title: Tablet Control
       icon: mdi:tablet-dashboard
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/tablet_control_center.yaml
     lovelace-home-media:
       mode: yaml
       title: Home Media
       icon: mdi:home-music
-      show_in_sidebar: true
+      show_in_sidebar: false
       require_admin: false
       filename: dashboards/home_media.yaml
     mobile-dashboard:
