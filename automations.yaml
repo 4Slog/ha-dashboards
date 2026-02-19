@@ -294,3 +294,121 @@
         entity_id: cover.blind_tilt_5b8c
       data:
         tilt_position: 100
+
+# ============================================
+# WHOLE-HOME AUTOMATIONS - FAMILY ROUTINE
+# ============================================
+
+- id: morning_kitchen_lights_weekday
+  alias: "Morning Kitchen Lights - Weekday"
+  description: "Turn on kitchen light when motion detected in kitchen weekday mornings (6:30-10 AM)"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      to: "on"
+  condition:
+    - condition: time
+      after: "06:30:00"
+      before: "10:00:00"
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: light.kitchen_light_switch
+      state: "off"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.kitchen_light_switch
+    - service: logbook.log
+      data:
+        name: Morning Routine
+        message: "Kitchen light turned on - morning motion detected"
+
+- id: evening_wind_down_common_lights
+  alias: "Evening Wind Down - Common Area Lights Off"
+  description: "Turn off kitchen, dining, and great room lights at 9:30 PM when Paul or Tuella are home"
+  mode: single
+  trigger:
+    - platform: time
+      at: "21:30:00"
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.paul
+          state: "home"
+        - condition: state
+          entity_id: person.tuella_sowu
+          state: "home"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.kitchen_light_switch
+          - light.great_room_fan_and_light
+          - light.dining_room_main_light
+    - service: logbook.log
+      data:
+        name: Evening Wind Down
+        message: "Common area lights turned off for bedtime (9:30 PM)"
+
+- id: away_mode_lights_off
+  alias: "Away Mode - Lights Off (Paul + Tuella)"
+  description: "Turn off all common area lights when both Paul and Tuella are away from home"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: person.paul
+      to: "not_home"
+    - platform: state
+      entity_id: person.tuella_sowu
+      to: "not_home"
+  condition:
+    - condition: state
+      entity_id: person.paul
+      state: "not_home"
+    - condition: state
+      entity_id: person.tuella_sowu
+      state: "not_home"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.kitchen_light_switch
+          - light.great_room_fan_and_light
+          - light.dining_room_main_light
+    - service: switch.turn_off
+      target:
+        entity_id: switch.master_hallway
+    - service: logbook.log
+      data:
+        name: Away Mode
+        message: "Paul and Tuella are both away - common area lights turned off"
+
+- id: welcome_home_evening_lights
+  alias: "Welcome Home - Evening Kitchen Light"
+  description: "Turn on kitchen light when Paul or Tuella arrives home after 5 PM"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - person.paul
+        - person.tuella_sowu
+      to: "home"
+  condition:
+    - condition: time
+      after: "17:00:00"
+      before: "23:59:59"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.kitchen_light_switch
+    - service: logbook.log
+      data:
+        name: Welcome Home
+        message: "Someone arrived home after 5 PM - kitchen light turned on"
