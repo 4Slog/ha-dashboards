@@ -252,6 +252,10 @@ input_boolean:
     name: Study Blinds Auto Schedule
     initial: on
     icon: mdi:blinds-horizontal
+  great_room_blinds_auto:
+    name: Great Room Blinds Auto Schedule
+    initial: on
+    icon: mdi:blinds-horizontal
 
 # =======================
 #  DEVICE TRACKER - MAURIECE iPHONE
