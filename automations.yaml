@@ -100,23 +100,6 @@
       data:
         fan_mode: "auto"
 
-- id: doorbell_front_door_popup_kitchen_tablet
-  alias: 'Doorbell Front Door Popup - Kitchen Tablet'
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: event.front_door_ding_2
-  action:
-    - service: browser_mod.popup
-      data:
-        title: Front Door
-        device_id: browser_mod_c145c9d9_9dc38c06
-        content:
-          type: picture-entity
-          entity: camera.front_door_live_view_2
-          camera_view: live
-        timeout: 30000
-
 - id: main_lights_master_on
   alias: Main Lights Master On
   mode: single
@@ -144,67 +127,6 @@
         entity_id:
           - light.kitchen_light_switch
           - light.great_room_fan_and_light
-- id: hp_motion_detected
-  alias: HP Motion Detected
-  description: Triggered when HP webcam detects motion
-  mode: single
-  trigger:
-    - platform: webhook
-      webhook_id: hp_motion_detected
-  action:
-    - service: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.hp_presence
-
-- id: hp_motion_cleared
-  alias: HP Motion Cleared
-  description: Triggered when HP webcam motion clears
-  mode: single
-  trigger:
-    - platform: webhook
-      webhook_id: hp_motion_cleared
-  action:
-    - service: input_boolean.turn_off
-      target:
-        entity_id: input_boolean.hp_presence
-
-- id: doorbell_fullscreen_camera_fully_kiosk
-  alias: "Doorbell - Show Camera on Kitchen Tablet (Fully Kiosk)"
-  description: "When doorbell rings, wake tablet and show front door camera fullscreen"
-  mode: single
-  max_exceeded: silent
-
-  trigger:
-    - platform: state
-      entity_id: event.front_door_ding_2
-      not_from:
-        - "unknown"
-        - "unavailable"
-
-  action:
-    # Step 1: Wake the screen
-    - service: switch.turn_on
-      target:
-        entity_id: switch.kitchentablet_screen
-
-    # Step 2: Load fullscreen camera view
-    - service: fully_kiosk.load_url
-      target:
-        device_id: a7d6569ad4d0ec18c24a1be99059f13f
-      data:
-        url: "http://10.0.0.60:8123/command-center/doorbell-fullscreen"
-
-    # Step 3: Wait 45 seconds
-    - delay:
-        seconds: 45
-
-    # Step 4: Return to main dashboard
-    - service: fully_kiosk.load_url
-      target:
-        device_id: a7d6569ad4d0ec18c24a1be99059f13f
-      data:
-        url: "http://10.0.0.60:8123/command-center/media"
-
 - id: great_room_blinds_open_1130
   alias: "Great Room Blinds - Open at 11:30 AM if Still Closed"
   description: "If great room blinds haven't been manually opened by 11:30 AM, tilt them open"
@@ -328,34 +250,6 @@
       data:
         name: Morning Routine
         message: "Kitchen light turned on - morning motion detected"
-
-- id: evening_wind_down_common_lights
-  alias: "Evening Wind Down - Common Area Lights Off"
-  description: "Turn off kitchen, dining, and great room lights at 9:30 PM when Paul or Tuella are home"
-  mode: single
-  trigger:
-    - platform: time
-      at: "21:30:00"
-  condition:
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.paul
-          state: "home"
-        - condition: state
-          entity_id: person.tuella_sowu
-          state: "home"
-  action:
-    - service: light.turn_off
-      target:
-        entity_id:
-          - light.kitchen_light_switch
-          - light.great_room_fan_and_light
-          - light.dining_room_main_light
-    - service: logbook.log
-      data:
-        name: Evening Wind Down
-        message: "Common area lights turned off for bedtime (9:30 PM)"
 
 - id: away_mode_lights_off
   alias: "Away Mode - Lights Off (Paul + Tuella)"
