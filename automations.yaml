@@ -306,3 +306,137 @@
       data:
         name: Welcome Home
         message: "Someone arrived home after 5 PM - kitchen light turned on"
+
+- id: kitchen_light_auto_off_no_motion
+  alias: "Kitchen Light Auto-Off - No Motion 45 Min"
+  description: "Turn off kitchen light after 45 minutes of no motion on kitchen tablet"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      to: "off"
+      for:
+        minutes: 45
+  condition:
+    - condition: state
+      entity_id: light.kitchen_light_switch
+      state: "on"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.kitchen_light_switch
+    - service: logbook.log
+      data:
+        name: Kitchen Auto-Off
+        message: "Kitchen light turned off - no motion detected for 45 minutes"
+
+- id: sleep_detection_bedtime_routine
+  alias: "Sleep Detection - Bedtime Routine"
+  description: "When both Paul and Tuella are asleep, turn off all lights, fans, close blinds, sleep tablet"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: sensor.sm_s928u1_sleep_confidence
+    - platform: state
+      entity_id: sensor.tuellas_samsung_sleep_confidence
+    - platform: state
+      entity_id: sensor.sm_s928u1_detected_activity
+    - platform: state
+      entity_id: sensor.tuellas_samsung_detected_activity
+    - platform: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      to: "off"
+    - platform: state
+      entity_id: binary_sensor.great_room_ringcsm_motion
+      to: "off"
+    - platform: state
+      entity_id: binary_sensor.living_room_motion_3
+      to: "off"
+  condition:
+    # Must be after 9:30 PM
+    - condition: time
+      after: "21:30:00"
+    # At least one light must be on (prevent re-firing after already done)
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: light.kitchen_light_switch
+          state: "on"
+        - condition: state
+          entity_id: light.great_room_fan_and_light
+          state: "on"
+        - condition: state
+          entity_id: light.dining_room_main_light
+          state: "on"
+    # Both sleep confidence above 75%
+    - condition: numeric_state
+      entity_id: sensor.sm_s928u1_sleep_confidence
+      above: 75
+    - condition: numeric_state
+      entity_id: sensor.tuellas_samsung_sleep_confidence
+      above: 75
+    # Both phones showing still
+    - condition: state
+      entity_id: sensor.sm_s928u1_detected_activity
+      state: "still"
+    - condition: state
+      entity_id: sensor.tuellas_samsung_detected_activity
+      state: "still"
+    # No motion anywhere for 20+ minutes
+    - condition: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      state: "off"
+      for:
+        minutes: 20
+    - condition: state
+      entity_id: binary_sensor.great_room_ringcsm_motion
+      state: "off"
+      for:
+        minutes: 20
+    - condition: state
+      entity_id: binary_sensor.living_room_motion_3
+      state: "off"
+      for:
+        minutes: 20
+  action:
+    # Turn off all lights
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.great_room_fan_and_light
+          - light.dining_room_main_light
+          - light.kitchen_light_switch
+    # Turn off fans
+    - service: fan.turn_off
+      target:
+        entity_id:
+          - fan.great_room_fan_and_light
+          - fan.dining_room_main_fan
+    # Turn off master hallway
+    - service: switch.turn_off
+      target:
+        entity_id: switch.master_hallway
+    # Close blinds
+    - service: cover.set_cover_tilt_position
+      target:
+        entity_id: cover.great_room_blinds
+      data:
+        tilt_position: 99
+    - service: cover.set_cover_tilt_position
+      target:
+        entity_id: cover.blind_tilt_5b8c
+      data:
+        tilt_position: 100
+    # Sleep kitchen tablet
+    - service: number.set_value
+      target:
+        entity_id: number.vaca_ea80840db_screen_brightness
+      data:
+        value: 0
+    - service: button.press
+      target:
+        entity_id: button.vaca_ea80840db_sleep_screen
+    - service: logbook.log
+      data:
+        name: Sleep Detection
+        message: "Both Paul and Tuella asleep - bedtime routine executed"
