@@ -308,26 +308,34 @@
         message: "Someone arrived home after 5 PM - kitchen light turned on"
 
 - id: front_porch_light_sunset_on
-  alias: "Front Porch Light - On at Sunset"
-  description: "Turn on front porch light 15 minutes before sunset"
+  alias: "Front Porch Light - Sunset Failsafe"
+  description: "30 min after sunset, turn on front porch if Alexa routine hasn't already"
   mode: single
   trigger:
     - platform: sun
       event: sunset
-      offset: "-00:15:00"
+      offset: "+00:30:00"
+  condition:
+    - condition: state
+      entity_id: input_boolean.front_porch_virtual_toggle
+      state: "off"
   action:
     - service: input_boolean.turn_on
       target:
         entity_id: input_boolean.front_porch_virtual_toggle
 
 - id: front_porch_light_sunrise_off
-  alias: "Front Porch Light - Off at Sunrise"
-  description: "Turn off front porch light at sunrise"
+  alias: "Front Porch Light - Sunrise Failsafe"
+  description: "30 min after sunrise, turn off front porch if Alexa routine hasn't already"
   mode: single
   trigger:
     - platform: sun
       event: sunrise
-      offset: "+00:15:00"
+      offset: "+00:30:00"
+  condition:
+    - condition: state
+      entity_id: input_boolean.front_porch_virtual_toggle
+      state: "on"
   action:
     - service: input_boolean.turn_off
       target:
