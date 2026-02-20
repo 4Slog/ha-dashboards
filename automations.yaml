@@ -307,6 +307,32 @@
         name: Welcome Home
         message: "Someone arrived home after 5 PM - kitchen light turned on"
 
+- id: front_porch_light_sunset_on
+  alias: "Front Porch Light - On at Sunset"
+  description: "Turn on front porch light 15 minutes before sunset"
+  mode: single
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "-00:15:00"
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.front_porch_virtual_toggle
+
+- id: front_porch_light_sunrise_off
+  alias: "Front Porch Light - Off at Sunrise"
+  description: "Turn off front porch light at sunrise"
+  mode: single
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "+00:15:00"
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.front_porch_virtual_toggle
+
 - id: front_porch_virtual_toggle_sync
   alias: "Front Porch Light - Virtual Toggle Sync"
   description: "When front porch virtual toggle changes, send command to Alexa to control the physical Amazon switch"
