@@ -307,6 +307,40 @@
         name: Welcome Home
         message: "Someone arrived home after 5 PM - kitchen light turned on"
 
+- id: midnight_lights_off_backup
+  alias: "2 AM Backup - Common Area Lights Off"
+  description: "Backup to sleep detection - turn off common area lights at 2 AM if Paul or Tuella are home and no kitchen motion"
+  mode: single
+  trigger:
+    - platform: time
+      at: "02:00:00"
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.paul
+          state: "home"
+        - condition: state
+          entity_id: person.tuella_sowu
+          state: "home"
+    # Don't run if Mauriece is in the kitchen
+    - condition: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      state: "off"
+      for:
+        minutes: 30
+  action:
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.kitchen_light_switch
+          - light.great_room_fan_and_light
+          - light.dining_room_main_light
+    - service: logbook.log
+      data:
+        name: 2 AM Backup
+        message: "2 AM backup triggered - common area lights turned off"
+
 - id: kitchen_light_auto_off_no_motion
   alias: "Kitchen Light Auto-Off - No Motion 45 Min"
   description: "Turn off kitchen light after 45 minutes of no motion on kitchen tablet"
@@ -382,7 +416,7 @@
     - condition: state
       entity_id: sensor.tuellas_samsung_detected_activity
       state: "still"
-    # No motion anywhere for 20+ minutes
+    # No motion anywhere for 20+ minutes (also catches Mauriece still being up)
     - condition: state
       entity_id: binary_sensor.vaca_ea80840db_motion
       state: "off"
