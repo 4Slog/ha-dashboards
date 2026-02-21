@@ -16,27 +16,6 @@ cards:
       padding: 12px
 
     cards:
-      # Home Button
-      - type: custom:mushroom-template-card
-        primary: Home
-        icon: mdi:home
-        icon_color: blue
-        tap_action:
-          action: navigate
-          navigation_path: /mobile-dashboard/home
-        card_mod:
-          style: |
-            ha-card {
-              border-radius: 12px;
-              box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              transition: all 0.3s ease;
-              font-size: 1.1rem !important;
-            }
-            ha-card:active {
-              transform: scale(0.98);
-            }
-
       # Weather & Comfort Section
       - !include ../shared-cards/weather-comfort.yaml
 

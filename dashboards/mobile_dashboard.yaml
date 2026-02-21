@@ -1,3 +1,6 @@
+swipe_nav:
+  enable: false
+
 views:
   - !include ../ui/views/mobile-home.yaml
   - !include ../ui/views/mobile-weather.yaml

@@ -20,70 +20,120 @@ cards:
       - type: vertical-stack
         cards:
           # Paul
-          - type: custom:mushroom-person-card
-            entity: person.paul_sowu
-            use_entity_picture: true
-            layout: vertical
-            primary_info: name
-            secondary_info: state
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 16px;
-                  font-size: 1.2rem !important;
-                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                }
-
-          - type: custom:mushroom-chips-card
-            chips:
-              - type: entity
-                entity: sensor.paul_s_phone_battery_level
-                name: Battery
-              - type: entity
-                entity: sensor.paul_s_phone_battery_state
-                name: Charging
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 16px;
-                  font-size: 1.1rem !important;
-                  margin-top: -8px;
-                  margin-bottom: 16px;
-                  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                }
+          - type: custom:button-card
+            entity: person.paul
+            name: Paul
+            show_entity_picture: true
+            show_name: true
+            show_state: false
+            custom_fields:
+              battery: |
+                [[[
+                  const tracker = states['device_tracker.paul_360'];
+                  if (tracker && tracker.attributes.battery_level) {
+                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                    return `<span style="font-size: 1.0rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+                  }
+                  return '';
+                ]]]
+              status: |
+                [[[
+                  const tracker = states['device_tracker.paul_360'];
+                  if (!tracker) return '';
+                  if (tracker.state === 'home') return `<span style="font-size: 1.1rem; font-weight: 600;">🏠 Home</span>`;
+                  if (tracker.attributes.driving) return `<span style="font-size: 1.1rem; font-weight: 600;">🚗 Driving</span>`;
+                  return `<span style="font-size: 1.1rem; font-weight: 600;">📍 Away</span>`;
+                ]]]
+            styles:
+              card:
+                - height: 160px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+                - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
+                - padding: 12px
+                - margin-bottom: 12px
+              grid:
+                - grid-template-areas: '"i" "n" "battery" "status"'
+                - grid-template-rows: 70px auto auto auto
+              img_cell:
+                - width: 70px
+                - height: 70px
+                - border-radius: 50%
+                - border: 3px solid white
+                - justify-self: center
+              name:
+                - font-size: 1.2rem
+                - font-weight: 700
+                - color: white
+                - justify-self: center
+                - margin-top: 4px
+              custom_fields:
+                battery:
+                  - justify-self: center
+                  - color: white
+                  - margin-top: 4px
+                status:
+                  - justify-self: center
+                  - color: white
+                  - margin-top: 4px
 
           # Tuella
-          - type: custom:mushroom-person-card
+          - type: custom:button-card
             entity: person.tuella_sowu
-            use_entity_picture: true
-            layout: vertical
-            primary_info: name
-            secondary_info: state
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 16px;
-                  font-size: 1.2rem !important;
-                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                }
-
-          - type: custom:mushroom-chips-card
-            chips:
-              - type: entity
-                entity: sensor.tuellas_samsung_battery_level
-                name: Battery
-              - type: entity
-                entity: sensor.tuellas_samsung_battery_state
-                name: Charging
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 16px;
-                  font-size: 1.1rem !important;
-                  margin-top: -8px;
-                  margin-bottom: 16px;
-                  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                }
+            name: Tuella
+            show_entity_picture: true
+            show_name: true
+            show_state: false
+            custom_fields:
+              battery: |
+                [[[
+                  const tracker = states['device_tracker.tuella_360'];
+                  if (tracker && tracker.attributes.battery_level) {
+                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                    return `<span style="font-size: 1.0rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+                  }
+                  return '';
+                ]]]
+              status: |
+                [[[
+                  const tracker = states['device_tracker.tuella_360'];
+                  if (!tracker) return '';
+                  if (tracker.state === 'home') return `<span style="font-size: 1.1rem; font-weight: 600;">🏠 Home</span>`;
+                  if (tracker.attributes.driving) return `<span style="font-size: 1.1rem; font-weight: 600;">🚗 Driving</span>`;
+                  return `<span style="font-size: 1.1rem; font-weight: 600;">📍 Away</span>`;
+                ]]]
+            styles:
+              card:
+                - height: 160px
+                - border-radius: 16px
+                - background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)
+                - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
+                - padding: 12px
+                - margin-bottom: 12px
+              grid:
+                - grid-template-areas: '"i" "n" "battery" "status"'
+                - grid-template-rows: 70px auto auto auto
+              img_cell:
+                - width: 70px
+                - height: 70px
+                - border-radius: 50%
+                - border: 3px solid white
+                - justify-self: center
+              name:
+                - font-size: 1.2rem
+                - font-weight: 700
+                - color: white
+                - justify-self: center
+                - margin-top: 4px
+              custom_fields:
+                battery:
+                  - justify-self: center
+                  - color: white
+                  - margin-top: 4px
+                status:
+                  - justify-self: center
+                  - color: white
+                  - margin-top: 4px
 
           # Mauriece
           - type: custom:mushroom-person-card

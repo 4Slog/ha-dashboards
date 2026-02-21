@@ -1,6 +1,6 @@
-title: Front Door
+title: Cameras
 path: frontdoor
-icon: mdi:shield-home
+icon: mdi:cctv
 panel: true
 theme: default
 
@@ -16,74 +16,242 @@ cards:
       padding: 12px
 
     cards:
-      # Home Button
-      - type: custom:mushroom-template-card
-        primary: Home
-        icon: mdi:home
-        icon_color: blue
-        tap_action:
-          action: navigate
-          navigation_path: /mobile-dashboard/home
+      # === FEATURED CAMERA ===
+
+      # Front Door Featured
+      - type: conditional
+        conditions:
+          - entity: input_select.featured_camera
+            state: "front_door"
+        card:
+          type: picture-entity
+          entity: camera.10_0_0_60
+          name: Front Door
+          camera_view: live
+          show_name: true
+          show_state: false
+          tap_action:
+            action: more-info
+          card_mod:
+            style: |
+              ha-card {
+                height: 240px;
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                overflow: hidden;
+              }
+              ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+      # Wyze Cam Featured
+      - type: conditional
+        conditions:
+          - entity: input_select.featured_camera
+            state: "wyze_cam"
+        card:
+          type: picture-entity
+          entity: camera.wyze_cam
+          name: Wyze Cam
+          camera_view: live
+          show_name: true
+          show_state: false
+          tap_action:
+            action: more-info
+          card_mod:
+            style: |
+              ha-card {
+                height: 240px;
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                overflow: hidden;
+              }
+              ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+      # Pan Cam Featured
+      - type: conditional
+        conditions:
+          - entity: input_select.featured_camera
+            state: "pan_cam"
+        card:
+          type: picture-entity
+          entity: camera.pan_cam
+          name: Pan Cam
+          camera_view: live
+          show_name: true
+          show_state: false
+          tap_action:
+            action: more-info
+          card_mod:
+            style: |
+              ha-card {
+                height: 240px;
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                overflow: hidden;
+              }
+              ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+      # Redbase Featured
+      - type: conditional
+        conditions:
+          - entity: input_select.featured_camera
+            state: "redbase"
+        card:
+          type: picture-entity
+          entity: camera.redbase
+          name: Redbase
+          camera_view: live
+          show_name: true
+          show_state: false
+          tap_action:
+            action: more-info
+          card_mod:
+            style: |
+              ha-card {
+                height: 240px;
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                overflow: hidden;
+              }
+              ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+      # === THUMBNAIL GRID (tap to feature) ===
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(2, 1fr)
+          gap: 10px
+        cards:
+          # Front Door Thumbnail
+          - type: conditional
+            conditions:
+              - entity: input_select.featured_camera
+                state_not: "front_door"
+            card:
+              type: picture-entity
+              entity: camera.10_0_0_60
+              name: Front Door
+              camera_view: live
+              show_name: true
+              show_state: false
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                service_data:
+                  entity_id: input_select.featured_camera
+                  option: "front_door"
+              card_mod:
+                style: |
+                  ha-card {
+                    height: 130px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    overflow: hidden;
+                  }
+                  ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+          # Wyze Cam Thumbnail
+          - type: conditional
+            conditions:
+              - entity: input_select.featured_camera
+                state_not: "wyze_cam"
+            card:
+              type: picture-entity
+              entity: camera.wyze_cam
+              name: Wyze Cam
+              camera_view: live
+              show_name: true
+              show_state: false
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                service_data:
+                  entity_id: input_select.featured_camera
+                  option: "wyze_cam"
+              card_mod:
+                style: |
+                  ha-card {
+                    height: 130px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    overflow: hidden;
+                  }
+                  ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+          # Pan Cam Thumbnail
+          - type: conditional
+            conditions:
+              - entity: input_select.featured_camera
+                state_not: "pan_cam"
+            card:
+              type: picture-entity
+              entity: camera.pan_cam
+              name: Pan Cam
+              camera_view: live
+              show_name: true
+              show_state: false
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                service_data:
+                  entity_id: input_select.featured_camera
+                  option: "pan_cam"
+              card_mod:
+                style: |
+                  ha-card {
+                    height: 130px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    overflow: hidden;
+                  }
+                  ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+          # Redbase Thumbnail
+          - type: conditional
+            conditions:
+              - entity: input_select.featured_camera
+                state_not: "redbase"
+            card:
+              type: picture-entity
+              entity: camera.redbase
+              name: Redbase
+              camera_view: live
+              show_name: true
+              show_state: false
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                service_data:
+                  entity_id: input_select.featured_camera
+                  option: "redbase"
+              card_mod:
+                style: |
+                  ha-card {
+                    height: 130px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    overflow: hidden;
+                  }
+                  ha-card img { object-fit: cover; height: 100%; width: 100%; }
+
+      # === FRONT DOOR CONTROLS (mobile extra) ===
+      - type: entities
+        title: Front Door Controls
+        state_color: true
+        entities:
+          - entity: switch.front_door_in_home_chime
+            name: In-Home Chime
+          - entity: switch.front_door_motion_detection
+            name: Motion Detection
+          - entity: switch.front_door_motion_detection_2
+            name: Motion Detection (Alt)
+          - entity: number.front_door_volume
+            name: Chime Volume
+          - entity: sensor.front_door_last_activity
+            name: Last Activity
         card_mod:
           style: |
             ha-card {
+              font-size: 0.95rem !important;
               border-radius: 12px;
-              box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              transition: all 0.3s ease;
-              font-size: 1.1rem !important;
+              box-shadow: 0 3px 8px rgba(0,0,0,0.15);
             }
-            ha-card:active {
-              transform: scale(0.98);
-            }
-
-      # Front Door Section
-      - type: vertical-stack
-        cards:
-          - type: heading
-            heading: Front Door
-            heading_style: title
-            icon: mdi:shield-home
-            card_mod:
-              style: |
-                ha-card {
-                  font-size: 1.2rem !important;
-                }
-
-          - type: grid
-            columns: 1
-            square: false
-            cards:
-              - type: picture-entity
-                entity: camera.front_door_live_view_2
-                name: Front Door
-                camera_view: auto
-                card_mod:
-                  style: |
-                    ha-card {
-                      min-height: 250px;
-                      border-radius: 12px;
-                      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-                    }
-
-              - type: entities
-                title: Front Door Controls
-                state_color: true
-                entities:
-                  - entity: switch.front_door_in_home_chime
-                    name: In-Home Chime
-                  - entity: switch.front_door_motion_detection
-                    name: Motion Detection
-                  - entity: switch.front_door_motion_detection_2
-                    name: Motion Detection (Alt)
-                  - entity: number.front_door_volume
-                    name: Chime Volume
-                  - entity: sensor.front_door_last_activity
-                    name: Last Activity
-                card_mod:
-                  style: |
-                    ha-card {
-                      font-size: 0.95rem !important;
-                      border-radius: 12px;
-                      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-                    }
