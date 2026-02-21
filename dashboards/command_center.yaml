@@ -5,4 +5,3 @@ views:
   - !include ../ui/command-center/cameras.yaml
   - !include ../ui/command-center/family.yaml
   - !include ../ui/command-center/media.yaml
-  - !include ../ui/command-center/doorbell-fullscreen.yaml
