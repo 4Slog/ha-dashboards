@@ -128,8 +128,8 @@
           - light.kitchen_light_switch
           - light.great_room_fan_and_light
 - id: great_room_blinds_open_1130
-  alias: "Great Room Blinds - Open at 11:30 AM if Still Closed"
-  description: "If great room blinds haven't been manually opened by 11:30 AM, tilt them open"
+  alias: "Great Room Blinds - Open at 8:00 AM if Still Closed"
+  description: "If great room blinds haven't been manually opened by 8:00 AM, open them fully"
   mode: single
   trigger:
     - platform: time
@@ -147,7 +147,7 @@
       target:
         entity_id: cover.great_room_blinds
       data:
-        tilt_position: 78
+        tilt_position: 50
 
 - id: great_room_blinds_close_530
   alias: "Great Room Blinds - Close at 5:30 PM"
