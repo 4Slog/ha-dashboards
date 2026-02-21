@@ -4,166 +4,201 @@ cards:
     heading: Family Location
     heading_style: title
     icon: mdi:map-marker-account
+
+  # Row 1 — 3 person cards
+  - type: grid
+    columns: 3
+    square: false
+    cards:
+      # Paul
+      - type: custom:button-card
+        entity: person.paul
+        name: Paul
+        show_entity_picture: true
+        show_name: true
+        show_state: false
+        custom_fields:
+          battery: |
+            [[[
+              const tracker = states['device_tracker.paul_360'];
+              if (tracker && tracker.attributes.battery_level) {
+                const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                return `<span style="font-size: 0.85rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+              }
+              return '';
+            ]]]
+          status: |
+            [[[
+              const tracker = states['device_tracker.paul_360'];
+              if (!tracker) return '';
+              if (tracker.state === 'home') return `<span style="font-size: 0.9rem; font-weight: 600;">🏠 Home</span>`;
+              if (tracker.attributes.driving) return `<span style="font-size: 0.9rem; font-weight: 600;">🚗 Driving</span>`;
+              return `<span style="font-size: 0.9rem; font-weight: 600;">📍 Away</span>`;
+            ]]]
+        styles:
+          card:
+            - height: 150px
+            - border-radius: 16px
+            - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+            - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
+            - padding: 10px
+          grid:
+            - grid-template-areas: '"i" "n" "battery" "status"'
+            - grid-template-rows: 60px auto auto 1fr
+          img_cell:
+            - width: 60px
+            - height: 60px
+            - border-radius: 50%
+            - border: 2px solid white
+            - justify-self: center
+            - margin-bottom: 4px
+          name:
+            - font-size: 1.0rem
+            - font-weight: 700
+            - color: white
+            - justify-self: center
+            - margin-bottom: 4px
+          custom_fields:
+            battery:
+              - justify-self: center
+              - color: white
+              - margin-bottom: 2px
+            status:
+              - justify-self: center
+              - color: white
+              - text-align: center
+
+      # Tuella
+      - type: custom:button-card
+        entity: person.tuella_sowu
+        name: Tuella
+        show_entity_picture: true
+        show_name: true
+        show_state: false
+        custom_fields:
+          battery: |
+            [[[
+              const tracker = states['device_tracker.tuella_360'];
+              if (tracker && tracker.attributes.battery_level) {
+                const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                return `<span style="font-size: 0.85rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+              }
+              return '';
+            ]]]
+          status: |
+            [[[
+              const tracker = states['device_tracker.tuella_360'];
+              if (!tracker) return '';
+              if (tracker.state === 'home') return `<span style="font-size: 0.9rem; font-weight: 600;">🏠 Home</span>`;
+              if (tracker.attributes.driving) return `<span style="font-size: 0.9rem; font-weight: 600;">🚗 Driving</span>`;
+              return `<span style="font-size: 0.9rem; font-weight: 600;">📍 Away</span>`;
+            ]]]
+        styles:
+          card:
+            - height: 150px
+            - border-radius: 16px
+            - background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)
+            - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
+            - padding: 10px
+          grid:
+            - grid-template-areas: '"i" "n" "battery" "status"'
+            - grid-template-rows: 60px auto auto 1fr
+          img_cell:
+            - width: 60px
+            - height: 60px
+            - border-radius: 50%
+            - border: 2px solid white
+            - justify-self: center
+            - margin-bottom: 4px
+          name:
+            - font-size: 1.0rem
+            - font-weight: 700
+            - color: white
+            - justify-self: center
+            - margin-bottom: 4px
+          custom_fields:
+            battery:
+              - justify-self: center
+              - color: white
+              - margin-bottom: 2px
+            status:
+              - justify-self: center
+              - color: white
+              - text-align: center
+
+      # Mauriece
+      - type: custom:button-card
+        entity: person.mauriece
+        name: Mauriece
+        show_entity_picture: true
+        show_name: true
+        show_state: false
+        custom_fields:
+          battery: |
+            [[[
+              const tracker = states['device_tracker.mauriece_360'];
+              if (tracker && tracker.attributes.battery_level) {
+                const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
+                return `<span style="font-size: 0.85rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
+              }
+              return '';
+            ]]]
+          status: |
+            [[[
+              const tracker = states['device_tracker.mauriece_360'];
+              if (!tracker) return '';
+              if (tracker.state === 'home') return `<span style="font-size: 0.9rem; font-weight: 600;">🏠 Home</span>`;
+              if (tracker.attributes.driving) return `<span style="font-size: 0.9rem; font-weight: 600;">🚗 Driving</span>`;
+              return `<span style="font-size: 0.9rem; font-weight: 600;">📍 Away</span>`;
+            ]]]
+        styles:
+          card:
+            - height: 150px
+            - border-radius: 16px
+            - background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)
+            - box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3)
+            - padding: 10px
+          grid:
+            - grid-template-areas: '"i" "n" "battery" "status"'
+            - grid-template-rows: 60px auto auto 1fr
+          img_cell:
+            - width: 60px
+            - height: 60px
+            - border-radius: 50%
+            - border: 2px solid white
+            - justify-self: center
+            - margin-bottom: 4px
+          name:
+            - font-size: 1.0rem
+            - font-weight: 700
+            - color: white
+            - justify-self: center
+            - margin-bottom: 4px
+          custom_fields:
+            battery:
+              - justify-self: center
+              - color: white
+              - margin-bottom: 2px
+            status:
+              - justify-self: center
+              - color: white
+              - text-align: center
+
+  # Row 2 — Full width square map
+  - type: map
+    entities:
+      - person.paul
+      - person.tuella_sowu
+      - person.mauriece
+      - zone.home
+    hours_to_show: 2
+    default_zoom: 13
+    dark_mode: true
     card_mod:
       style: |
         ha-card {
-          font-size: 1.4rem !important;
+          aspect-ratio: 1 / 1;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          overflow: hidden;
         }
-
-  - type: custom:layout-card
-    layout_type: custom:grid-layout
-    layout:
-      grid-template-columns: 1fr 2fr
-      gap: 16px
-    cards:
-      # LEFT COLUMN: Person cards and batteries
-      - type: vertical-stack
-        cards:
-          # Paul
-          - type: custom:button-card
-            entity: person.paul
-            name: Paul
-            show_entity_picture: true
-            show_name: true
-            show_state: false
-            custom_fields:
-              battery: |
-                [[[
-                  const tracker = states['device_tracker.paul_360'];
-                  if (tracker && tracker.attributes.battery_level) {
-                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
-                    return `<span style="font-size: 1.0rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
-                  }
-                  return '';
-                ]]]
-              status: |
-                [[[
-                  const tracker = states['device_tracker.paul_360'];
-                  if (!tracker) return '';
-                  if (tracker.state === 'home') return `<span style="font-size: 1.1rem; font-weight: 600;">🏠 Home</span>`;
-                  if (tracker.attributes.driving) return `<span style="font-size: 1.1rem; font-weight: 600;">🚗 Driving</span>`;
-                  return `<span style="font-size: 1.1rem; font-weight: 600;">📍 Away</span>`;
-                ]]]
-            styles:
-              card:
-                - height: 160px
-                - border-radius: 16px
-                - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
-                - box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3)
-                - padding: 12px
-                - margin-bottom: 12px
-              grid:
-                - grid-template-areas: '"i" "n" "battery" "status"'
-                - grid-template-rows: 70px auto auto auto
-              img_cell:
-                - width: 70px
-                - height: 70px
-                - border-radius: 50%
-                - border: 3px solid white
-                - justify-self: center
-              name:
-                - font-size: 1.2rem
-                - font-weight: 700
-                - color: white
-                - justify-self: center
-                - margin-top: 4px
-              custom_fields:
-                battery:
-                  - justify-self: center
-                  - color: white
-                  - margin-top: 4px
-                status:
-                  - justify-self: center
-                  - color: white
-                  - margin-top: 4px
-
-          # Tuella
-          - type: custom:button-card
-            entity: person.tuella_sowu
-            name: Tuella
-            show_entity_picture: true
-            show_name: true
-            show_state: false
-            custom_fields:
-              battery: |
-                [[[
-                  const tracker = states['device_tracker.tuella_360'];
-                  if (tracker && tracker.attributes.battery_level) {
-                    const charging = tracker.attributes.battery_charging ? '⚡' : '🔋';
-                    return `<span style="font-size: 1.0rem;">${charging} ${tracker.attributes.battery_level}%</span>`;
-                  }
-                  return '';
-                ]]]
-              status: |
-                [[[
-                  const tracker = states['device_tracker.tuella_360'];
-                  if (!tracker) return '';
-                  if (tracker.state === 'home') return `<span style="font-size: 1.1rem; font-weight: 600;">🏠 Home</span>`;
-                  if (tracker.attributes.driving) return `<span style="font-size: 1.1rem; font-weight: 600;">🚗 Driving</span>`;
-                  return `<span style="font-size: 1.1rem; font-weight: 600;">📍 Away</span>`;
-                ]]]
-            styles:
-              card:
-                - height: 160px
-                - border-radius: 16px
-                - background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)
-                - box-shadow: 0 4px 12px rgba(250, 112, 154, 0.3)
-                - padding: 12px
-                - margin-bottom: 12px
-              grid:
-                - grid-template-areas: '"i" "n" "battery" "status"'
-                - grid-template-rows: 70px auto auto auto
-              img_cell:
-                - width: 70px
-                - height: 70px
-                - border-radius: 50%
-                - border: 3px solid white
-                - justify-self: center
-              name:
-                - font-size: 1.2rem
-                - font-weight: 700
-                - color: white
-                - justify-self: center
-                - margin-top: 4px
-              custom_fields:
-                battery:
-                  - justify-self: center
-                  - color: white
-                  - margin-top: 4px
-                status:
-                  - justify-self: center
-                  - color: white
-                  - margin-top: 4px
-
-          # Mauriece
-          - type: custom:mushroom-person-card
-            entity: person.mauriece
-            use_entity_picture: true
-            layout: vertical
-            primary_info: name
-            secondary_info: state
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 16px;
-                  font-size: 1.2rem !important;
-                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                }
-
-      # RIGHT COLUMN: Map
-      - type: map
-        entities:
-          - person.paul_sowu
-          - person.tuella_sowu
-          - person.mauriece
-          - zone.home
-        hours_to_show: 2
-        default_zoom: 13
-        dark_mode: true
-        card_mod:
-          style: |
-            ha-card {
-              min-height: 500px;
-              border-radius: 16px;
-              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }

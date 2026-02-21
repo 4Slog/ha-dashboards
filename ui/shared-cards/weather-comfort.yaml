@@ -1,39 +1,38 @@
 type: vertical-stack
 cards:
+  # Heading
   - type: heading
     heading: Weather & Comfort
     heading_style: title
     icon: mdi:weather-partly-cloudy
+
+  # Row 1 — Full width forecast
+  - type: weather-forecast
+    entity: weather.forecast_home
+    show_forecast: true
     card_mod:
       style: |
         ha-card {
-          font-size: 1.4rem !important;
+          width: 100%;
+          min-height: 200px;
+          font-size: 1.1rem !important;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
+  # Row 2 — Thermostat + HVAC Auto Comfort (2 columns)
   - type: grid
-    columns: 3
+    columns: 2
     square: false
     cards:
-      - type: weather-forecast
-        entity: weather.forecast_home
-        show_forecast: true
-        card_mod:
-          style: |
-            ha-card {
-              min-height: 280px;
-              font-size: 1.15rem !important;
-              border-radius: 16px;
-              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-
       - type: thermostat
         entity: climate.thermostat
         name: Thermostat
         card_mod:
           style: |
             ha-card {
-              min-height: 280px;
-              font-size: 1.15rem !important;
+              min-height: 240px;
+              font-size: 1.1rem !important;
               border-radius: 16px;
               box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
@@ -60,9 +59,9 @@ cards:
             [[[
               const t = states['sensor.average_home_temperature'];
               if (t && t.state !== 'unknown' && t.state !== 'unavailable') {
-                return `<span style="font-size: 2rem; font-weight: 700;">${t.state}°F</span>`;
+                return `<span style="font-size: 1.8rem; font-weight: 700;">${t.state}°F</span>`;
               }
-              return '<span style="font-size: 2rem; font-weight: 700;">--°F</span>';
+              return '<span style="font-size: 1.8rem; font-weight: 700;">--°F</span>';
             ]]]
           label: |
             [[[
@@ -70,7 +69,7 @@ cards:
             ]]]
         styles:
           card:
-            - min-height: 280px
+            - min-height: 240px
             - border-radius: 16px
             - box-shadow: 0 4px 12px rgba(0,0,0,0.15)
             - padding: 16px
@@ -83,7 +82,7 @@ cards:
             - color: white
             - justify-self: center
           name:
-            - font-size: 1.2rem
+            - font-size: 1.1rem
             - font-weight: 700
             - color: white
             - justify-self: center
@@ -91,7 +90,7 @@ cards:
           custom_fields:
             band:
               - justify-self: center
-              - font-size: 0.9rem
+              - font-size: 0.85rem
               - color: rgba(255,255,255,0.9)
               - margin-top: 6px
             temp:
@@ -100,7 +99,7 @@ cards:
               - margin-top: 10px
             label:
               - justify-self: center
-              - font-size: 0.85rem
+              - font-size: 0.8rem
               - color: rgba(255,255,255,0.8)
               - margin-top: 2px
         state:
