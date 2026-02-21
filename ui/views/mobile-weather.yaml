@@ -39,3 +39,54 @@ cards:
 
       # Weather & Comfort Section
       - !include ../shared-cards/weather-comfort.yaml
+
+      # Room Temperatures
+      - type: vertical-stack
+        cards:
+          - type: heading
+            heading: Room Temperatures
+            heading_style: title
+            icon: mdi:thermometer
+
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: tile
+                entity: sensor.lumi_lumi_weather_temperature
+                name: Master Bedroom
+                color: purple
+                vertical: true
+                card_mod:
+                  style: |
+                    ha-card {
+                      min-height: 100px;
+                      border-radius: 16px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    }
+
+              - type: tile
+                entity: sensor.temp_bedroom_wing_temperature
+                name: Galley
+                color: green
+                vertical: true
+                card_mod:
+                  style: |
+                    ha-card {
+                      min-height: 100px;
+                      border-radius: 16px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    }
+
+              - type: tile
+                entity: sensor.temp_bedroom_wing_temperature_2
+                name: Blue Room
+                color: blue
+                vertical: true
+                card_mod:
+                  style: |
+                    ha-card {
+                      min-height: 100px;
+                      border-radius: 16px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    }

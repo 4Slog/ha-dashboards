@@ -38,17 +38,77 @@ cards:
               box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
 
-      - type: tile
-        entity: sensor.average_home_temperature
-        name: Indoor Average
-        color: blue
-        card_mod:
-          style: |
-            ha-card {
-              min-height: 280px;
-              display: flex;
-              align-items: center;
-              font-size: 1.3rem !important;
-              border-radius: 16px;
-              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
+      - type: custom:button-card
+        entity: input_boolean.hvac_auto_comfort
+        name: |
+          [[[
+            return entity.state === 'on' ? 'AUTO COMFORT' : 'MANUAL MODE';
+          ]]]
+        icon: |
+          [[[
+            return entity.state === 'on' ? 'mdi:thermostat-auto' : 'mdi:thermostat';
+          ]]]
+        tap_action:
+          action: toggle
+        show_state: false
+        custom_fields:
+          band: |
+            [[[
+              return entity.state === 'on' ? '<span>Comfort Band: 71–73°F</span>' : '<span>Auto Disabled</span>';
+            ]]]
+          temp: |
+            [[[
+              const t = states['sensor.average_home_temperature'];
+              if (t && t.state !== 'unknown' && t.state !== 'unavailable') {
+                return `<span style="font-size: 2rem; font-weight: 700;">${t.state}°F</span>`;
+              }
+              return '<span style="font-size: 2rem; font-weight: 700;">--°F</span>';
+            ]]]
+          label: |
+            [[[
+              return '<span>Indoor Average</span>';
+            ]]]
+        styles:
+          card:
+            - min-height: 280px
+            - border-radius: 16px
+            - box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+            - padding: 16px
+          grid:
+            - grid-template-areas: '"i" "n" "band" "temp" "label"'
+            - grid-template-rows: 50px auto auto auto auto
+          icon:
+            - width: 44px
+            - height: 44px
+            - color: white
+            - justify-self: center
+          name:
+            - font-size: 1.2rem
+            - font-weight: 700
+            - color: white
+            - justify-self: center
+            - margin-top: 6px
+          custom_fields:
+            band:
+              - justify-self: center
+              - font-size: 0.9rem
+              - color: rgba(255,255,255,0.9)
+              - margin-top: 6px
+            temp:
+              - justify-self: center
+              - color: white
+              - margin-top: 10px
+            label:
+              - justify-self: center
+              - font-size: 0.85rem
+              - color: rgba(255,255,255,0.8)
+              - margin-top: 2px
+        state:
+          - value: 'on'
+            styles:
+              card:
+                - background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)
+          - value: 'off'
+            styles:
+              card:
+                - background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 100%)

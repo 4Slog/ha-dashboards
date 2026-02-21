@@ -39,3 +39,51 @@ cards:
 
       # Calendar Section
       - !include ../shared-cards/calendar-events.yaml
+
+      # Family Tasks
+      - type: vertical-stack
+        cards:
+          - type: heading
+            heading: Family Tasks
+            heading_style: title
+            icon: mdi:clipboard-check-outline
+
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: todo-list
+                entity: todo.house_tasks
+                title: House Tasks
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                      max-height: 300px;
+                      overflow-y: auto;
+                    }
+
+              - type: todo-list
+                entity: todo.paul
+                title: Paul's Tasks
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                      max-height: 300px;
+                      overflow-y: auto;
+                    }
+
+              - type: todo-list
+                entity: todo.tuella
+                title: Tuella's Tasks
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 16px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                      max-height: 300px;
+                      overflow-y: auto;
+                    }

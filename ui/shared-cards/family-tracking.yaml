@@ -81,7 +81,23 @@ cards:
                   border-radius: 16px;
                   font-size: 1.1rem !important;
                   margin-top: -8px;
+                  margin-bottom: 16px;
                   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+
+          # Mauriece
+          - type: custom:mushroom-person-card
+            entity: person.mauriece
+            use_entity_picture: true
+            layout: vertical
+            primary_info: name
+            secondary_info: state
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 16px;
+                  font-size: 1.2rem !important;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 }
 
       # RIGHT COLUMN: Map
@@ -89,6 +105,7 @@ cards:
         entities:
           - person.paul_sowu
           - person.tuella_sowu
+          - person.mauriece
           - zone.home
         hours_to_show: 2
         default_zoom: 13
