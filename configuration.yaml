@@ -282,10 +282,3 @@ zone:
 
 camera: !include cameras.yaml
 ffmpeg:
-
-# =======================
-#  GO2RTC STREAMS
-# =======================
-go2rtc:
-  streams:
-    great_room_ring: rtsp://10.0.0.60:8556/649a631caa8b_live
