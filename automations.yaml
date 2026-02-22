@@ -430,6 +430,27 @@
         name: Kitchen Auto-Off
         message: "Kitchen light turned off - no motion detected for 45 minutes"
 
+- id: kitchen_light_auto_on_motion
+  alias: "Kitchen Light Auto-On - Motion Detected"
+  description: "Turn on kitchen light when motion detected on kitchen tablet"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: light.kitchen_light_switch
+      state: "off"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.kitchen_light_switch
+    - service: logbook.log
+      data:
+        name: Kitchen Auto-On
+        message: "Kitchen light turned on - motion detected on kitchen tablet"
+
 - id: sleep_detection_bedtime_routine
   alias: "Sleep Detection - Bedtime Routine"
   description: "When both Paul and Tuella are asleep, turn off all lights, fans, close blinds, sleep tablet"
