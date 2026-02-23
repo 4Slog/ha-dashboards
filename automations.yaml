@@ -561,3 +561,61 @@
       data:
         name: Sleep Detection
         message: "Both Paul and Tuella asleep - bedtime routine executed"
+
+# ══════════════════════════════════════════════════════
+# 19. HA Startup Notification
+# ══════════════════════════════════════════════════════
+- id: ha_startup_notification
+  alias: "HA Startup Notification"
+  description: "Notify Paul's phone whenever Home Assistant restarts"
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - delay: "00:00:30"
+    - service: notify.mobile_app_sm_s928u1
+      data:
+        title: "Home Assistant Started"
+        message: "HA is back online. All automations are active."
+    - service: notify.mobile_app_p13pro
+      data:
+        title: "Home Assistant Started"
+        message: "HA is back online. All automations are active."
+
+# ══════════════════════════════════════════════════════
+# 20. MQTT Broker Unavailable Notification
+# ══════════════════════════════════════════════════════
+- id: mqtt_broker_unavailable_notify
+  alias: "MQTT Broker Unavailable Notification"
+  description: "Notify Paul when MQTT broker goes unavailable"
+  trigger:
+    - platform: event
+      event_type: mqtt_disconnected
+  action:
+    - service: notify.mobile_app_sm_s928u1
+      data:
+        title: "MQTT Broker Down"
+        message: "Mosquitto MQTT broker disconnected. Ring, Wyze, and other MQTT devices may be offline."
+    - service: notify.mobile_app_p13pro
+      data:
+        title: "MQTT Broker Down"
+        message: "Mosquitto MQTT broker disconnected. Ring, Wyze, and other MQTT devices may be offline."
+
+# ══════════════════════════════════════════════════════
+# 21. MQTT Broker Reconnected Notification
+# ══════════════════════════════════════════════════════
+- id: mqtt_broker_reconnected_notify
+  alias: "MQTT Broker Reconnected Notification"
+  description: "Notify Paul when MQTT broker reconnects"
+  trigger:
+    - platform: event
+      event_type: mqtt_connected
+  action:
+    - service: notify.mobile_app_sm_s928u1
+      data:
+        title: "MQTT Broker Reconnected"
+        message: "Mosquitto MQTT broker is back online."
+    - service: notify.mobile_app_p13pro
+      data:
+        title: "MQTT Broker Reconnected"
+        message: "Mosquitto MQTT broker is back online."
