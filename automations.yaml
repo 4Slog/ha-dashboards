@@ -619,3 +619,58 @@
       data:
         title: "MQTT Broker Reconnected"
         message: "Mosquitto MQTT broker is back online."
+
+# ══════════════════════════════════════════════════════
+# 22. HA Restart - Kitchen Light Cleanup
+# If HA restarts while kitchen light is on but no motion,
+# turn it off (lost timer recovery).
+# ══════════════════════════════════════════════════════
+- id: ha_restart_kitchen_light_cleanup
+  alias: "HA Restart - Kitchen Light Cleanup"
+  description: "On HA start, turn off kitchen light if on with no motion (lost timer recovery)"
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - delay: "00:01:00"
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: light.kitchen_light_switch
+          state: "on"
+        - condition: state
+          entity_id: binary_sensor.vaca_ea80840db_motion
+          state: "off"
+    - service: light.turn_off
+      target:
+        entity_id: light.kitchen_light_switch
+    - service: logbook.log
+      data:
+        name: HA Restart Cleanup
+        message: "Kitchen light turned off on startup - was on with no motion (lost timer recovery)"
+
+# ══════════════════════════════════════════════════════
+# 23. HA Restart - Wake Kitchen Tablet Screen
+# If HA crashed mid-sleep-routine, tablet screen may be
+# stuck at brightness 0. Wake it on restart.
+# ══════════════════════════════════════════════════════
+- id: ha_restart_wake_kitchen_tablet
+  alias: "HA Restart - Wake Kitchen Tablet Screen"
+  description: "On HA start, restore kitchen tablet to normal brightness in case it was stuck dark"
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - delay: "00:01:30"
+    - service: number.set_value
+      target:
+        entity_id: number.vaca_ea80840db_screen_brightness
+      data:
+        value: 100
+    - service: button.press
+      target:
+        entity_id: button.vaca_ea80840db_wake_screen
+    - service: logbook.log
+      data:
+        name: HA Restart Cleanup
+        message: "Kitchen tablet screen woken on HA startup"

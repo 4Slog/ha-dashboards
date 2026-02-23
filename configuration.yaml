@@ -240,9 +240,11 @@ template:
 input_boolean:
   hvac_auto_comfort:
     name: HVAC Auto Comfort
+    initial: on
     icon: mdi:thermostat-auto
   main_lights_master:
     name: Main Lights Master
+    initial: off
     icon: mdi:lightbulb-group
   hp_presence:
     name: HP Presence
