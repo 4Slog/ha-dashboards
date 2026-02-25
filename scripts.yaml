@@ -61,7 +61,7 @@ spotify_send_to:
   description: "Transfer Spotify playback to any speaker and auto-resume."
   fields:
     speaker:
-      description: "Spotify Connect source name (e.g. Kitchen dot, Family dot, Bose Home Speaker 300)"
+      description: "Target speaker"
       example: "Kitchen dot"
       required: true
       selector:
@@ -71,16 +71,29 @@ spotify_send_to:
             - "Family dot"
             - "Bose Home Speaker 300"
             - "Casa de Sowu"
-            - "T's Bose Home Speaker 300"
             - "Living Room TV"
   mode: single
   sequence:
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.spotifyplus_paul_sowu
-        source: "{{ speaker }}"
-    - delay:
-        milliseconds: 1500
-    - service: media_player.media_play
-      data:
-        entity_id: media_player.spotifyplus_paul_sowu
+    - choose:
+        # Bose: use native device ID to bypass Chromecast path
+        - conditions:
+            - condition: template
+              value_template: "{{ speaker == 'Bose Home Speaker 300' }}"
+          sequence:
+            - service: spotifyplus.player_transfer_playback
+              data:
+                entity_id: media_player.spotifyplus_paul_sowu
+                device_id: "5190deba7802ce444af01686633f06d33dc25540"
+                play: true
+                force_activate_device: false
+      # All other devices: select_source + resume
+      default:
+        - service: media_player.select_source
+          data:
+            entity_id: media_player.spotifyplus_paul_sowu
+            source: "{{ speaker }}"
+        - delay:
+            milliseconds: 1500
+        - service: media_player.media_play
+          data:
+            entity_id: media_player.spotifyplus_paul_sowu
