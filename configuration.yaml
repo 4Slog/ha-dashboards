@@ -284,3 +284,12 @@ zone:
 
 camera: !include cameras.yaml
 ffmpeg:
+
+# =======================
+#  SHELL COMMANDS
+# =======================
+shell_command:
+  wake_tablet_spotify: >
+    adb -s 10.0.0.166:37129 shell
+    "input keyevent KEYCODE_WAKEUP &&
+    am start -n com.spotify.music/.MainActivity"

@@ -582,15 +582,3 @@ cards:
 
           # === MEDIA BROWSER ===
           - type: media-browser
-            entity: media_player.spotifyplus_paul_sowu
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 16px;
-                  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
-                  overflow: hidden;
-                  min-height: 450px;
-                }
-                @media (max-width: 1400px) {
-                  ha-card { border-radius: 12px; min-height: 380px; }
-                }
