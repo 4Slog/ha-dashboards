@@ -429,10 +429,10 @@ cards:
             [[[
               const state = entity.state;
               if (state === 'opening') {
-                return `<span style="font-size: 0.9rem; color: #000000; font-weight: 700;">OPENING...</span>`;
+                return `<span style="font-size: 0.9rem; color: #000000; font-weight: 700;">CLOSING...</span>`;
               }
               if (state === 'closing') {
-                return `<span style="font-size: 0.9rem; color: #000000; font-weight: 700;">CLOSING...</span>`;
+                return `<span style="font-size: 0.9rem; color: #000000; font-weight: 700;">OPENING...</span>`;
               }
               return '';
             ]]]
