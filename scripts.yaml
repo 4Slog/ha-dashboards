@@ -52,41 +52,35 @@ toggle_main_lights:
                     tilt_position: 99
 
 # ============================================
-# Spotify Transfer Scripts (added by big bro)
+# Spotify Transfer Script
 # ============================================
 
-spotify_transfer_kitchen:
-  alias: "Spotify to Kitchen Dot"
+spotify_send_to:
+  alias: "Spotify: Send to Speaker"
+  icon: mdi:spotify
+  description: "Transfer Spotify playback to any speaker and auto-resume."
+  fields:
+    speaker:
+      description: "Spotify Connect source name (e.g. Kitchen dot, Family dot, Bose Home Speaker 300)"
+      example: "Kitchen dot"
+      required: true
+      selector:
+        select:
+          options:
+            - "Kitchen dot"
+            - "Family dot"
+            - "Bose Home Speaker 300"
+            - "Casa de Sowu"
+            - "T's Bose Home Speaker 300"
+            - "Living Room TV"
+  mode: single
   sequence:
-    - service: spotifyplus.player_transfer_playback
+    - service: media_player.select_source
       data:
         entity_id: media_player.spotifyplus_paul_sowu
-        device_name: "Kitchen dot"
-        play: true
-
-spotify_transfer_family:
-  alias: "Spotify to Family Dot"
-  sequence:
-    - service: spotifyplus.player_transfer_playback
+        source: "{{ speaker }}"
+    - delay:
+        milliseconds: 1500
+    - service: media_player.media_play
       data:
         entity_id: media_player.spotifyplus_paul_sowu
-        device_name: "Family dot"
-        play: true
-
-spotify_transfer_show8:
-  alias: "Spotify to Show 8"
-  sequence:
-    - service: spotifyplus.player_transfer_playback
-      data:
-        entity_id: media_player.spotifyplus_paul_sowu
-        device_name: "Show 8"
-        play: true
-
-spotify_transfer_greatroom:
-  alias: "Spotify to Great Room"
-  sequence:
-    - service: spotifyplus.player_transfer_playback
-      data:
-        entity_id: media_player.spotifyplus_paul_sowu
-        device_name: "Casa de Sowu"
-        play: true
