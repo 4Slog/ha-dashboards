@@ -152,7 +152,9 @@ cards:
                 show_state: true
                 tap_action:
                   action: call-service
-                  service: script.spotify_transfer_kitchen
+                  service: script.spotify_send_to
+                  service_data:
+                    speaker: "Kitchen dot"
                 hold_action:
                   action: more-info
                 state:
@@ -197,7 +199,7 @@ cards:
                     - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card:hover { 
+                    ha-card:hover {
                       border-color: rgba(29, 185, 84, 0.5);
                       box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
@@ -213,7 +215,9 @@ cards:
                 show_state: true
                 tap_action:
                   action: call-service
-                  service: script.spotify_transfer_family
+                  service: script.spotify_send_to
+                  service_data:
+                    speaker: "Family dot"
                 hold_action:
                   action: more-info
                 state:
@@ -258,7 +262,7 @@ cards:
                     - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card:hover { 
+                    ha-card:hover {
                       border-color: rgba(29, 185, 84, 0.5);
                       box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
@@ -266,15 +270,17 @@ cards:
                       ha-card { height: 80px !important; }
                     }
 
-              # Show 8
+              # Kit & Fam (multi-room group: Kitchen + Family dots)
               - type: custom:button-card
-                entity: media_player.show_8
-                name: Show 8
-                icon: mdi:tablet
+                entity: media_player.kit_and_fam
+                name: Kit & Fam
+                icon: mdi:speaker-multiple
                 show_state: true
                 tap_action:
                   action: call-service
-                  service: script.spotify_transfer_show8
+                  service: script.spotify_send_to
+                  service_data:
+                    speaker: "Kit and fam"
                 hold_action:
                   action: more-info
                 state:
@@ -319,7 +325,7 @@ cards:
                     - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card:hover { 
+                    ha-card:hover {
                       border-color: rgba(29, 185, 84, 0.5);
                       box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
@@ -327,15 +333,17 @@ cards:
                       ha-card { height: 80px !important; }
                     }
 
-              # Great Room
+              # Bose Home Speaker 300
               - type: custom:button-card
-                entity: media_player.office
-                name: Great Room
-                icon: mdi:tablet
+                entity: media_player.bose_speaker_media_player
+                name: Bose Speaker
+                icon: mdi:speaker-wireless
                 show_state: true
                 tap_action:
                   action: call-service
-                  service: script.spotify_transfer_greatroom
+                  service: script.spotify_send_to
+                  service_data:
+                    speaker: "Bose Home Speaker 300"
                 hold_action:
                   action: more-info
                 state:
@@ -380,7 +388,70 @@ cards:
                     - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card:hover { 
+                    ha-card:hover {
+                      border-color: rgba(29, 185, 84, 0.5);
+                      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
+                    }
+                    @media (max-width: 1400px) {
+                      ha-card { height: 80px !important; }
+                    }
+
+              # VACA Kitchen Tablet (P13PRO)
+              - type: custom:button-card
+                entity: media_player.kitchen_vaca_media_player
+                name: Kitchen Tablet
+                icon: mdi:tablet
+                show_state: true
+                tap_action:
+                  action: call-service
+                  service: script.spotify_send_to
+                  service_data:
+                    speaker: "P13PRO"
+                hold_action:
+                  action: more-info
+                state:
+                  - value: "playing"
+                    styles:
+                      card:
+                        - border: 2px solid #1DB954
+                        - box-shadow: 0 4px 16px rgba(29, 185, 84, 0.4)
+                      icon:
+                        - color: '#1DB954'
+                  - value: "paused"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.7)'
+                  - value: "idle"
+                    styles:
+                      icon:
+                        - color: 'rgba(255,255,255,0.5)'
+                  - value: "unavailable"
+                    styles:
+                      card:
+                        - opacity: 0.5
+                      icon:
+                        - color: 'rgba(255,255,255,0.3)'
+                styles:
+                  card:
+                    - height: 100px
+                    - border-radius: 12px
+                    - background: rgba(255,255,255,0.05)
+                    - border: 2px solid rgba(255,255,255,0.1)
+                    - transition: all 0.3s ease
+                  icon:
+                    - width: 32px
+                    - height: 32px
+                    - color: white
+                  name:
+                    - font-size: 1rem
+                    - font-weight: 600
+                    - color: white
+                  state:
+                    - font-size: 0.8rem
+                    - color: rgba(255,255,255,0.5)
+                card_mod:
+                  style: |
+                    ha-card:hover {
                       border-color: rgba(29, 185, 84, 0.5);
                       box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
                     }
@@ -440,61 +511,7 @@ cards:
                     - color: rgba(255,255,255,0.5)
                 card_mod:
                   style: |
-                    ha-card:hover { 
-                      border-color: rgba(102, 126, 234, 0.5);
-                      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-                    }
-                    @media (max-width: 1400px) {
-                      ha-card { height: 80px !important; }
-                    }
-
-              # Server Speaker (no Spotify - just media control)
-              - type: custom:button-card
-                entity: media_player.vlc_telnet
-                name: Server
-                icon: mdi:speaker-wireless
-                show_state: true
-                tap_action:
-                  action: more-info
-                hold_action:
-                  action: more-info
-                state:
-                  - value: "playing"
-                    styles:
-                      card:
-                        - border: 2px solid #667eea
-                        - box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4)
-                      icon:
-                        - color: '#667eea'
-                  - value: "paused"
-                    styles:
-                      icon:
-                        - color: 'rgba(255,255,255,0.7)'
-                  - value: "idle"
-                    styles:
-                      icon:
-                        - color: 'rgba(255,255,255,0.5)'
-                styles:
-                  card:
-                    - height: 100px
-                    - border-radius: 12px
-                    - background: rgba(255,255,255,0.05)
-                    - border: 2px solid rgba(255,255,255,0.1)
-                    - transition: all 0.3s ease
-                  icon:
-                    - width: 32px
-                    - height: 32px
-                    - color: white
-                  name:
-                    - font-size: 1rem
-                    - font-weight: 600
-                    - color: white
-                  state:
-                    - font-size: 0.8rem
-                    - color: rgba(255,255,255,0.5)
-                card_mod:
-                  style: |
-                    ha-card:hover { 
+                    ha-card:hover {
                       border-color: rgba(102, 126, 234, 0.5);
                       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
                     }
