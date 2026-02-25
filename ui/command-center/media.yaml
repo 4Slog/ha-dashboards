@@ -580,5 +580,6 @@ cards:
                   ha-card { height: 26px !important; }
                 }
 
-          # === MEDIA BROWSER ===
-          - type: media-browser
+          # === MEDIA CONTROL ===
+          - type: media-control
+            entity: media_player.spotifyplus_paul_sowu

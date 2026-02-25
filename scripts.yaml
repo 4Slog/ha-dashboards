@@ -88,12 +88,14 @@ spotify_send_to:
                 device_id: "5190deba7802ce444af01686633f06d33dc25540"
                 play: true
                 force_activate_device: false
-      # P13PRO tablet: wake screen + launch Spotify first so it appears in Connect list
+      # P13PRO tablet: wake screen first so Spotify registers in Connect list
         - conditions:
             - condition: template
               value_template: "{{ speaker == 'P13PRO' }}"
           sequence:
-            - service: shell_command.wake_tablet_spotify
+            - service: button.press
+              target:
+                entity_id: button.vaca_ea80840db_wake_screen
             - delay:
                 seconds: 4
             - service: media_player.select_source
