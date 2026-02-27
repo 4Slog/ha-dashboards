@@ -392,26 +392,7 @@
     - platform: state
       entity_id: input_boolean.front_porch_virtual_toggle
       to: "off"
-  action:
-    - choose:
-        - conditions:
-            - condition: state
-              entity_id: input_boolean.front_porch_virtual_toggle
-              state: "on"
-          sequence:
-            - service: alexa_devices.send_text_command
-              data:
-                device_id: 2c5033f63f63756f7d7ad408d93e8ab2
-                text_command: "turn on front porch"
-        - conditions:
-            - condition: state
-              entity_id: input_boolean.front_porch_virtual_toggle
-              state: "off"
-          sequence:
-            - service: alexa_devices.send_text_command
-              data:
-                device_id: 2c5033f63f63756f7d7ad408d93e8ab2
-                text_command: "turn off front porch"
+  action: []
 
 - id: midnight_lights_off_backup
   alias: "2 AM Backup - Common Area Lights Off"
