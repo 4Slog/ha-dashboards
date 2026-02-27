@@ -289,3 +289,19 @@ zone:
 camera: !include cameras.yaml
 ffmpeg:
 
+# =======================
+#  NOTIFY - SMS VIA GOOGLE FI
+# =======================
+notify:
+  - name: sms_paul
+    platform: smtp
+    server: smtp.gmail.com
+    port: 587
+    starttls: true
+    username: sowu.paul@gmail.com
+    password: !secret gmail_smtp_password
+    sender: sowu.paul@gmail.com
+    sender_name: "Home Assistant"
+    recipient:
+      - 6784621032@msg.fi.google.com
+
