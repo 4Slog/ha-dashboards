@@ -453,16 +453,21 @@
 
 - id: kitchen_light_auto_on_motion
   alias: "Kitchen Light Auto-On - Motion Detected"
-  description: "Turn on kitchen light when motion detected and lux below 800"
+  description: "Turn on kitchen light when motion detected (VACA tablet fast trigger or presence sensor)"
   mode: single
   trigger:
     - platform: state
       entity_id: binary_sensor.presence_sensor
       to: "on"
+    - platform: state
+      entity_id: binary_sensor.vaca_ea80840db_motion
+      to: "on"
   condition:
     - condition: state
       entity_id: light.kitchen_light_switch
       state: "off"
+    - condition: template
+      value_template: "{{ (now() - states.light.kitchen_light_switch.last_changed).total_seconds() > 60 }}"
   action:
     - service: light.turn_on
       target:
