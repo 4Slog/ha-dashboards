@@ -429,15 +429,15 @@
         message: "2 AM backup triggered - common area lights turned off"
 
 - id: kitchen_light_auto_off_no_motion
-  alias: "Kitchen Light Auto-Off - No Motion 45 Min"
-  description: "Turn off kitchen light after 45 minutes of no motion on kitchen tablet"
+  alias: "Kitchen Light Auto-Off - No Motion 30 Min"
+  description: "Turn off kitchen light after 30 minutes of no motion from presence sensor"
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.vaca_ea80840db_motion
+      entity_id: binary_sensor.presence_sensor
       to: "off"
       for:
-        minutes: 45
+        minutes: 30
   condition:
     - condition: state
       entity_id: light.kitchen_light_switch
@@ -449,15 +449,15 @@
     - service: logbook.log
       data:
         name: Kitchen Auto-Off
-        message: "Kitchen light turned off - no motion detected for 45 minutes"
+        message: "Kitchen light turned off - no motion detected for 30 minutes"
 
 - id: kitchen_light_auto_on_motion
   alias: "Kitchen Light Auto-On - Motion Detected"
-  description: "Turn on kitchen light when motion detected on kitchen tablet"
+  description: "Turn on kitchen light when motion detected and lux below 800"
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.vaca_ea80840db_motion
+      entity_id: binary_sensor.presence_sensor
       to: "on"
   condition:
     - condition: state
@@ -470,7 +470,7 @@
     - service: logbook.log
       data:
         name: Kitchen Auto-On
-        message: "Kitchen light turned on - motion detected on kitchen tablet"
+        message: "Kitchen light turned on - motion detected"
 
 - id: sleep_detection_bedtime_routine
   alias: "Sleep Detection - Bedtime Routine"
