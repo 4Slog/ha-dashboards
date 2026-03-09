@@ -839,17 +839,13 @@
   description: "When front door doorbell rings, pop up live camera feed on great room TV via QuickBars"
   trigger:
     - platform: state
-      entity_id: binary_sensor.front_door_ding
-      to: "on"
+      entity_id: event.front_door_ding_2
   action:
     - event: quickbars.open
       event_data:
-        rtsp_url: "rtsp://10.0.0.60:8556/649a63ddc1d8_live"
+        camera_entity: camera.front_door_live_view
         position: top_right
         auto_hide: 30
         show_title: true
         camera_title: "Front Door"
         show_toast: false
-        rtsp_transport: tcp
-        rtsp_latency: low
-        software_decoder: true
