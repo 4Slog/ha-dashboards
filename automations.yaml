@@ -833,3 +833,20 @@
       data:
         name: HA Restart Cleanup
         message: "Kitchen tablet screen woken on HA startup"
+
+- id: ring_doorbell_ding_tv_pip
+  alias: "Ring Doorbell Ding - Front Door Camera PiP on TV"
+  description: "When front door doorbell rings, pop up live camera feed on great room TV via QuickBars"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_ding
+      to: "on"
+  action:
+    - event: quickbars.open
+      event_data:
+        camera_entity: camera.front_door_live_view
+        position: top_right
+        auto_hide: 30
+        show_title: true
+        camera_title: "Front Door"
+        show_toast: false
