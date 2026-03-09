@@ -844,7 +844,7 @@
   action:
     - event: quickbars.open
       event_data:
-        rtsp_url: "rtsp://10.0.0.60:8558/front_door_ring"
+        rtsp_url: "rtsp://10.0.0.60:8556/649a63ddc1d8_live"
         position: top_right
         auto_hide: 30
         show_title: true
