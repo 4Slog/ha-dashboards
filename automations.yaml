@@ -844,9 +844,12 @@
   action:
     - event: quickbars.open
       event_data:
-        camera_entity: camera.front_door_live_view
+        rtsp_url: "rtsp://10.0.0.60:8558/front_door_ring"
         position: top_right
         auto_hide: 30
         show_title: true
         camera_title: "Front Door"
         show_toast: false
+        rtsp_transport: tcp
+        rtsp_latency: low
+        software_decoder: true
