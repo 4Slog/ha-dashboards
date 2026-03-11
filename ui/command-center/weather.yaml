@@ -130,10 +130,6 @@ cards:
             show_name: true
             show_icon: true
             custom_fields:
-              band: |
-                [[[
-                  return entity.state === 'on' ? '<span>Comfort Band: 71-73°F</span>' : '<span>Auto Disabled</span>';
-                ]]]
               temp: |
                 [[[
                   const avgTemp = states['sensor.average_home_temperature'];
@@ -148,19 +144,31 @@ cards:
                 ]]]
               status: |
                 [[[
-                  return entity.state === 'on' ? '<span>✓ Maintaining Temperature</span>' : '<span>Thermostat Manual Control</span>';
+                  return entity.state === 'on' ? '<span>Cool to 75°F when house &gt; 78°F</span>' : '<span>Thermostat Manual Control</span>';
+                ]]]
+              toggle: |
+                [[[
+                  const on = entity.state === 'on';
+                  const onBg  = on  ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.15)';
+                  const offBg = !on ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.15)';
+                  const onColor  = on  ? '#1a7a40' : 'rgba(255,255,255,0.5)';
+                  const offColor = !on ? '#555'    : 'rgba(255,255,255,0.5)';
+                  return `<div style="display:flex;gap:10px;justify-content:center;width:100%;">
+                    <div style="flex:1;text-align:center;padding:6px 0;border-radius:20px;background:${onBg};color:${onColor};font-size:0.9rem;font-weight:700;letter-spacing:0.5px;">ON</div>
+                    <div style="flex:1;text-align:center;padding:6px 0;border-radius:20px;background:${offBg};color:${offColor};font-size:0.9rem;font-weight:700;letter-spacing:0.5px;">OFF</div>
+                  </div>`;
                 ]]]
             styles:
               card:
-                - height: 280px
+                - height: 100%
                 - min-height: 280px
                 - border-radius: 16px
                 - box-shadow: 0 4px 12px rgba(0,0,0,0.15)
                 - padding: 20px
                 - transition: all 0.3s ease
               grid:
-                - grid-template-areas: '"i" "n" "band" "temp" "label" "status"'
-                - grid-template-rows: 60px auto auto auto auto 1fr
+                - grid-template-areas: '"i" "n" "temp" "label" "status" "toggle"'
+                - grid-template-rows: 60px auto auto auto 1fr auto
               icon:
                 - width: 50px
                 - height: 50px
@@ -175,11 +183,6 @@ cards:
                 - margin-bottom: 6px
                 - letter-spacing: 0.5px
               custom_fields:
-                band:
-                  - justify-self: center
-                  - font-size: 1rem
-                  - color: rgba(255, 255, 255, 0.9)
-                  - margin-bottom: 12px
                 temp:
                   - justify-self: center
                   - color: white
@@ -195,6 +198,9 @@ cards:
                   - color: rgba(255, 255, 255, 0.9)
                   - text-align: center
                   - padding: 0 8px
+                toggle:
+                  - width: 100%
+                  - padding-top: 12px
             state:
               - value: 'on'
                 styles:
@@ -208,8 +214,6 @@ cards:
               style: |
                 @media (max-width: 1400px) {
                   ha-card {
-                    height: 200px !important;
-                    min-height: 200px !important;
                     padding: 12px !important;
                     border-radius: 12px !important;
                   }
