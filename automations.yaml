@@ -1,32 +1,12 @@
-- id: maintain_comfort_band_71_73
-  alias: Maintain Comfort Band - Day/Night Season Aware
-  description: >
-    Day (8AM-9PM): heat at 71, cool at 73.
-    Night (9PM-8AM): heat at 72, cool at 74.
-    Cooling suppressed when outdoor temp is below 71°F (let outside air do the work).
+- id: hvac_cool_main
+  alias: HVAC - Cool to 75 When House Above 78
+  description: "Cooling season only. Cool to 75F when house exceeds 78F, but only if outdoor temp is above 68F. Otherwise do nothing and let the house float."
   mode: single
 
   trigger:
-    # Day triggers
     - platform: numeric_state
       entity_id: sensor.average_home_temperature
-      below: 71
-      for:
-        minutes: 10
-    - platform: numeric_state
-      entity_id: sensor.average_home_temperature
-      above: 73
-      for:
-        minutes: 10
-    # Night triggers (looser band)
-    - platform: numeric_state
-      entity_id: sensor.average_home_temperature
-      below: 72
-      for:
-        minutes: 10
-    - platform: numeric_state
-      entity_id: sensor.average_home_temperature
-      above: 74
+      above: 78
       for:
         minutes: 10
 
@@ -34,124 +14,37 @@
     - condition: state
       entity_id: input_boolean.hvac_auto_comfort
       state: "on"
+    - condition: numeric_state
+      entity_id: weather.forecast_home
+      attribute: temperature
+      above: 68
 
   action:
-    - choose:
-
-        # === NIGHT MODE (9PM - 8AM): heat at 72, cool at 74 ===
-        - conditions:
-            - condition: time
-              after: "21:00:00"
-              before: "08:00:00"
-          sequence:
-            - choose:
-                # Heat if below 72
-                - conditions:
-                    - condition: numeric_state
-                      entity_id: sensor.average_home_temperature
-                      below: 72
-                  sequence:
-                    - service: climate.set_hvac_mode
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        hvac_mode: heat
-                    - service: climate.set_temperature
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        temperature: 73
-                    - service: logbook.log
-                      data:
-                        name: HVAC Night Mode
-                        message: "Heating to 73°F (night band)"
-                # Cool if above 74 AND outdoor >= 71
-                - conditions:
-                    - condition: numeric_state
-                      entity_id: sensor.average_home_temperature
-                      above: 74
-                    - condition: numeric_state
-                      entity_id: weather.forecast_home
-                      attribute: temperature
-                      above: 72
-                  sequence:
-                    - service: climate.set_hvac_mode
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        hvac_mode: cool
-                    - service: climate.set_temperature
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        temperature: 73
-                    - service: logbook.log
-                      data:
-                        name: HVAC Night Mode
-                        message: "Cooling to 73°F (night band, outdoor above 72°F)"
-
-        # === DAY MODE (8AM - 9PM): heat at 71, cool at 73 ===
-        - conditions:
-            - condition: time
-              after: "08:00:00"
-              before: "21:00:00"
-          sequence:
-            - choose:
-                # Heat if below 71
-                - conditions:
-                    - condition: numeric_state
-                      entity_id: sensor.average_home_temperature
-                      below: 71
-                  sequence:
-                    - service: climate.set_hvac_mode
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        hvac_mode: heat
-                    - service: climate.set_temperature
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        temperature: 72
-                    - service: logbook.log
-                      data:
-                        name: HVAC Day Mode
-                        message: "Heating to 72°F (day band)"
-                # Cool if above 73 AND outdoor >= 71
-                - conditions:
-                    - condition: numeric_state
-                      entity_id: sensor.average_home_temperature
-                      above: 73
-                    - condition: numeric_state
-                      entity_id: weather.forecast_home
-                      attribute: temperature
-                      above: 72
-                  sequence:
-                    - service: climate.set_hvac_mode
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        hvac_mode: cool
-                    - service: climate.set_temperature
-                      target:
-                        entity_id: climate.thermostat
-                      data:
-                        temperature: 72
-                    - service: logbook.log
-                      data:
-                        name: HVAC Day Mode
-                        message: "Cooling to 72°F (day band, outdoor above 72°F)"
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.thermostat
+      data:
+        hvac_mode: cool
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.thermostat
+      data:
+        temperature: 75
+    - service: logbook.log
+      data:
+        name: HVAC Cool
+        message: "Cooling to 75°F (house above 78°F, outdoor above 68°F)"
 
 - id: hvac_suppress_cooling_outdoor_cool
-  alias: HVAC - Suppress Cooling When Outdoor Temp Cool
-  description: "When outdoor temp drops to 72°F or below and AC is running, turn it off and let outside air do the work."
+  alias: HVAC - Stop Cooling When Outdoor Drops Below 68
+  description: "If AC is running and outdoor temp drops to 68F or below, shut it off and let outside air do the work."
   mode: single
 
   trigger:
     - platform: numeric_state
       entity_id: weather.forecast_home
       attribute: temperature
-      below: 73
+      below: 69
 
   condition:
     - condition: state
@@ -170,48 +63,7 @@
     - service: logbook.log
       data:
         name: HVAC Suppression
-        message: "Cooling turned off — outdoor temp at or below 72°F, letting outside air cool the house"
-
-- id: hvac_fan_circulation_hourly
-  alias: HVAC Fan Circulation Hourly
-  description: Run system fan 10 minutes every hour, daytime only (8AM-9PM), when HVAC is idle.
-  mode: single
-
-  trigger:
-    - platform: time_pattern
-      minutes: "0"
-
-  condition:
-    - condition: state
-      entity_id: input_boolean.hvac_auto_comfort
-      state: "on"
-    - condition: state
-      entity_id: climate.thermostat
-      state: "off"
-    # Daytime only — no fan circulation at night
-    - condition: time
-      after: "08:00:00"
-      before: "21:00:00"
-
-  action:
-    - service: climate.set_fan_mode
-      target:
-        entity_id: climate.thermostat
-      data:
-        fan_mode: "on"
-
-    - delay: "00:10:00"
-
-    - service: climate.set_fan_mode
-      target:
-        entity_id: climate.thermostat
-      data:
-        fan_mode: "auto"
-
-    - service: logbook.log
-      data:
-        name: HVAC Fan Circulation
-        message: "Fan ran for 10 minutes (hourly circulation)"
+        message: "Cooling stopped — outdoor at or below 68°F"
 
 - id: main_lights_master_on
   alias: Main Lights Master On
